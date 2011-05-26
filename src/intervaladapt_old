@@ -1,0 +1,390 @@
+// This file has been automatically generated from cxscadapt.hpp.m4
+// Do not edit directly!
+#ifndef __INTERVALADAPT_HPP__
+#define __INTERVALADAPT_HPP__
+
+#include <iosfwd>
+#include <interval.hpp>
+#include <imath.hpp>
+
+namespace yalaa
+{
+  namespace iv
+  {
+    // ****************************************************************
+    // TODO: FIX Dummy Decls
+    // ****************************************************************
+    typedef double mreal;
+    // ****************************************************************
+
+    inline double to_double(mreal d) 
+    {
+      return d;
+    }
+
+    class interval
+    {
+    public:
+      interval()
+        :m_adapt(0,0){}
+
+      interval(mreal lb, mreal ub)
+        :m_adapt(to_double(lb), to_double(ub)){}
+
+      explicit interval(mreal r)
+        :m_adapt(to_double(r),to_double(r))
+        {}
+
+      inline interval& operator=(const mreal &other)
+        {
+          m_adapt = cxsc::interval(to_double(other), to_double(other));
+          return *this;
+        }
+
+      inline interval& operator&=(const interval &other)
+        {
+          m_adapt &= other.m_adapt;
+          return *this;
+        }
+
+      inline interval& operator|=(const interval &other)
+        {
+          m_adapt |= other.m_adapt;
+          return *this;
+        }
+
+      void set_inf(const mreal &r)
+        {
+          Inf(m_adapt) = to_double(r);
+        }
+
+      void set_sup(const mreal &r)
+        {
+          Sup(m_adapt) = to_double(r);
+        }
+
+// Konzept Intervall
+      typedef void trait_is_iv_t;
+
+
+      // assignment operators
+      // #sop(,[interval],[interval])
+      // #ifelse(interval,[mreal],,[sop(,[interval],[mreal])
+      //# ifelse(interval,[interval],,[sop(,[interval],[interval])])])
+
+      // typedef
+      typedef cxsc::interval adapter_t;
+
+      // interval - interval
+      inline interval& operator+=(const interval &other)
+        {
+          m_adapt += other.m_adapt;         return *this;
+        }
+
+      inline interval& operator-=(const interval &other)
+        {
+          m_adapt -= other.m_adapt;         return *this;
+        }
+
+      inline interval& operator*=(const interval &other)
+        {
+          m_adapt *= other.m_adapt;         return *this;
+        }
+
+      inline interval& operator/=(const interval &other)
+        {
+          m_adapt /= other.m_adapt;         return *this;
+        }
+
+
+
+      // interval - real
+      inline interval& operator+=(const mreal &other)
+        {
+          *this += interval(other)
+            ;         return *this;
+        }
+
+      inline interval& operator-=(const mreal &other)
+        {
+          *this -= interval(other)
+            ;         return *this;
+        }
+
+      inline interval& operator*=(const mreal &other)
+        {
+          *this *= interval(other)
+            ;         return *this;
+        }
+
+      inline interval& operator/=(const mreal &other)
+        {
+          *this /= interval(other)
+            ;         return *this;
+        }
+
+
+
+
+      inline const interval operator-() const
+        {
+          interval result(*this);
+          result.m_adapt = -m_adapt;
+          return result;
+        }
+
+      inline const interval operator+() const
+        {
+          return interval(*this);
+        }
+
+      // compare operators
+      inline bool operator==(const interval &other) const
+        {
+          return m_adapt == other.m_adapt;
+        }
+
+      inline bool operator!=(const interval &other) const
+        {
+          return !(*this == other);
+        }
+
+      inline interval& operator=(const interval & other)
+        {
+          m_adapt = other.m_adapt;
+          return *this;
+        }
+
+      inline void print(std::ostream &os) const
+	{
+	  os << m_adapt;
+	}
+      
+
+
+    private:
+
+      explicit interval(const cxsc::interval &other)
+        :m_adapt(other)
+        {}
+
+      friend bool operator<=(mreal, const interval&);
+      friend mreal inf(const interval &);
+      friend mreal sup(const interval &);
+      friend mreal mid(const interval &);
+      friend interval iv_pi();
+      friend mreal diam(const interval&);
+      friend interval arctan(const interval&);
+
+      friend interval cos(interval);
+      friend interval sin(interval);
+      friend interval tan(interval);
+      friend interval exp(interval);
+      friend interval ln(interval);
+      friend interval log10(interval);
+      friend interval sqr(interval);
+      friend interval sqrt(interval);
+      friend interval abs(interval);
+
+      friend interval pow(const interval&, int);
+      friend interval pow(const interval&, mreal);
+      friend interval pow(interval, const interval&);
+
+      cxsc::interval m_adapt;
+    };
+
+    // interval - interval Ops
+    inline interval operator+(interval o1, const interval &o2)
+    {
+      return o1 += o2;
+    }
+
+
+    inline interval operator-(interval o1, const interval &o2)
+    {
+      return o1 -= o2;
+    }
+
+
+    inline interval operator*(interval o1, const interval &o2)
+    {
+      return o1 *= o2;
+    }
+
+
+    inline interval operator/(interval o1, const interval &o2)
+    {
+      return o1 /= o2;
+    }
+
+
+
+
+    // interval - real
+    inline interval operator+(interval o1, const mreal &o2)
+    {
+      return o1 += o2;
+    }
+    inline interval operator+( const mreal &o1, const interval &o2)
+    {
+      interval ir(o1);
+      return ir += o2;
+    }
+
+    inline interval operator-(interval o1, const mreal &o2)
+    {
+      return o1 -= o2;
+    }
+    inline interval operator-( const mreal &o1, const interval &o2)
+    {
+      interval ir(o1);
+      return ir -= o2;
+    }
+
+    inline interval operator*(interval o1, const mreal &o2)
+    {
+      return o1 *= o2;
+    }
+    inline interval operator*( const mreal &o1, const interval &o2)
+    {
+      interval ir(o1);
+      return ir *= o2;
+    }
+
+    inline interval operator/(interval o1, const mreal &o2)
+    {
+      return o1 /= o2;
+    }
+    inline interval operator/( const mreal &o1, const interval &o2)
+    {
+      interval ir(o1);
+      return ir /= o2;
+    }
+
+
+    inline interval cos(interval arg)
+    {
+      arg.m_adapt = cos(arg.m_adapt);
+      return arg;
+    }
+
+    inline interval sin(interval arg)
+    {
+      arg.m_adapt = sin(arg.m_adapt);
+      return arg;
+    }
+
+    inline interval tan(interval arg)
+    {
+      arg.m_adapt = tan(arg.m_adapt);
+      return arg;
+    }
+
+    inline interval exp(interval arg)
+    {
+      arg.m_adapt = exp(arg.m_adapt);
+      return arg;
+    }
+
+    inline interval ln(interval arg)
+    {
+      arg.m_adapt = ln(arg.m_adapt);
+      return arg;
+    }
+
+    inline interval sqr(interval arg)
+    {
+      arg.m_adapt = sqr(arg.m_adapt);
+      return arg;
+    }
+
+    inline interval sqrt(interval arg)
+    {
+      arg.m_adapt = sqrt(arg.m_adapt);
+      return arg;
+    }
+
+    inline interval abs(interval arg)
+    {
+      arg.m_adapt = abs(arg.m_adapt);
+      return arg;
+    }
+
+
+    inline interval pow(const interval &b, int e)
+    {
+      if(e >= 0)
+        return interval(cxsc::Power(b.m_adapt, e));
+      else
+        return interval(cxsc::pow(b.m_adapt, cxsc::interval(e)));
+    }
+
+    inline interval pow(const interval &a, mreal e)
+    {
+      return interval(cxsc::pow(a.m_adapt, cxsc::interval(to_double(e))));
+    }
+
+    inline interval pow(interval a, const interval &e)
+    {
+      a.m_adapt = pow(a.m_adapt, e.m_adapt);
+      return a;
+    }
+
+    // inline interval log10(interval a)
+    // {
+    //   a.m_adapt = log10(a.m_adapt);
+    //   return a;
+    // }
+
+    inline interval arctan(const interval &i)
+    {
+      return interval(cxsc::atan(i.m_adapt));
+    }
+
+    inline mreal inf(const interval &i)
+    {
+      return mreal(_double(Inf(i.m_adapt)));
+    }
+
+    inline mreal sup(const interval &i)
+    {
+      return mreal(_double(Sup(i.m_adapt)));
+    }
+
+    inline mreal mid(const interval &i)
+    {
+      return mreal(_double(mid(i.m_adapt)));
+    }
+
+    inline bool operator<=(mreal d, const interval &i)
+    {
+      return to_double(d) <= i.m_adapt;
+    }
+
+    inline interval iv_pi()
+    {
+      return interval(cxsc::Pi());
+    }
+
+    inline mreal diam(const interval &i)
+    {
+      return mreal(_double(diam(i.m_adapt)));
+    }
+
+    inline interval operator|(interval o1, const interval &o2)
+    {
+      return o1 |= o2;
+    }
+
+
+    inline interval operator&(interval o1, const interval &o2)
+    {
+      return o1 &= o2;
+    }
+  }
+}
+
+// interval helper
+#include "helper/ivhelper.hpp"
+
+#endif /*__INTERVALADAPT_HPP__*/

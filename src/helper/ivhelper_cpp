@@ -1,0 +1,25 @@
+#include "ivhelper.hpp"
+
+#include "fphelper.hpp"
+
+namespace yalaa 
+{
+  namespace iv 
+  {
+    double w(const interval &iv) 
+    {
+      yalaa::fp::RndControl rnd;
+      rnd.upward();
+      double res = sup(iv) - inf(iv);
+      return res;
+    }
+
+    double rad(const interval & iv) 
+    {
+      yalaa::fp::RndControl rnd;
+      rnd.upward();
+      double res = (sup(iv) - inf(iv))/2;
+      return res;
+    }
+  }
+}

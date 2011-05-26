@@ -1,0 +1,31 @@
+#ifndef __IVHELPER_HPP__
+#define __IVHELPER_HPP__
+
+// Interval helpers
+// Only for double based intervals!
+
+namespace yalaa 
+{
+  namespace iv 
+  {
+    /** 
+     * Calculates the upwards rounded width of an interval
+     * 
+     * @param i interval
+     * 
+     * @return width
+     */
+    double w(const interval &i);
+    
+    /** 
+     * Calculates the updwards rounded radius of an interval (w(i)/2)
+     * 
+     * @param iv interval
+     * 
+     * @return radius<
+     */
+    double rad(const interval & iv);
+  }
+}
+
+#endif /*__IVHELPER_HPP__*/

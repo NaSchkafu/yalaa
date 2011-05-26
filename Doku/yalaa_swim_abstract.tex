@@ -1,0 +1,139 @@
+\documentclass[a4, fontsize=10pt]{scrartcl}
+
+\usepackage{graphicx}
+%\usepackage{mathptmx}      % use Times fonts if available on your TeX system
+\usepackage{multicol}
+\usepackage{multirow}
+
+% Eigene Defs
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{xspace}
+\usepackage{intmacros}
+\usepackage{subfigure}
+\usepackage[algoruled]{algorithm2e}
+\usepackage{tikz}
+\newcommand*\circled[1]{%
+  \tikz[baseline=(C.base)]\node[draw,circle,inner sep=0.3pt](C){#1};
+  \hspace{-1.3ex}
+}
+\newcommand{\iv}[2]{\ensuremath{[#1, #2]}\xspace}
+\newcommand{\aff}[1]{\ensuremath{\hat{#1}}\xspace}
+\def\wlst{\ensuremath{\mathcal{L}}\xspace}
+\def\flst{\ensuremath{\mathcal{L_\mathrm{final}}}\xspace}
+\def\den{\ensuremath{\bfm{\Phi}}\xspace}
+\newcommand{\pow}[0]{\ensuremath{\mathrm{pow}}\xspace}
+%\newcommand{\rad}[0]{\ensuremath{\mathrm{pow}}\xspace}
+\graphicspath{{./figures/}}
+
+\newcommand{\yalaa}{\texttt{YalAA}\xspace}
+
+\pagestyle{empty}
+
+\title{\yalaa - Yet Another Library for Affine Arithmetic}
+\author{Stefan Kiel}
+
+\setlength{\textheight}{24.5cm}
+
+\begin{document}
+\begin{center}
+{\Large\bf
+% Begin Title REQUIRED
+\yalaa\ - Yet Another Library for Affine Arithmetic
+% End Title
+}
+
+\bigskip
+
+{\large
+% Begin Author's Name REQUIRED
+Stefan Kiel\\
+% End Name
+}
+\medskip
+% Begin Affiliation REQUIRED
+University of Duisburg-Essen
+% End Affiliation
+
+% % Begin Address REQUIRED
+% Ecole Normale Sup\'erieure de Lyon\\
+% 69007 Lyon, France\\
+% % End Address
+
+% % Begin E-Mail OPTIONAL, REQUIRED for the corresponding author
+% scan2010@ens-lyon.fr
+% % End E-Mail
+\end{center}
+\medskip
+
+% Begin Abstract REQUIRED
+%\begin{abstract}
+Affine arithmetic (AA) is a model for verified computations proposed by Comba
+and Stolfi [1]. In contrast to interval arithmetic it tracks first-order
+correlations in variables during the computation and thus often leads to
+tighter range bounds for functions suffering from the dependency effect. An
+affine form $\aff x = x_0 + \sum_{i=1}^n \x_i\epsilon_i$ has a central value
+$x_0$ and error terms consisting of a partial deviation $x_i$ and a symbolic
+noise variable $\epsilon_i \in \iv{-1}{1}$ modeling linear correlations.
+Several improvements for the original model were proposed in [2]-[5]. However,
+existing publicly available implementations (e.g. \texttt{libaa},
+\texttt{libaffa}) have a number of shortcomings and do not support these
+extensions.
+
+% AA has attracted some attention in the last years even from outside of the
+% classical interval community (...). 
+ % The reference implementation libaa from the inventors of affine
+% arithmetic is a non object oriented C library, which does not fit well into
+% modern C++ software and further lacks implementations of several elementary
+% functions like $\cos, \sin, \tan$.  Another freely available implementation
+% named libaffa is object oriented and supports these function, but its
+% implementation is not fully verified and further it is not very flexible.
+
+In this talk we present \yalaa, a newly developed object-oriented library for
+AA. Similarly to the \texttt{Boost.Interval} package, it uses  a configurable
+base type for representation of the partial deviations. \yalaa's functionality is
+controlled by policy classes: \texttt{ErrorTerm}, \texttt{AffineCombination},
+\texttt{ArithmeticKernel}, \texttt{ErrorPolicy}, \texttt{AffinePolicy}.
+
+\texttt{ErrorTerm} defines the representation of the symbolic noise variables
+and the partial deviations, while \texttt{AffineCombination} models a
+combination of several \texttt{ErrorTerm} objects and supplies the basic
+affine operations: addition, scaling and translation.  The kernel implements
+the actual mathematical operations. The library also contains a kernel
+suitable for standard floating-point types. If possible it implements the
+elementary functions as described in [6]. Otherwise we use a Chebyshev
+interpolation based approach. We plan to implement other kernels featuring the
+faster computation model proposed in a recent SCAN talk [3]. Handling such errors
+as domain violation or overflows is controlled by the
+\texttt{ErrorPolicy}. \texttt{AffinePolicy} controls the way new affine noise
+symbols are introduced. This allows us to implement the AF1 and AF2 forms
+described in [2].
+
+Currently we are working on an implementation of generalized interval
+arithmetic [7] in \yalaa.  Similarly to AA, it tracks first order
+correlations but represents the partial deviations with tight intervals. A
+further goal is the support for higher order forms like those introduced in
+[4],[5]. However, a new arithmetic kernel which exploits the higher order
+noise symbols in the approximation of non-affine functions would be necessary
+in this case. Note that this topic is not entirely explored because the relevant
+publications focus on polynomial functions. Consequently they do not
+cover non-affine operations or elementary
+functions other than multiplication or the integer power function.\\
+%\end{abstract}
+
+\small{
+{\bf References:}
+\begin{description}
+\item[{[1]}] J. L. D. Comba and J. Stolfi \textit{Affine Arithmetic and its Application to
+  Computer Graphics}.
+\item[{[2]}] F. Messine \textit{Extensions of Affine Arithmetic:
+    Applications to Unconstrained Global Optimization}.
+\item[{[3]}] J. Ninin and F. Messine \textit{Reliable Affine Arithmetics}.
+\item[{[4]}] G. Bilotta \textit{Self-Verified Extension of Affine Arithmetic
+    to Arbitrary Order}. 
+\item[{[5]}] F. Messine and A. Touhami \textit{A General Reliable Quadratic Form: An Extension of Affine Arithmetic}.
+\item[{[6]}] L. H. de Figueiredo and J. Stolfi \textit{Self-Validated Numerical Methods and Applications}.
+\item[{[7]}] E. Hansen \textit{A Generalized Interval Arithmetic}.
+%\item[{[7]}] G. Bilotta \textit{Self-Verified Extension of Affine Arithmetic to Arbitrary Order}.
+\end{description}
+}
+\end{document}
