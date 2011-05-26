@@ -50,14 +50,14 @@ namespace yalaa
       int m_mode;
     };
 
-    /**
-     * Determines whether a double is a special value (infinity or NaN)
-     *
-     * @param d value to check
-     *
-     * @return true if d is infinity or NaN
-     */
-    bool is_special(double d);
+    /** 
+     * Returns approbiate flags for a double value
+    * 
+    * @param val double value
+    * 
+    * @return flags for ArithmeticError<double> class
+    */
+    unsigned get_flags(double val);
   }
 }
 

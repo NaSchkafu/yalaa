@@ -26,7 +26,7 @@ namespace yalaa
       
       enum ERROR_TYPE {POS_ERR, NEG_ERR, GEN_ERR };
       enum kerror_t { DISCONT = 1, UNBOUND = 2, P_D_VIOL = 4, C_D_VIOL = 8, 
-		      OVERFLOW = 16, I_ERROR = 32 };
+		      OFLOW = 16, I_ERROR = 32 };
 
       /** 
        * Ctor
@@ -36,6 +36,7 @@ namespace yalaa
        * @param gen general error
        */
       ArithmeticError(base_ref_t gen, unsigned error);
+
 
       /** 
        * Ctor
@@ -60,8 +61,7 @@ namespace yalaa
        * @param neg negative error
        * @param error flags
        */
-      ArithmeticError(base_ref_t gen, base_ref_t pos, base_ref_t neg, 
-		      base_ref_t sum, unsigned error);
+      ArithmeticError(base_ref_t gen, base_ref_t pos, base_ref_t neg, unsigned error);
       
       /** 
        * Gets the sum off all errors
@@ -109,7 +109,7 @@ namespace yalaa
       T m_pos;
       T m_neg;
       T m_sum;
-      unsigned m_flags;
+      unsigned m_error;
     };
 
     #include "arithmeticerror.inl"

@@ -189,7 +189,7 @@ namespace yalaa
 
         // Fehler zurückgeben
         T err = sum_error(*ac1, down, up);
-        return yalaa::details::ArithmeticError<T>(err, !yalaa::fp::is_special(err));
+        return yalaa::details::ArithmeticError<T>(err, yalaa::fp::get_flags(err));
       }
 
       template<typename T, template<typename> class ET, 
@@ -222,7 +222,7 @@ namespace yalaa
           err = sum_error(*ac1, down, up);
         }
 
-        return yalaa::details::ArithmeticError<T>(err, !yalaa::fp::is_special(err));
+        return yalaa::details::ArithmeticError<T>(err, yalaa::fp::get_flags(err));
       }
 
       template<typename T, template<typename> class ET, 
@@ -239,7 +239,7 @@ namespace yalaa
         ac0_up = ac->central()+s;
         T err = std::max(ac0_up - ac0, ac0 -ac0_down);
         ac->set_central(ac0);
-        return yalaa::details::ArithmeticError<T>(err, !yalaa::fp::is_special(err));
+        return yalaa::details::ArithmeticError<T>(err, yalaa::fp::get_flags(err));
       }
 
       template<typename T, template<typename> class ET, 
@@ -266,7 +266,7 @@ namespace yalaa
 
         // Fehler zurückgeben
         T err = sum_error(*ac, down, up);
-        return yalaa::details::ArithmeticError<T>(err, !yalaa::fp::is_special(err));
+        return yalaa::details::ArithmeticError<T>(err, yalaa::fp::get_flags(err));
       }
 
 

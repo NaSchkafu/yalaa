@@ -134,7 +134,7 @@ namespace yalaa
 	iv_t remainder((order ? w*w : w)*(*ddf)(d)/(order ? 192.0 : 16.0));
 	err += iv_traits::my_w(remainder);
 	err *= 0.5;
-	return aerror_t(err, !yalaa::fp::is_special(err));
+	return aerror_t(err, yalaa::fp::get_flags(err));
       }  
     }
   }

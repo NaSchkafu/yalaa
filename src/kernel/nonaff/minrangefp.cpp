@@ -39,6 +39,12 @@ namespace yalaa
       typename MinRangeBuiltInFP<T, ET, AC, AFFOP>::aerror_t
       MinRangeBuiltInFP<T, ET, AC, AFFOP>::sqrt(ac_t *ac, T lbx, T ubx)
       {
+	unsigned flags = 0;
+	if(ubx < 0)
+	  return aerror_t(0.0,aerror_t::C_D_VIOL);
+	else if(lbx < 0)
+	  flags |= aerror_t::P_D_VIOL;
+
 	yalaa::fp::RndControl rnd;
 	rnd.downward();
 	T fa = yalaa::details::base_traits<T>::my_sqrt(lbx);
@@ -49,12 +55,9 @@ namespace yalaa
 	T c;
 	T err = min_range(lbx, ubx, fa, fb, alpha, c);
 	
-	// std::cout << "lbx:" << lbx << " ubx: " << ubx << " alpha: " << alpha
-	//           << " c: " << c << " err: " << err << " fa: " << fa << " fb: " << fb << std::endl;
-
-	// // Affine Approximation f = alpha*x + c mit Fehler err berechnen
 	err += aff_op_t::scale_add(ac, alpha, alpha, c, rnd);
-	return yalaa::details::ArithmeticError<T>(err, !yalaa::fp::is_special(err));
+	flags |= yalaa::fp::get_flags(err);
+	return aerror_t(err, flags);
       }
 
       template<typename T, template<typename> class ET,
@@ -65,18 +68,15 @@ namespace yalaa
       MinRangeFP<T, ET, AC, AFFOP, IV>::exp(ac_t *ac, const IV &d)
       {
 	yalaa::fp::RndControl rnd;
-	const iv_t &e = yalaa::details::base_traits<iv_t>::my_exp(d);
+	const iv_t &e = iv_traits::my_exp(d);
 	T c;
 	rnd.upward();
-	T err = min_range(yalaa::details::base_traits<iv_t>::my_inf(d),
-			  yalaa::details::base_traits<iv_t>::my_sup(d), yalaa::details::base_traits<iv_t>::my_inf(e),
-			  yalaa::details::base_traits<iv_t>::my_sup(e), yalaa::details::base_traits<iv_t>::my_inf(e),
-			  c);
-	T err2 = aff_op_t::scale_add(ac, yalaa::details::base_traits<iv_t>::my_inf(e), 
-					  yalaa::details::base_traits<iv_t>::my_inf(e), c, rnd);
+	T err = min_range(iv_traits::my_inf(d), iv_traits::my_sup(d), iv_traits::my_inf(e),
+			  iv_traits::my_sup(e), iv_traits::my_inf(e), c);
+	T err2 = aff_op_t::scale_add(ac, iv_traits::my_inf(e), iv_traits::my_inf(e), c, rnd);
 	rnd.upward();
 	err += err2;
-	return yalaa::details::ArithmeticError<T>(err, !yalaa::fp::is_special(err));
+	return aerror_t(err, yalaa::fp::get_flags(err));
       }
 
       template<typename T, template<typename> class ET,
@@ -86,18 +86,22 @@ namespace yalaa
       typename MinRangeFP<T, ET, AC, AFFOP, IV>::aerror_t
       MinRangeFP<T, ET, AC, AFFOP, IV>::ln(ac_t *ac, const IV &d)
       {
+	if(iv_traits::my_sup(d) <= 0)
+	  return aerror_t(0.0, aerror_t::C_D_VIOL);
+	else if(iv_traits::my_inf(d) <= 0)
+	  return aerror_t(0.0, aerror_t::UNBOUND | aerror_t::P_D_VIOL);
+
 	yalaa::fp::RndControl rnd;
-	const iv_t &l = yalaa::details::base_traits<iv_t>::my_ln(d);
+	const iv_t &l = iv_traits::my_ln(d);
 	rnd.upward();
-	T dx = 1/yalaa::details::base_traits<iv_t>::my_sup(d);
+	T dx = 1/iv_traits::my_sup(d);
 	T c;
-	T err = min_range(yalaa::details::base_traits<iv_t>::my_inf(d),
-			       yalaa::details::base_traits<iv_t>::my_sup(d), yalaa::details::base_traits<iv_t>::my_inf(l),
-			       yalaa::details::base_traits<iv_t>::my_sup(l), dx, c);
+	T err = min_range(iv_traits::my_inf(d), iv_traits::my_sup(d), 
+			  iv_traits::my_inf(l), iv_traits::my_sup(l), dx, c);
 	T err2 = aff_op_t::scale_add(ac, dx, dx, c, rnd);
 	rnd.upward();
 	err += err2;
-	return yalaa::details::ArithmeticError<T>(err, !yalaa::fp::is_special(err));	
+	return aerror_t(err, yalaa::fp::get_flags(err));	
       }
 
       template<typename T, template<typename> class ET,
@@ -107,6 +111,9 @@ namespace yalaa
       typename MinRangeFP<T, ET, AC, AFFOP, IV>::aerror_t
       MinRangeFP<T, ET, AC, AFFOP, IV>::inv(ac_t *ac, const IV& d)
       {
+	if(iv_traits::my_inf(d) <= 0 && iv_traits::my_sup(d) >= 0)
+	  return aerror_t(0.0, aerror_t::UNBOUND | 
+			  (iv_traits::my_inf(d) == iv_traits::my_sup(d) ? aerror_t::C_D_VIOL :  aerror_t::P_D_VIOL));
 	yalaa::fp::RndControl rnd;
 	bool sgn = iv_traits::my_inf(d) < 0;
 	T a = fabs(iv_traits::my_inf(d));
@@ -122,7 +129,7 @@ namespace yalaa
 	T err2 = aff_op_t::scale_add(ac, alpha, alpha, c, rnd);
 	rnd.upward();
 	err += err2;
-	return yalaa::details::ArithmeticError<T>(err, !yalaa::fp::is_special(err));
+	return aerror_t(err, yalaa::fp::get_flags(err));
       }
     }
   }

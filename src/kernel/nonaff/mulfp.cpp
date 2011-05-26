@@ -20,7 +20,7 @@ namespace yalaa
 	rnd.upward();
 	err += rad1*rad2;
 	err += iv_traits::my_w(central);
-	return yalaa::details::ArithmeticError<T>(err, !yalaa::fp::is_special(err));
+	return yalaa::details::ArithmeticError<T>(err, yalaa::fp::get_flags(err));
       }
       
       template<typename T, template<typename> class ET,
@@ -35,24 +35,23 @@ namespace yalaa
 	    ac->clear();
 	    ac->set_central(1.0);
 	  }
-	  return yalaa::details::ArithmeticError<T>(0.0, false);
+	  return yalaa::details::ArithmeticError<T>(0.0, 0);
 	}
 	else if(n == 2)
 	  return sqr(ac, rad);
 	else if(n > static_cast<unsigned>(std::numeric_limits<int>::max()))
-	  return yalaa::details::ArithmeticError<T>(0.0, true);
+	  return yalaa::details::ArithmeticError<T>(0.0, yalaa::details::ArithmeticError<T>::I_ERROR);
 	
 	yalaa::fp::RndControl rnd;
 	// central interval
 	iv_t ix0(iv_traits::my_pow(iv_t(ac->central()), (int)n));
 	iv_t iscale(iv_traits::my_mul(iv_t(static_cast<T>(n)), iv_traits::my_pow(iv_t(ac->central()), (int)n-1)));
 	T nx0 = iv_traits::my_mid(ix0);
-	// scaling factor
-	//T scale = mid(iscale);
+
 	rnd.upward();
-	//T err = iv_traits::my_w(iscale)*ac->size();
 	T err = iv_traits::my_w(ix0);
-	
+
+	// TODO: positiven und negativen fehler propagieren
 	T perr = 0.0, serr = 0.0;
 	T prad = rad;
 	for(unsigned k = 2; k <= n; k++) {
@@ -69,7 +68,7 @@ namespace yalaa
 	rnd.upward();
 	err += err2;
 	
-	return yalaa::details::ArithmeticError<T>(err, !yalaa::fp::is_special(err));
+	return yalaa::details::ArithmeticError<T>(err, yalaa::fp::get_flags(err));
       }
       
       template<typename T, template<typename> class ET,
@@ -88,7 +87,7 @@ namespace yalaa
 	T ncenter = center + 0.5*rad;
 	err += std::max(ncenter - center, (center + rad) - ncenter);
 	ac->set_central(ncenter);
-	return yalaa::details::ArithmeticError<T>(err, !yalaa::fp::is_special(err));
+	return yalaa::details::ArithmeticError<T>(err, yalaa::fp::get_flags(err));
       }
 
       template<typename T, template<typename> class ET,

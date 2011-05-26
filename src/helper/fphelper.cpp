@@ -53,7 +53,7 @@ namespace yalaa
     inline bool is_infinity(double r)
     {
 #ifdef _WIN32
-		return _finite(r);
+      return _finite(r);
 #else
       return isinf(r);
 #endif
@@ -63,7 +63,7 @@ namespace yalaa
     inline bool is_quiet_NaN(double r)
     {
 #ifdef _WIN32
-		return _isnan(r);
+      return _isnan(r);
 #else
       return isnan(r);
 #endif
@@ -72,25 +72,35 @@ namespace yalaa
     inline bool is_signaling_NaN(double r)
     {
  #ifdef _WIN32
-		return _isnan(r);
+      return _isnan(r);
 #else
       return isnan(r);
 #endif
     }
 
+    
     inline bool is_nan(double r)
     {
 #ifdef _WIN32
-		return _isnan(r);
+      return _isnan(r);
 #else
       return isnan(r);
 #endif
     }
 
-    bool is_special(double d)
+    unsigned get_flags(double val)
     {
-      return is_nan(d) || is_infinity(d);
+      if(isnan(val))
+	return 32;
+      else if(is_infinity(val))
+	return 16;
+      return 0;
     }
+
+    // bool is_special(double d)
+    // {
+    //   return is_nan(d) || is_infinity(d);
+    // }
   }
 }
 
