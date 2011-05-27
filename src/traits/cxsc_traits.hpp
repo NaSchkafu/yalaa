@@ -123,9 +123,6 @@ namespace yalaa
 	  return sqrt(i);
 	}
     };
-
-    typedef cxsc::interval sel_iv_t;
-    
   }
 }
 

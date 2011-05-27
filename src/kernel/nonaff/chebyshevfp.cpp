@@ -97,6 +97,9 @@ namespace yalaa
 	  { iv_traits::my_div(iv_t(1.0),iv_traits::my_sqrt(iv_t(2.0))), iv_traits::my_div(iv_t(-1.0),iv_traits::my_sqrt(iv_t(2.0)))},
 	  { iv_traits::my_div(iv_traits::my_sqrt(iv_t(3)),iv_t(2.0)), iv_t(0.0) }
 	};
+	static const T S_HALF(0.5);
+	static const T S_RMND1(192);
+	static const T S_RMND2(16);
 
 	using namespace yalaa::fp;
 
@@ -109,14 +112,14 @@ namespace yalaa
 	rnd.upward();
 	iv_t ibsia(fast_sub_dd_up<T, iv_t>(b,a));
 	iv_t iapib(fast_add_dd_up<T, iv_t>(a,b));
-	iv_t x0(0.5*fast_add_ii_up(ibsia*S_X[order][0], iapib));
-	iv_t x1(0.5*fast_add_ii_up(ibsia*S_X[order][1], iapib));
+	iv_t x0(S_HALF*fast_add_ii_up(iv_traits::my_mul(ibsia,S_X[order][0]), iapib));
+	iv_t x1(S_HALF*fast_add_ii_up(iv_traits::my_mul(ibsia,S_X[order][1]), iapib));
 	iv_t fx0((*f)(x0));
 	iv_t fx1((*f)(x1));
 	iv_t c0(fast_add_ii_up<iv_t>(fx0, fx1));
-	iv_t c1(fast_add_ii_up<iv_t>(fx0, fx1*S_X[order][1]));
-	c0 *= 0.5;
-	T w = iv_traits::my_w(d);
+	iv_t c1(fast_add_ii_up<iv_t>(fx0, iv_traits::my_mul(fx1,S_X[order][1])));
+	c0 *= S_HALF;
+	T w(iv_traits::my_w(d));
 	
 	T err = 0.0;
 	if(w <= 1.0)
@@ -131,7 +134,7 @@ namespace yalaa
 	}
 	
 	w *= w;
-	iv_t remainder((order ? w*w : w)*(*ddf)(d)/(order ? 192.0 : 16.0));
+	iv_t remainder((order ? w*w : w)*(*ddf)(d)/(order ? S_RMND1 : S_RMND2));
 	err += iv_traits::my_w(remainder);
 	err *= 0.5;
 	return aerror_t(err, yalaa::fp::get_flags(err));

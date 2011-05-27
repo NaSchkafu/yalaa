@@ -58,5 +58,6 @@ AC_MSG_NOTICE([Unknown compiler. Please set flags for rounding math if necessary
 dnl Libtool
 LT_INIT
 
+
 dnl Ausgeben
 AC_OUTPUT

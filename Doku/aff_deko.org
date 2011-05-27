@@ -4,10 +4,10 @@
 
 
 * Introduction
-~YalAA~ \cite{yalaa} is a library for performing affine calculation. The
-library allows to plug in various policies for handling errors occurring
+~YalAA~ \cite{yalaa} is a library for implementing affine arithmetic (AA). The
+library allows the user to plug in various policies for handling errors occurring
 during the calculation through a user defined ~ErrorPolicy~. In this paper we
-consider the use of decorations, a concept that came recently up during the
+consider the use of decorations, a concept that came up recently during the
 standardization process for interval arithmetic (IEEE P1788)
 \cite{p1788motion8}, \cite{p1788motion18}, \cite{hayes2010},
 \cite{p1788hayes2011}, \cite{kreinovich2011}, for error handling in ~YalAA~
@@ -16,22 +16,23 @@ decoration concept for intervals.
 
 * Decorations
 ** Current Status in P1788
-The P1788 standard is still under heavy discussion. However, on some aspects
-of exception handling has already been voted on. 
+The P1788 standard is still under heavy discussion. However, the following aspects
+of exception handling have been already voted on. 
 + Use of decorations (Motion 8) \cite{p1788motion8}
 + Domain tetrit (Motion 18) \cite{p1788motion18}
-While both motions have some ideas for concrete decorations, their only
-definite decision is the use of decoration and the domain tetrit. Some more
-details are given in the position paper \cite{hayes2010}. The author proposes
+While both motions have some ideas for specific decorations, their only
+definite decision are the use of decoration and the domain tetrit. Some more
+details are given in the position paper \cite{hayes2010}. Besides, the author proposes
 two further decorations:
-+ Defined and Continuous $C(f,X)$
-+ Defined and Bounded $B(f,X)$
-Both are combined into a single decoration $CB(f,X) = C(f,X) \land B(f,X)$.
-However, in a motion currently under discussion by the same author the bounded
-decoration is left out and only $C(f,X)$ is considered \cite{p1788hayes2011}.
++ Defined and Continuous $\mathrm{CD}(f,X)$
++ Defined and Bounded $\mathrm{BD}(f,X)$
+Both are combined into a single decoration $\mathrm{CB}(f,X) =
+\mathrm{CD}(f,X) \land \mathrm{BD}(f,X)$.  However, the bounded decoration is
+left out and only $C(f,X)$ is considered in a motion currently under
+discussion by the same author\cite{p1788hayes2011}.
 
 ** Affine Decorations
-The ~ErrorPolDec~ policy class provides two types of decoration. Decorations
+The ~YalAA~'s ~ErrorPolDec~ policy class provides two types of decorations. Decorations
 directly associated with function graph are called /F-decoration/. They make
 claims about the function /f/ independently of the used implementation. If a
 decoration is also dependent on the implementation it's called a
@@ -44,8 +45,8 @@ Supported /C-decorations/:
   in the current implementation ($\mathrm{B}(f,X) \land \lnot \mathtt{Overflow}
   \land \lnot \mathrm{NE}$)
 + $\mathrm{NE}(f,X,\mathtt{aff\_t})$: ~bool~, no internal error occurred
-$\mathrm{B}(f,X)$ denotes that the function is /bounded/ over the intersection of /X/
-with its natural domain.
+$\mathrm{B}(f,X)$ denotes that the function is /bounded/ over the intersection
+of its natural domain with /X/.
 
 #Intentionally left out is the continuous flag:
 #+ $C(f,X)$: bool, function /f/ is continuous and defined over /X/
@@ -60,7 +61,7 @@ provide the $\mathrm{BD}(f,X)$ decorations meaning /bounded and defined/
 regarding the bounded flag[fn:1] are not relevant in the affine context.
 
 The C-decorations not only depend on the function $f$ and the affine form $X$
-but also on the concrete arithmetic implementation[fn:6].  ~YalAA~ allows the
+but also on the specific arithmetic implementation[fn:6].  ~YalAA~ allows the
 user to detect overflows during computation through the
 $\mathrm{VR}(f,X,\mathtt{aff\_t})$ decoration. Furthermore, an /internal error/
 flag $\mathrm{NE}(f,X,\mathtt{aff\_t})$ is used for signaling an unexpected
@@ -91,22 +92,22 @@ D and the general error flag NE:
 + $\lnot D^+ \rightarrow  \lnot VR$
 + $\lnot NE \rightarrow \lnot VR$
 This results in the following possible combinations:
-|----------------+-----+----+----+------------------|
-| $\mathrm{D}^+$ | (B) | VR | NE | Dec.             |
-|----------------+-----+----+----+------------------|
-| T              | T   | T  | T  | $\mathfrak{D}_2$ |
-| T              | T   | F  | T  | $\mathfrak{D}_1$ |
-| T              | F   | F  | T  | $\mathfrak{D}_1$ |
-| F              | ?   | F  | T  | $\mathbb{D}_0$   |
-| ?              | ?   | F  | F  | $\mathfrak{D}_0$ |
-|----------------+-----+----+----+------------------|
-As the bounded flag B is invisible to the user, two cases result in the same
-decoration $\mathfrak{D}_1$. The second last case is identically to
-$\mathbb{D}_0$, so no new decoration is introduced here. The /internal error/
-flag NE is a special case. If $\mathrm{NE}$ is false, all other flags are in
-an undefined state with the exception of VR which is also false in this case.
-This convention allows checking only the VR flag in order to detect whether
-the computation was error-free and the affine part has a meaningful value.
+|----------------+-----+----+----+----------|
+| $\mathrm{D}^+$ | (B) | VR | NE |  No.  |
+|----------------+-----+----+----+----------|
+| T              | T   | T  | T  |        1 |
+| T              | T   | F  | T  |        2 |
+| T              | F   | F  | T  |        3 |
+| F              | ?   | F  | T  |        4 |
+| ?              | ?   | F  | F  |        5 |
+|----------------+-----+----+----+----------|
+For the user the cases two and three are identically because the bounded flag
+is invisible to him. Case 4 is same as either F-decoration $\mathbb{D}_0$ or
+$\mathbb{D}_5$.  The /internal error/ flag NE is a special case. If
+$\mathrm{NE}$ is false, all other flags are in an undefined state with the
+exception of VR which is also false in this case.  This convention allows
+checking only the VR flag in order to detect whether the computation was
+error-free and the affine part has a meaningful value.
 
 * Meanings
   The F-decorations make claims about the function /f/ over /X/:
@@ -123,24 +124,25 @@ the computation was error-free and the affine part has a meaningful value.
   Just like their archetypes in \cite{p1788hayes2011}, \cite{hayes2010} they are
   ordered: $$ \mathbb{D}_0 < \mathbb{D}_1 < \mathbb{D}_ 2 < \mathbb{D}_3 <
   \mathbb{D}_4 < \mathbb{D}_5$$ by their quality. If a computation yields
-  $\mathbb{D}_i$ over $X$ it is guaranteed that the same computation over some
+  $\mathbb{D}_i$ over $X$, it is guaranteed that the same computation over some
   subbox $X' \subseteq X$ yields a decorations $\mathbb{D}_j$ with $j \geq i$. 
   ~ErrorPolDec~ supports property tracking as defined in
-  \cite{p1788hayes2011} Def. 3. 
+  \cite{p1788hayes2011}, Def. 3. 
 It is also possible to interpret the C-decorations:
-|------------------+------------------------------|
-| Dec.             | Description                  |
-|------------------+------------------------------|
-| $\mathfrak{D}_2$ | No errors during calculation |
-| $\mathfrak{D}_1$ | Unbounded and/or Overflow    |
-| $\mathfrak{D}_0$ | Internal error               |
-|------------------+------------------------------|
+|------+----------------------------------|
+| Dec. | Description                      |
+|------+----------------------------------|
+|    1 | No errors during calculation     |
+|  2/3 | Unbounded and/or Overflow        |
+|    4 | $\mathbb{D}_0$ or $\mathbb{D}_5$ |
+|    5 | Internal error                   |
+|------+----------------------------------|
 
 * Mapping to Standard Affine Arithmetic
   AA as described by de Figueiredo and Stolfi \cite{stolfi1997} provides two
   special values for error handling:
-  + *R* denotes the whole real line
-  + *[]* denotes the empty affine form (set)
+  + *R* denoting the whole real line
+  + *[]* denoting the empty affine form (set)
 We define the following mapping from the decorations to these special values:
 |--------------------------------+---------------|
 | Dec.                           | Special Value |
@@ -151,19 +153,38 @@ We define the following mapping from the decorations to these special values:
 | $\mathfrak{D}_0$               | *[]*          |
 |--------------------------------+---------------|
 This maps all error conditions to their respective counterparts in the affine
-model. Mapping $\mathfrak{D}_0$ to *[]* may look a bit controverse at the
+model. Mapping $\mathfrak{D}_0$ to *[]* might look a bit controverse at the
 first glance. However, as the special values refer to both the mathematical
 function and the implementation[fn:3] we can interpret $\mathfrak{D}_0$ as if
 the implementation is not defined over /X/. 
 
-* Implementation in YalAA
+* Interoperability with IA
+** Combination with IA
+Affine forms can combined with interval using addition, subtraction, ... . As
+the proposed affine decorations mainly follow the decorations under discussion
+for intervals, ~YalAA~ aims at providing proper property tracking for mixed
+calculation. However, specific details depend on the final P1788 standard and
+concrete implementation of decorations in IA libraries.
+** Conversion to IA
+All special functions which can produce some error state are implemented
+through non-affine approximations over an interval enclosure of the affine
+form. That is, the decoration part of an affine form can propagated to a
+decorated interval without loss of correctness.
+
+* Implementation
+** Data Types
 Following the original approach of \cite{stolfi1997} every affine form in
 ~YalAA~ has a field to store whether the form has a special value. Its type is
 determined by the used ~ErrorPolicy~ \cite{yalaa}. ~ErrorPolDec~ defines this
 type to ~unsigned short~. The F- and C-decorations are stored
 separately. While the first three bits store the F-decoration in form of the
-$\mathbb{D}_i, 0 \leq i \leq 5$ defined above, the following two store the VR
-and the NE flags separately.
+$\mathbb{D}_i, 0 \leq i \leq 5$ defined above, the following two store the
+negated VR and the NE flags separately.
+** Limits
+Because decorated interval are up to today not supported by interval
+libraries, the interoperability is not implemented in ~YalAA~. The
+~ErrorPolDec~ class is subject to change whereas P1788 evolves.
+
 
 \bibliographystyle{plain}
 \bibliography{references}
@@ -182,3 +203,5 @@ be added for distinction of these cases.
 [fn:2] Following \cite{p1788hayes2011} functions are per definition continuous and bounded over the empty set.
 
 [fn:3] R is used for indicating overflows in \cite{stolfi1997}.
+
+
