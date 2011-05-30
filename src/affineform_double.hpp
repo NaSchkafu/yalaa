@@ -17,4 +17,6 @@ namespace yalaa
   double rad(const AffineForm<double, ET, AC, AR, AP, EP, IV> &af);
 }
 
+#include "affineform_double.inl"
+
 #endif /*__AFFINEFORM_DOUBLE_HPP__*/

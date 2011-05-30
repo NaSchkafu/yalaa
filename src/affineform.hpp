@@ -281,5 +281,6 @@ namespace yalaa
 #undef YALAA_FRIEND_DEF
 #undef YALAA_FRIEND_DECL
 
+#include "affineform.inl"
 
 #endif /*__AFFINEFORM_HPP__*/

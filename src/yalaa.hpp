@@ -24,7 +24,7 @@
 #include "comb/affinecombimpl.hpp"
 #include "kernel/exacterror.hpp"
 #include "pol/af0.hpp"
-#include "pol/errorpol.hpp"
+#include "pol/errorpolstd.hpp"
 #include "affineform.hpp"
 #include "affineform_double.hpp"
 #include "yalaa_ios.hpp"

@@ -1,5 +1,7 @@
 // -*-c++-*-
 // Spezialisierung double
+#include "helper/fphelper.hpp"
+
 namespace yalaa
 {
   namespace details

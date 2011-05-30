@@ -67,24 +67,33 @@ namespace yalaa
   YALAA_AFF_TEMPLATE
   YALAA_DECL_T::self_t& YALAA_DECL::operator+=(const self_t &other)
   {
-    typename ar_t::aerror_t error(ar_t::add(&m_a, other.m_a));
-    ap_t::add_errors(&m_a, error);
+    if(!ep_t::pre_op(*this, other)) {
+      typename ar_t::aerror_t error(ar_t::add(&m_a, other.m_a));
+      ap_t::add_errors(&m_a, error);
+      ep_t::post_op(*this, other, error);
+    }
     return *this;
   }
 
   YALAA_AFF_TEMPLATE
   YALAA_DECL_T::self_t& YALAA_DECL::operator-=(const self_t &other)
   {
-    typename ar_t::aerror_t error(ar_t::sub(&m_a, other.m_a));
-    ap_t::add_errors(&m_a, error);
+    if(!ep_t::pre_op(*this, other)) {
+      typename ar_t::aerror_t error(ar_t::sub(&m_a, other.m_a));
+      ap_t::add_errors(&m_a, error);
+      ep_t::post_op(*this, other, error);
+    }
     return *this;
   }
 
   YALAA_AFF_TEMPLATE
   YALAA_DECL_T::self_t& YALAA_DECL::operator*=(const self_t &other)
   {
-    typename ar_t::aerror_t error(ar_t::mul(&m_a, other.m_a, rad(*this), rad(other)));
-    ap_t::add_errors(&m_a, error);
+    if(!ep_t::pre_op(*this, other)) {
+      typename ar_t::aerror_t error(ar_t::mul(&m_a, other.m_a, rad(*this), rad(other)));
+      ap_t::add_errors(&m_a, error);
+      ep_t::post_op(*this, other, error);
+    }
     return *this;
   }
 

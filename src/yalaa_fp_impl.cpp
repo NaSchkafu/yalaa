@@ -10,14 +10,10 @@
 
 // Affine Operations
 #include "comb/affinecombopimpl.hpp"
-#include "comb/affinecombopimpl.inl"
+#include "comb/affinecombopimpl.cpp"
 
 // Affine Comb.
-#include "comb/affinecombimpl.inl"
-
-// AffineForm
-#include "affineform.inl"
-#include "affineform_double.inl"
+#include "comb/affinecombimpl.cpp"
 
 // Arithmetic Kernels
 #include "kernel/aff/exacterroraffinefp.cpp"
