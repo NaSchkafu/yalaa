@@ -26,7 +26,7 @@
 namespace yalaa 
 {
 #ifdef HAVE_FLOAT_IV
-  // float
+  // aff_e_f
   template class details::AffineCombImpl<float, details::ErrorTermImpl>;
   template class AffineForm<float, details::ErrorTermImpl, details::AffineCombImpl, 
 			    kernel::ExactErrorFP, pol::AF0, pol::ErrorPolImpl, details::float_iv_t>;
@@ -39,12 +39,26 @@ namespace yalaa
   template aff_e_f pow(aff_e_f, int);
   template details::float_iv_t to_iv(const aff_e_f&);
   template float rad(const aff_e_f&);
+
+  // aff_e_f_dec
+  template class AffineForm<float, details::ErrorTermImpl, details::AffineCombImpl, 
+			    kernel::ExactErrorFP, pol::AF0, pol::ErrorPolImpl, details::float_iv_t>;
+  template aff_e_f_dec exp(aff_e_f_dec);
+  template aff_e_f_dec sqrt(aff_e_f_dec);
+  template aff_e_f_dec ln(aff_e_f_dec);
+  template aff_e_f_dec sin(aff_e_f_dec);
+  template aff_e_f_dec cos(aff_e_f_dec);
+  template aff_e_f_dec sqr(aff_e_f_dec);
+  template aff_e_f_dec pow(aff_e_f_dec, int);
+  template details::float_iv_t to_iv(const aff_e_f_dec&);
+  template float rad(const aff_e_f_dec&);
 #endif
 
 #ifdef HAVE_DOUBLE_IV
+  // aff_e_d
   template class details::AffineCombImpl<double, details::ErrorTermImpl>;
   template class AffineForm<double, details::ErrorTermImpl, details::AffineCombImpl, 
-			    kernel::ExactErrorFP, pol::AF0, pol::ErrorPolImpl, details::double_iv_t>;
+			    kernel::ExactErrorFP, pol::AF0, pol::ErrorPolStd, details::double_iv_t>;
   template aff_e_d exp(aff_e_d);
   template aff_e_d sqrt(aff_e_d);
   template aff_e_d ln(aff_e_d);
@@ -54,9 +68,23 @@ namespace yalaa
   template aff_e_d pow(aff_e_d, int);
   template details::double_iv_t to_iv(const aff_e_d&);
   template double rad(const aff_e_d&);
+
+  // aff_e_d_dec
+  template class AffineForm<double, details::ErrorTermImpl, details::AffineCombImpl, 
+			    kernel::ExactErrorFP, pol::AF0, pol::ErrorPolDec, details::double_iv_t>;
+  template aff_e_d_dec exp(aff_e_d_dec);
+  template aff_e_d_dec sqrt(aff_e_d_dec);
+  template aff_e_d_dec ln(aff_e_d_dec);
+  template aff_e_d_dec sin(aff_e_d_dec);
+  template aff_e_d_dec cos(aff_e_d_dec);
+  template aff_e_d_dec sqr(aff_e_d_dec);
+  template aff_e_d_dec pow(aff_e_d_dec, int);
+  template details::double_iv_t to_iv(const aff_e_d_dec&);
+  template double rad(const aff_e_d_dec&);
 #endif
 
 #if HAVE_L_DOUBLE_IV
+  // aff_e_ld
   template class details::AffineCombImpl<long double, details::ErrorTermImpl>;
   template class AffineForm<long double, details::ErrorTermImpl, details::AffineCombImpl, 
 			    kernel::ExactErrorFP, pol::AF0, pol::ErrorPolImpl, details::l_double_iv_t>;
@@ -69,5 +97,19 @@ namespace yalaa
   template aff_e_ld pow(aff_e_ld, int);
   template details::l_double_iv_t to_iv(const aff_e_ld&);
   template long double rad(const aff_e_ld&);
+
+  template class AffineForm<long double, details::ErrorTermImpl, details::AffineCombImpl, 
+			    kernel::ExactErrorFP, pol::AF0, pol::ErrorPolDec, details::l_double_iv_t>;
+  template aff_e_ld_dec exp(aff_e_ld_dec);
+  template aff_e_ld_dec sqrt(aff_e_ld_dec);
+  template aff_e_ld_dec ln(aff_e_ld_dec);
+  template aff_e_ld_dec sin(aff_e_ld_dec);
+  template aff_e_ld_dec cos(aff_e_ld_dec);
+  template aff_e_ld_dec sqr(aff_e_ld_dec);
+  template aff_e_ld_dec pow(aff_e_ld_dec, int);
+  template details::l_double_iv_t to_iv(const aff_e_ld_dec&);
+  template long double rad(const aff_e_ld_dec&);
+
+
 #endif
 }

@@ -47,4 +47,8 @@ typename ArithmeticError<T>::base_t ArithmeticError<T>::gen() const
   return m_gen;
 }
 
-
+template<typename T>
+unsigned ArithmeticError<T>::error() const
+{
+  return m_error;
+}

@@ -35,8 +35,8 @@ namespace yalaa
 
   namespace pol 
   {
-    template<typename T, typename IV>
-    class ErrorPolStd;
+    template<typename T, typename IV> class ErrorPolStd;
+    template<typename T, typename IV> class ErrorPolDec;
     template<typename, template<typename> class, template<typename, template<typename> class> class>
     class AF0;
   }
@@ -49,18 +49,30 @@ namespace yalaa
   /// Standard affine form with the ExactError kernel for float
   typedef AffineForm<float, details::ErrorTermImpl, details::AffineCombImpl, kernel::ExactErrorFP, 
 		     yalaa::pol::AF0, yalaa::pol::ErrorPolStd, details::float_iv_t> aff_e_f;
+
+  /// Standard affine form with the ExactError kernel for float
+  typedef AffineForm<float, details::ErrorTermImpl, details::AffineCombImpl, kernel::ExactErrorFP, 
+		     yalaa::pol::AF0, yalaa::pol::ErrorPolDec, details::float_iv_t> aff_e_f_dec;
 #endif
 
 #ifdef HAVE_DOUBLE_IV
   /// Standard affine form with the ExactError kernel for double
   typedef AffineForm<double, details::ErrorTermImpl, details::AffineCombImpl, kernel::ExactErrorFP, 
 		     yalaa::pol::AF0, yalaa::pol::ErrorPolStd, details::double_iv_t> aff_e_d;
+
+  /// Standard affine form with the ExactError kernel for double with decorations
+  typedef AffineForm<double, details::ErrorTermImpl, details::AffineCombImpl, kernel::ExactErrorFP, 
+		     yalaa::pol::AF0, yalaa::pol::ErrorPolDec, details::double_iv_t> aff_e_d_dec;
 #endif
 
 #ifdef HAVE_L_DOUBLE_IV
   /// Standard affine form with the ExactError kernel for long double
   typedef AffineForm<long double, details::ErrorTermImpl, details::AffineCombImpl, kernel::ExactErrorFP,
 		     yalaa::pol::AF0, yalaa::pol::ErrorPolStd, details::l_double_iv_t> aff_e_ld;
+
+  /// Standard affine form with the ExactError kernel for long double with decorations
+  typedef AffineForm<long double, details::ErrorTermImpl, details::AffineCombImpl, kernel::ExactErrorFP,
+		     yalaa::pol::AF0, yalaa::pol::ErrorPolDec, details::l_double_iv_t> aff_e_ld_dec;
 #endif
 
 }

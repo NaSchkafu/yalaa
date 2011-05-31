@@ -3,8 +3,7 @@
                                     template<typename, template<typename> class> class AC, \
                                     template<typename, template<typename> class, template<typename, template<typename> class> class, class> class AR, \
                                     template<typename, template<typename> class, template<typename, template<typename> class> class> class AP, \
-                                    typename EP, typename IV            \
-                                    >
+                                    template<typename, typename> class EP, typename IV>
 #define YALAA_DECL AffineForm<T, ET, AC, AR, AP, EP, IV>
 #define YALAA_DECL_T typename AffineForm<T, ET, AC, AR, AP, EP, IV>
 #define YALAA_FRIEND_DEF   template<typename AF>                        \
@@ -41,14 +40,19 @@ namespace yalaa
 
   YALAA_AFF_TEMPLATE
   YALAA_DECL::AffineForm(base_ref_t scalar)
-    :m_a(scalar), m_special(ep_t::NONE)
-  { }
+    :m_a(yalaa::details::base_traits<base_t>::my_zero())
+  { 
+    if(!ep_t::new_form(*this, scalar))
+      m_a.set_central(scalar);
+  }
 
   YALAA_AFF_TEMPLATE
   YALAA_DECL::AffineForm(const iv_t &iv)
-    :m_a(iv_traits::my_mid(iv)), m_special(ep_t::NONE)
   {
-    ap_t::new_form(&m_a, iv_traits::my_rad(iv));
+    if(!ep_t::new_form(*this, iv)) {
+      m_a.set_central(iv_traits::my_mid(iv));
+      ap_t::new_form(&m_a, iv_traits::my_rad(iv));
+    }
   }
 
   YALAA_AFF_TEMPLATE

@@ -6,14 +6,14 @@ namespace yalaa
            template<typename, template<typename> class> class AC, \
            template<typename, template<typename> class, template<typename, template<typename> class> class, class> class AR, \
            template<typename, template<typename> class, template<typename, template<typename> class> class> class AP, \
-           typename EP, typename IV>
+           template<typename, typename> class EP, typename IV>
   IV to_iv(const AffineForm<double, ET, AC, AR, AP, EP, IV> & af);
 
   template<template<typename> class ET,				\
 	   template<typename, template<typename> class> class AC,	\
 	   template<typename, template<typename> class, template<typename, template<typename> class> class, class> class AR, \
 	   template<typename, template<typename> class, template<typename, template<typename> class> class> class AP, \
-	   typename EP, typename IV>
+	   template<typename, typename> class EP, typename IV>
   double rad(const AffineForm<double, ET, AC, AR, AP, EP, IV> &af);
 }
 

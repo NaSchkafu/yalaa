@@ -24,8 +24,7 @@ namespace yalaa
                                     template<typename, template<typename> class> class AC, \
                                     template<typename, template<typename> class, template<typename, template<typename> class> class, class> class AR, \
                                     template<typename, template<typename> class, template<typename, template<typename> class> class> class AP, \
-                                    typename EP, typename IV \
-                                    >
+                                    template<typename, typename> class EP, typename IV>
 #define YALAA_DECL AffineForm<T, ET, AC, AR, AP, EP, IV>
 #define YALAA_DECL_T typename AffineForm<T, ET, AC, AR, AP, EP, IV>
 #define YALAA_FRIEND_DECL   template<typename AF>			\
@@ -51,9 +50,9 @@ namespace yalaa
     typedef AC<T, ET> ac_t;
     typedef AR<T, ET, AC, IV> ar_t;
     typedef AP<T, ET, AC> ap_t;
-    typedef EP ep_t;
-    typedef typename boost::mpl::if_<boost::is_fundamental<base_t>, base_t, typename boost::add_const<typename boost::add_reference<base_t>::type>::type>::type base_ref_t;
     typedef IV iv_t;
+    typedef EP<T, iv_t> ep_t;
+    typedef typename boost::mpl::if_<boost::is_fundamental<base_t>, base_t, typename boost::add_const<typename boost::add_reference<base_t>::type>::type>::type base_ref_t;
     typedef void trait_is_aff_t;
     typedef yalaa::details::base_traits<iv_t> iv_traits;
 
@@ -250,6 +249,8 @@ namespace yalaa
     ac_t m_a;
     /// flag for special forms
     typename ep_t::special_t m_special;
+
+    friend class EP<T, IV>;
   };
   
   /** 

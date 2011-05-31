@@ -19,12 +19,18 @@
 #include "traits/l_double_traits.hpp"
 #endif
 
-// yalaa
+// errterm
 #include "errortermimpl.hpp"
+// comb
 #include "comb/affinecombimpl.hpp"
+//kernel
 #include "kernel/exacterror.hpp"
+// aff pol
 #include "pol/af0.hpp"
+// err pol
 #include "pol/errorpolstd.hpp"
+#include "pol/errorpoldec.hpp"
+// aff
 #include "affineform.hpp"
 #include "affineform_double.hpp"
 #include "yalaa_ios.hpp"

@@ -46,6 +46,13 @@ namespace yalaa
       explicit AffineCombImpl(base_ref_t central);
 
       /** 
+       * Ctor
+       * 
+       * 
+       */
+      AffineCombImpl();
+
+      /** 
        * Gets an iterator pointing to the combination's first element
        * 
        * 
@@ -159,7 +166,7 @@ namespace yalaa
     private:
       std::vector<ET<T> > m_errors;
       T m_central;
-      short m_special;
+//      short m_special;
     };
   }
 }

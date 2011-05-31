@@ -74,7 +74,11 @@ typename AffineCombImpl<T,ET>::size_t AffineCombImpl<T,ET>::size() const
 
 template<typename T, template<typename> class ET>
 AffineCombImpl<T,ET>::AffineCombImpl(base_ref_t central)
-  :m_central(central), m_special(0)
+  :m_central(central)
+{}
+
+template<typename T, template<typename> class ET>
+AffineCombImpl<T,ET>::AffineCombImpl()
 {}
 
 template<typename T, template<typename> class ET>

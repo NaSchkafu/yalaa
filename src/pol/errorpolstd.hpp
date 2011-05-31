@@ -5,27 +5,28 @@
 
 #define YALAA_SPEC_TEMPLATE_DEF template<template<typename> class ET,   \
                                          template<typename, template<typename> class> class AC, \
-                                         template<typename, template<typename> class, template<typename, template<typename> class> class, class> class AR, \
-                                         template<typename, template<typename> class, template<typename, template<typename> class> class> class AP>
-#define YALAA_SPEC_TEMPLATE_T yalaa::AffineForm<T, ET, AC, AR, AP, ErrorPolStd, IV>
+                                         template<typename, template<typename> class, \
+						  template<typename, template<typename> class> class, class> class AR, \
+                                         template<typename, template<typename> class, \
+						  template<typename, template<typename> class> class> class AP>
+#define YALAA_SPEC_TEMPLATE_T yalaa::AffineForm<base_t, ET, AC, AR, AP, \
+						yalaa::pol::ErrorPolStd, iv_t>
 
 
 namespace yalaa 
 {
   namespace pol
   {
-    template<typename T, typename IV> class ErrorPolStd;
-
-    template<typename T1, typename IV2>
+    template<typename T, typename IV>
     class ErrorPolStd
     {
     public:
-      enum special_t { NONE = 0, EMPTY = 1, R = 2};
+      enum special_t { NONE = 0, EMPTY = 2, R = 1 };
 
-      typedef IV2 iv_t;
-      typedef T1 base_t;
+      typedef IV iv_t;
+      typedef T base_t;
       typedef typename boost::mpl::if_<boost::is_fundamental<base_t>, base_t, typename boost::add_const<typename boost::add_reference<base_t>::type>::type>::type base_ref_t;
-      typedef yalaa::details::ArithmeticError<T1> aerror_t;
+      typedef yalaa::details::ArithmeticError<T> aerror_t;
 
       /**
        * Function called prior to an operation
@@ -35,14 +36,8 @@ namespace yalaa
        *
        * @return true if a special form is generated
        */
-      template<template<typename> class ET,
-	       template<typename, template<typename> class> class AC,
-	       template<typename, template<typename> class, template<typename, template<typename> class> class, class> class AR,
-	       template<typename, template<typename> class, template<typename, template<typename> class> class> class AP>
-      inline static bool test(yalaa::AffineForm<T1, ET, AC, AR, AP, ErrorPolStd, IV2> &a);
-
       YALAA_SPEC_TEMPLATE_DEF
-      inline static bool pre_op(YALAA_SPEC_TEMPLATE_T &af1 const YALAA_SPEC_TEMPLATE_T &af2);
+      inline static bool pre_op(YALAA_SPEC_TEMPLATE_T &af1, const YALAA_SPEC_TEMPLATE_T &af2);
 
       YALAA_SPEC_TEMPLATE_DEF
       inline static bool pre_op(YALAA_SPEC_TEMPLATE_T &af1, const iv_t &iv);
@@ -55,7 +50,7 @@ namespace yalaa
 
 
       YALAA_SPEC_TEMPLATE_DEF
-      inline static void post_op(YALAA_SPEC_TEMPLATE_T &af1 const YALAA_SPEC_TEMPLATE_T &af2,
+      inline static void post_op(YALAA_SPEC_TEMPLATE_T &af1, const YALAA_SPEC_TEMPLATE_T &af2,
                                  const aerror_t &err);
 
       YALAA_SPEC_TEMPLATE_DEF
@@ -68,6 +63,12 @@ namespace yalaa
       YALAA_SPEC_TEMPLATE_DEF
       inline static void post_op(YALAA_SPEC_TEMPLATE_T &af, const aerror_t &err);
 
+      YALAA_SPEC_TEMPLATE_DEF
+      inline static bool new_form(YALAA_SPEC_TEMPLATE_T &af, base_ref_t s);
+
+      YALAA_SPEC_TEMPLATE_DEF
+      inline static bool new_form(YALAA_SPEC_TEMPLATE_T &af, const iv_t& iv);
+
       /**
        * Determines whether the affine form has a special value
        *
@@ -77,9 +78,16 @@ namespace yalaa
        */
       inline static bool special(special_t val);
       // ****************************************************************
-    }; 
+
+    private:
+      inline static special_t to_special(const aerror_t& err);
+    };
+    #include "errorpolstd.inl"
   }
 }
 
+
+#undef YALAA_SPEC_TEMPLATE_T
+#undef YALAA_SPEC_TEMPLATE_DEF
 
 #endif /*__ERRORPOL_HPP__*/
