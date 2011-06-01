@@ -122,6 +122,17 @@ namespace yalaa
 	{
 	  return sqrt(i);
 	}
+
+      static bool is_empty(const base_t& i)
+	{
+	  return is_empty(i);
+	}
+
+      static bool is_special(const base_t &i)
+	{
+	  return is_empty(i) || IsInfinity(Inf(i)) || IsInfinity(Sup(i)) || 
+	    IsQuietNaN(Inf(i)) || IsQuietNaN(Sup(i)) || IsSignalingNaN(Inf(i)) || IsSignalingNaN(Sup(i));
+	}
     };
   }
 }

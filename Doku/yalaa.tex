@@ -277,9 +277,25 @@ form is combined with an interval quantity.
 
 \paragraph{ErrorPolicy}
 \label{sec:errorpolicy}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{errorpol}
+  \caption{Concept defining an \texttt{ErrorPolicy}}
+  \label{fig:error_policy}
+\end{figure}
 The \texttt{ErrorPolicy} is responsible for handling errors during the
-computation process. These errors are propagated through the error flags of the
-\texttt{ArithmeticError} class. 
+computation process. These errors are propagated through the error flags of
+the \texttt{ArithmeticError} class. Its methods are listed in
+Fig. \ref{fig:error_policy}. The \texttt{pre\_op} functions are called prior
+to performing an operation. If the arguments generate independent of the
+concrete function a special form, the functions should return \texttt{false}
+and modify its first argument accordingly. Then the calculation step is
+skipped and the special form is returned. Otherwise, the regular
+\texttt{ArithmeticKernel} operation is called and the resulting
+\texttt{ArithmeticError} object is passed to the \texttt{post\_op}
+operation. Once again, the \texttt{ErrorPolicy} should check whether to
+generate an appropriate special form.
+
 
 \subsection{Supplied Implementations}
 \yalaa is delivered with some standard implementations for the above described
@@ -344,7 +360,54 @@ Sect. \ref{sec:chebysh-interp}. To ease reuse, we have split the
 \label{sec:affinepolicy}
 The policy class \texttt{AF0} supplied with \yalaa mimics the behavior of the
 original affine arithmetic as described in \cite{stolfi1997}. All policy
-functions add the error with a new independent error symbol.
+functions add the error with a new independent error symbol. 
+
+\paragraph{ErrorPolicy}
+\label{sec:errorpolicy-1}
+Three implementations of the \texttt{ErrorPolicy} concept are supplied with
+\yalaa: \texttt{ErrorPolStd}, \texttt{ErrorPolNone} and \texttt{ErrorPolDec}.
+The \texttt{ErrorPolStd} resembles the approach described in \cite{stolfi1997}
+and thus provides two special forms:
+\begin{description}
+  \item[\texttt{NONE}] No special value
+  \item[\texttt{R}] Whole real line
+  \item[\texttt{EMPTY}] Empty affine form
+\end{description}
+Tab. \ref{tab:errorpolstd_map} shows how the \texttt{ArithmeticError} flags
+are mapped to these values and how they behave under combinations. As \yalaa
+allows combination of affine forms with the scalars and intervals of the base
+type, it is also necessary to \emph{their} special values. In general
+\texttt{ErrorPolStd} uses the function \texttt{is\_special} of the respective
+\texttt{base\_traits} specialization for checking if the operand is
+valid. If it is not the outcome is \texttt{EMPTY}. Further, we provide a
+specialization for floating-point base types handling $\pm \infty$
+values and \texttt{NaN} separately. A $\pm \infty$ operand or an unbounded
+interval generates \texttt{R} and \texttt{NaN} yields \texttt{EMPTY}.
+
+In \texttt{ErrorPolNone} no error handling at all is done and
+\texttt{ErrorPolDec} tries to provide the decorations concept of the upcoming
+interval standard \cite{P1788022} for affine arithmetic. A detailed
+description is given in \cite{yalaadeko}.
+\begin{table}
+  \centering
+  \begin{tabular}{ll||l|lll}
+    \hline
+    Flag & Mapping & $\circ$ & \texttt{NONE} & \texttt{R} & \texttt{EMPTY} \\
+    \hline
+    \texttt{DISCONT} & \texttt{NONE} & \texttt{NONE}&  \texttt{NONE} &
+    \texttt{R} & \texttt{EMPTY }\\
+    \texttt{UNBOUND} & \texttt{R} & \texttt{R} & \texttt{R} & \texttt{R} & \texttt{EMPTY}\\
+    \texttt{P\_D\_VIOL} & \texttt{NONE} & \texttt{EMPTY} & \texttt{EMPTY} &
+    \texttt{EMPTY} & \texttt{EMPTY}\\
+    \texttt{C\_D\_VIOL} & \texttt{EMPTY} & &\\
+    \texttt{OVERFLOW} & \texttt{R} & & \\
+    \texttt{ERROR} & \texttt{EMPTY} & &\\
+    \hline
+  \end{tabular}
+  \caption{Mapping of ArithmeticError flags to ErrorPolStd special values and
+    outcome of combinations of them}
+  \label{tab:errorpolstd_map}
+\end{table}
 
 % \subsection{Elementary Functions}
 % \label{sec:elementary-functions}

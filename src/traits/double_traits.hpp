@@ -33,6 +33,21 @@ namespace yalaa
 	{
 	  return -d;
 	}
+
+      static bool is_special(double d)
+	{
+	  return isnan(d) || isinf(d);
+	}
+
+      static bool is_infinity(double d)
+	{
+	  return isinf(d);
+	}
+
+      static bool is_nan(double d)
+	{
+	  return isnan(d);
+	}
     };
   }
 }

@@ -37,37 +37,37 @@ namespace yalaa
        * @return true if a special form is generated
        */
       YALAA_SPEC_TEMPLATE_DEF
-      inline static bool pre_op(YALAA_SPEC_TEMPLATE_T &af1, const YALAA_SPEC_TEMPLATE_T &af2);
+      inline static bool pre_op(YALAA_SPEC_TEMPLATE_T *af1, const YALAA_SPEC_TEMPLATE_T &af2);
 
       YALAA_SPEC_TEMPLATE_DEF
-      inline static bool pre_op(YALAA_SPEC_TEMPLATE_T &af1, const iv_t &iv);
+      inline static bool pre_op(YALAA_SPEC_TEMPLATE_T *af1, const iv_t &iv);
 
       YALAA_SPEC_TEMPLATE_DEF
-      inline static bool pre_op(YALAA_SPEC_TEMPLATE_T &af, base_ref_t s);
+      inline static bool pre_op(YALAA_SPEC_TEMPLATE_T *af, base_ref_t s);
 
       YALAA_SPEC_TEMPLATE_DEF
-      inline static bool pre_op(YALAA_SPEC_TEMPLATE_T &af);
+      inline static bool pre_op(YALAA_SPEC_TEMPLATE_T *af);
 
 
       YALAA_SPEC_TEMPLATE_DEF
-      inline static void post_op(YALAA_SPEC_TEMPLATE_T &af1, const YALAA_SPEC_TEMPLATE_T &af2,
+      inline static void post_op(YALAA_SPEC_TEMPLATE_T *af1, const YALAA_SPEC_TEMPLATE_T &af2,
                                  const aerror_t &err);
 
       YALAA_SPEC_TEMPLATE_DEF
-      inline static void post_op(YALAA_SPEC_TEMPLATE_T &af1, const iv_t &iv,
+      inline static void post_op(YALAA_SPEC_TEMPLATE_T *af1, const iv_t &iv,
                                  const aerror_t &err);
 
       YALAA_SPEC_TEMPLATE_DEF
-      inline static void post_op(YALAA_SPEC_TEMPLATE_T &af, base_ref_t s, const aerror_t &err);
+      inline static void post_op(YALAA_SPEC_TEMPLATE_T *af, base_ref_t s, const aerror_t &err);
 
       YALAA_SPEC_TEMPLATE_DEF
-      inline static void post_op(YALAA_SPEC_TEMPLATE_T &af, const aerror_t &err);
+      inline static void post_op(YALAA_SPEC_TEMPLATE_T *af, const aerror_t &err);
 
       YALAA_SPEC_TEMPLATE_DEF
-      inline static bool new_form(YALAA_SPEC_TEMPLATE_T &af, base_ref_t s);
+      inline static bool new_form(YALAA_SPEC_TEMPLATE_T *af, base_ref_t s);
 
       YALAA_SPEC_TEMPLATE_DEF
-      inline static bool new_form(YALAA_SPEC_TEMPLATE_T &af, const iv_t& iv);
+      inline static bool new_form(YALAA_SPEC_TEMPLATE_T *af, const iv_t& iv);
 
       /**
        * Determines whether the affine form has a special value

@@ -15,21 +15,6 @@ standardization process for interval arithmetic (IEEE P1788)
 decoration concept for intervals.
 
 * Decorations
-** Current Status in P1788
-The P1788 standard is still under heavy discussion. However, the following aspects
-of exception handling have been already voted on. 
-+ Use of decorations (Motion 8) \cite{p1788motion8}
-+ Domain tetrit (Motion 18) \cite{p1788motion18}
-While both motions have some ideas for specific decorations, their only
-definite decision are the use of decoration and the domain tetrit. Some more
-details are given in the position paper \cite{hayes2010}. Besides, the author proposes
-two further decorations:
-+ Defined and Continuous $\mathrm{CD}(f,X)$
-+ Defined and Bounded $\mathrm{BD}(f,X)$
-Both are combined into a single decoration $\mathrm{CB}(f,X) =
-\mathrm{CD}(f,X) \land \mathrm{BD}(f,X)$.  However, the bounded decoration is
-left out and only $C(f,X)$ is considered in a motion currently under
-discussion by the same author\cite{p1788hayes2011}.
 
 ** Affine Decorations
 The ~YalAA~'s ~ErrorPolDec~ policy class provides two types of decorations. Decorations
@@ -50,6 +35,21 @@ of its natural domain with /X/.
 
 #Intentionally left out is the continuous flag:
 #+ $C(f,X)$: bool, function /f/ is continuous and defined over /X/
+** Current Status in P1788
+The P1788 standard is still under heavy discussion. However, the following aspects
+of exception handling have been already voted on. 
++ Use of decorations (Motion 8) \cite{p1788motion8}
++ Domain tetrit (Motion 18) \cite{p1788motion18}
+While both motions have some ideas for specific decorations, their only
+definite decision are the use of decoration and the domain tetrit. Some more
+details are given in the position paper \cite{hayes2010}. Besides, the author proposes
+two further decorations:
++ Defined and Continuous $\mathrm{CD}(f,X)$
++ Defined and Bounded $\mathrm{BD}(f,X)$
+Both are combined into a single decoration $\mathrm{CB}(f,X) =
+\mathrm{CD}(f,X) \land \mathrm{BD}(f,X)$.  However, the bounded decoration is
+left out and only $C(f,X)$ is considered in a motion currently under
+discussion by the same author\cite{p1788hayes2011}.
 
 ** Discussion
 The F-decorations are consistent with the decoration definition considered by

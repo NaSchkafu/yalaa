@@ -40,16 +40,15 @@ namespace yalaa
 
   YALAA_AFF_TEMPLATE
   YALAA_DECL::AffineForm(base_ref_t scalar)
-    :m_a(yalaa::details::base_traits<base_t>::my_zero())
-  { 
-    if(!ep_t::new_form(*this, scalar))
+  {
+    if(ep_t::new_form(this, scalar))
       m_a.set_central(scalar);
   }
 
   YALAA_AFF_TEMPLATE
   YALAA_DECL::AffineForm(const iv_t &iv)
   {
-    if(!ep_t::new_form(*this, iv)) {
+    if(ep_t::new_form(this, iv)) {
       m_a.set_central(iv_traits::my_mid(iv));
       ap_t::new_form(&m_a, iv_traits::my_rad(iv));
     }
@@ -71,10 +70,10 @@ namespace yalaa
   YALAA_AFF_TEMPLATE
   YALAA_DECL_T::self_t& YALAA_DECL::operator+=(const self_t &other)
   {
-    if(!ep_t::pre_op(*this, other)) {
+    if(ep_t::pre_op(this, other)) {
       typename ar_t::aerror_t error(ar_t::add(&m_a, other.m_a));
       ap_t::add_errors(&m_a, error);
-      ep_t::post_op(*this, other, error);
+      ep_t::post_op(this, other, error);
     }
     return *this;
   }
@@ -82,10 +81,10 @@ namespace yalaa
   YALAA_AFF_TEMPLATE
   YALAA_DECL_T::self_t& YALAA_DECL::operator-=(const self_t &other)
   {
-    if(!ep_t::pre_op(*this, other)) {
+    if(ep_t::pre_op(this, other)) {
       typename ar_t::aerror_t error(ar_t::sub(&m_a, other.m_a));
       ap_t::add_errors(&m_a, error);
-      ep_t::post_op(*this, other, error);
+      ep_t::post_op(this, other, error);
     }
     return *this;
   }
@@ -93,10 +92,10 @@ namespace yalaa
   YALAA_AFF_TEMPLATE
   YALAA_DECL_T::self_t& YALAA_DECL::operator*=(const self_t &other)
   {
-    if(!ep_t::pre_op(*this, other)) {
+    if(ep_t::pre_op(this, other)) {
       typename ar_t::aerror_t error(ar_t::mul(&m_a, other.m_a, rad(*this), rad(other)));
       ap_t::add_errors(&m_a, error);
-      ep_t::post_op(*this, other, error);
+      ep_t::post_op(this, other, error);
     }
     return *this;
   }
@@ -105,15 +104,21 @@ namespace yalaa
   YALAA_DECL_T::self_t& YALAA_DECL::operator/=(const self_t &other)
   {
     // TODO: Fixme
-    // Die Divisionsoperation muesste letztlich elementar im Kernel stattfinden 
+    // Die Divisionsoperation muesste letztlich elementar im Kernel stattfinden
     // oder zumindest nur ein Errorsymbol hinzufügen
     // Problem: AffineForm hat (abseits von base_traits) keine Ahnung von base_t,
     // d.h. kann insbesondere auch keine passende Rundungsop durchführen. Der derzeitige
     // Workaround stellt damit sicher, dass beide Fehler voll eingehen.
-    typename ar_t::aerror_t error1(ar_t::inv(&m_a, to_iv(*this)));
-    typename ar_t::aerror_t error2(ar_t::mul(&m_a, other.m_a, rad(*this), rad(other)));
-    ap_t::add_errors(&m_a, error1);
-    ap_t::add_errors(&m_a, error2);
+    if(ep_t::pre_op(this)) {
+      typename ar_t::aerror_t error1(ar_t::inv(&m_a, to_iv(*this)));
+      ap_t::add_errors(&m_a, error1);
+      ep_t::post_op(this, other, error1);
+      if(ep_t::pre_op(this, other)) {
+        typename ar_t::aerror_t error2(ar_t::mul(&m_a, other.m_a, rad(*this), rad(other)));
+        ap_t::add_errors(&m_a, error2);
+        ep_t::post_op(this, other, error2);
+      }
+    }
     return *this;
   }
 
@@ -121,8 +126,11 @@ namespace yalaa
   YALAA_AFF_TEMPLATE
   YALAA_DECL_T::self_t& YALAA_DECL::operator+=(base_ref_t s)
   {
-    typename ar_t::aerror_t error(ar_t::add(&m_a, s));
-    ap_t::add_errors(&m_a, error);
+    if(ep_t::pre_op(this, s)) {
+      typename ar_t::aerror_t error(ar_t::add(&m_a, s));
+      ap_t::add_errors(&m_a, error);
+      ep_t::post_op(this, s, error);
+    }
     return *this;
   }
 
@@ -131,24 +139,33 @@ namespace yalaa
   {
     // TODO: Wenn base_t nicht exakt negiert werden kann, ist diese Stelle problematisch
     // Dokumentieren oder in Kernel mit ordentlicher Fehlerpropagation verschieben
-    typename ar_t::aerror_t error(ar_t::add(&m_a, yalaa::details::base_traits<base_t>::my_neg(s)));
-    ap_t::add_errors(&m_a, error);
+    if(ep_t::pre_op(this, s)) {
+      typename ar_t::aerror_t error(ar_t::add(&m_a, yalaa::details::base_traits<base_t>::my_neg(s)));
+      ap_t::add_errors(&m_a, error);
+      ep_t::post_op(this, s, error);
+    }
     return *this;
   }
 
   YALAA_AFF_TEMPLATE
   YALAA_DECL_T::self_t& YALAA_DECL::operator*=(base_ref_t s)
   {
-    typename ar_t::aerror_t error(ar_t::scale(&m_a, s));
-    ap_t::add_errors(&m_a, error);
+    if(ep_t::pre_op(this, s)) {
+      typename ar_t::aerror_t error(ar_t::scale(&m_a, s));
+      ap_t::add_errors(&m_a, error);
+      ep_t::post_op(this, s, error);
+    }
     return *this;
   }
 
   YALAA_AFF_TEMPLATE
   YALAA_DECL_T::self_t& YALAA_DECL::operator/=(base_ref_t s)
   {
-    typename ar_t::aerror_t error(ar_t::inv_scale(&m_a, s));
-    ap_t::add_errors(&m_a, error);
+    if(ep_t::pre_op(this, s)) {
+      typename ar_t::aerror_t error(ar_t::inv_scale(&m_a, s));
+      ap_t::add_errors(&m_a, error);
+      ep_t::post_op(this, s, error);
+    }
     return *this;
   }
 
@@ -156,53 +173,71 @@ namespace yalaa
   YALAA_AFF_TEMPLATE
   YALAA_DECL_T::self_t& YALAA_DECL::operator+=(const iv_t &iv)
   {
-    ac_t aiv(iv_traits::my_mid(iv));
-    ap_t::add_uncert(&aiv, iv_traits::my_rad(iv));
-    typename ar_t::aerror_t error(ar_t::add(&m_a, aiv));
-    ap_t::add_errors(&m_a, error);
+    if(ep_t::pre_op(this, iv)) {
+      ac_t aiv(iv_traits::my_mid(iv));
+      ap_t::add_uncert(&aiv, iv_traits::my_rad(iv));
+      typename ar_t::aerror_t error(ar_t::add(&m_a, aiv));
+      ap_t::add_errors(&m_a, error);
+      ep_t::post_op(this, iv, error);
+    }
     return *this;
   }
 
   YALAA_AFF_TEMPLATE
   YALAA_DECL_T::self_t& YALAA_DECL::operator-=(const iv_t &iv)
   {
-    ac_t aiv(iv_traits::my_mid(iv));
-    ap_t::add_uncert(&aiv, iv_traits::my_rad(iv));
-    typename ar_t::aerror_t error(ar_t::sub(&m_a, aiv));
-    ap_t::add_errors(&m_a, error);
+    if(ep_t::pre_op(this, iv)) {
+      ac_t aiv(iv_traits::my_mid(iv));
+      ap_t::add_uncert(&aiv, iv_traits::my_rad(iv));
+      typename ar_t::aerror_t error(ar_t::sub(&m_a, aiv));
+      ap_t::add_errors(&m_a, error);
+      ep_t::post_op(this, iv, error);
+    }
     return *this;
   }
 
   YALAA_AFF_TEMPLATE
   YALAA_DECL_T::self_t& YALAA_DECL::operator*=(const iv_t &iv)
   {
-    ac_t aiv(iv_traits::my_mid(iv));
-    base_t uc(iv_traits::my_rad(iv));
-    ap_t::add_uncert(&aiv, uc);
-    typename ar_t::aerror_t error(ar_t::mul(&m_a, aiv, rad(*this), uc));
-    ap_t::add_errors(&m_a, error);
+    if(ep_t::pre_op(this, iv)) {
+      ac_t aiv(iv_traits::my_mid(iv));
+      base_t uc(iv_traits::my_rad(iv));
+      ap_t::add_uncert(&aiv, uc);
+      typename ar_t::aerror_t error(ar_t::mul(&m_a, aiv, rad(*this), uc));
+      ap_t::add_errors(&m_a, error);
+      ep_t::post_op(this, iv, error);
+    }
     return *this;
   }
 
   YALAA_AFF_TEMPLATE
   YALAA_DECL_T::self_t& YALAA_DECL::operator/=(const iv_t &iv)
   {
-    ac_t aiv(iv_traits::my_mid(iv));
-    base_t uc(iv_traits::my_rad(iv));
-    ap_t::add_uncert(&aiv, uc);
-    typename ar_t::aerror_t error1(ar_t::inv(&m_a, to_iv(*this)));
-    typename ar_t::aerror_t error2(ar_t::mul(&m_a, aiv, rad(*this), uc));
-    ap_t::add_errors(&m_a, error1);
-    ap_t::add_errors(&m_a, error2);
+    if(ep_t::pre_op(this)) {
+      ac_t aiv(iv_traits::my_mid(iv));
+      base_t uc(iv_traits::my_rad(iv));
+      ap_t::add_uncert(&aiv, uc);
+      typename ar_t::aerror_t error1(ar_t::inv(&m_a, to_iv(*this)));
+      ap_t::add_errors(&m_a, error1);
+      ep_t::post_op(this, error1);
+      if(ep_t::pre_op(this, iv)) {
+        typename ar_t::aerror_t error2(ar_t::mul(&m_a, aiv, rad(*this), uc));
+        ap_t::add_errors(&m_a, error2);
+        ep_t::post_op(this, error2);
+      }
+    }
     return *this;
   }
-    
+
   // misc
   YALAA_AFF_TEMPLATE
   YALAA_DECL_T::self_t& YALAA_DECL::operator-()
   {
-    typename ar_t::aerror_t error(ar_t::neg(&m_a));
-    ap_t::add_errors(&m_a, error);
+    if(ep_t::pre_op(this)) {
+      typename ar_t::aerror_t error(ar_t::neg(&m_a));
+      ap_t::add_errors(&m_a, error);
+      ep_t::post_op(this, error);
+    }
     return *this;
   }
 
@@ -218,79 +253,104 @@ namespace yalaa
     if(other.m_a.size() == m_a.size() && other.m_a.central() == m_a.central()) {
       typename ac_t::aff_comb_const_iter it2(other.m_a.begin());
       for(typename ac_t::aff_comb_const_iter it1(m_a.begin()); it1 != m_a.end(); ++it1) {
-	if(!(*it1 == *it2) || it1->dev() != it2->dev())
+if(!(*it1 == *it2) || it1->dev() != it2->dev())
 	  return false;
 	++it2;
       }
       return true;
-    }  
+    }
     return false;
   }
 
-  
+
 
   // elementary
   YALAA_FRIEND_DEF
   exp(AF af)
   {
-    typename AF::ar_t::aerror_t error(AF::ar_t::exp(&af.m_a, to_iv(af)));
-    AF::ap_t::add_errors(&af.m_a, error);
+    if(AF::ep_t::pre_op(&af)) {
+      typename AF::ar_t::aerror_t error(AF::ar_t::exp(&af.m_a, to_iv(af)));
+      AF::ap_t::add_errors(&af.m_a, error);
+      AF::ep_t::post_op(&af, error);
+    }
     return af;
   }
 
   YALAA_FRIEND_DEF
   sqrt(AF af)
   {
-    const typename AF::iv_t& domain = to_iv(af);
-    typename AF::ar_t::aerror_t error(AF::ar_t::sqrt(&af.m_a, 
-						     yalaa::details::base_traits<typename AF::iv_t>::my_inf(domain), 
-						     yalaa::details::base_traits<typename AF::iv_t>::my_sup(domain)));
-    AF::ap_t::add_errors(&af.m_a, error);
+    if(AF::ep_t::pre_op(&af)) {
+      const typename AF::iv_t& domain = to_iv(af);
+      typename AF::ar_t::aerror_t error(AF::ar_t::sqrt(&af.m_a,
+						       yalaa::details::base_traits<typename AF::iv_t>::my_inf(domain),
+						       yalaa::details::base_traits<typename AF::iv_t>::my_sup(domain)));
+      AF::ap_t::add_errors(&af.m_a, error);
+      AF::ep_t::post_op(&af, error);
+    }
     return af;
   }
 
   YALAA_FRIEND_DEF
   sqr(AF af)
   {
-    typename AF::ar_t::aerror_t error(AF::ar_t::sqr(&af.m_a, rad(af)));
-    AF::ap_t::add_errors(&af.m_a, error);
+    if(AF::ep_t::pre_op(&af)) {
+      typename AF::ar_t::aerror_t error(AF::ar_t::sqr(&af.m_a, rad(af)));
+      AF::ap_t::add_errors(&af.m_a, error);
+      AF::ep_t::post_op(&af, error);
+    }
     return af;
   }
 
   YALAA_FRIEND_DEF
-  pow(AF af, int exp) 
+  pow(AF af, int exp)
   {
-    typename AF::ar_t::aerror_t error(AF::ar_t::pow(&af.m_a, abs(exp), rad(af)));
-    AF::ap_t::add_errors(&af.m_a, error);
-    // TODO: Neg. Exp
-    // return inv(af)
+    if(exp < 0 && AF::ep_t::pre_op(&af)) {
+      typename AF::ar_t::aerror_t error1(AF::ar_t::inv(&af.m_a, to_iv(af)));
+      AF::ap_t::add_errors(&af.m_a, error1);
+      AF::ep_t::post_op(&af, error1);
+    }
+
+    if(AF::ep_t::pre_op(&af)) {
+      typename AF::ar_t::aerror_t error2(AF::ar_t::pow(&af.m_a, abs(exp), rad(af)));
+      AF::ap_t::add_errors(&af.m_a, error2);
+      AF::ep_t::post_op(&af, error2);
+    }
     return af;
   }
 
   YALAA_FRIEND_DEF
-  ln(AF af) 
+  ln(AF af)
   {
-    const typename AF::iv_t& domain = to_iv(af);
-    typename AF::ar_t::aerror_t error(AF::ar_t::ln(&af.m_a, domain));
-    AF::ap_t::add_errors(&af.m_a, error);
+    if(AF::ep_t::pre_op(&af)) {
+      const typename AF::iv_t& domain = to_iv(af);
+      typename AF::ar_t::aerror_t error(AF::ar_t::ln(&af.m_a, domain));
+      AF::ap_t::add_errors(&af.m_a, error);
+      AF::ep_t::post_op(&af, error);
+    }
     return af;
   }
 
   YALAA_FRIEND_DEF
   sin(AF af)
   {
-    const typename AF::iv_t& domain = to_iv(af);
-    typename AF::ar_t::aerror_t error(AF::ar_t::sin(&af.m_a, domain));
-    AF::ap_t::add_errors(&af.m_a, error);
+    if(AF::ep_t::pre_op(&af)) {
+      const typename AF::iv_t& domain = to_iv(af);
+      typename AF::ar_t::aerror_t error(AF::ar_t::sin(&af.m_a, domain));
+      AF::ap_t::add_errors(&af.m_a, error);
+      AF::ep_t::post_op(&af, error);
+    }
     return af;
   }
 
   YALAA_FRIEND_DEF
   cos(AF af)
   {
-    const typename AF::iv_t& domain = to_iv(af);
-    typename AF::ar_t::aerror_t error(AF::ar_t::cos(&af.m_a, domain));
-    AF::ap_t::add_errors(&af.m_a, error);
+    if(AF::ep_t::pre_op(&af)) {
+      const typename AF::iv_t& domain = to_iv(af);
+      typename AF::ar_t::aerror_t error(AF::ar_t::cos(&af.m_a, domain));
+      AF::ap_t::add_errors(&af.m_a, error);
+      AF::ep_t::post_op(&af, error);
+    }
     return af;
   }
 }
