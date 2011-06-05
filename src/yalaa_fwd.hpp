@@ -7,7 +7,7 @@
 // your own instantiations or you will get some nice linker errors ;-).
 
 // configuration
-#include "config.h"
+#include "config_sel.h"
 
 // iv selector
 #include "yalaa_iv.hpp"

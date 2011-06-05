@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\kernel">
+      <UniqueIdentifier>{e2d0717b-0c59-46af-9dcc-e1b73343704b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\kernel\aff">
+      <UniqueIdentifier>{155bba31-a518-49b2-b23d-35c0938fd9d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\kernel\nonaff">
+      <UniqueIdentifier>{89fbf366-bfd6-4111-b21c-afcc0745b310}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\helper">
+      <UniqueIdentifier>{69da8057-c00e-4e1b-bc0c-217e45fd33b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\comb">
+      <UniqueIdentifier>{269bbe15-e428-42da-ae52-1f714dcb06ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\pol">
+      <UniqueIdentifier>{462e6303-6cbc-4143-a39f-cc91c8d39e84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\helper">
+      <UniqueIdentifier>{72e07afd-0423-4a6e-90d7-126fd326ac25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\traits">
+      <UniqueIdentifier>{7810ace6-b215-49ae-9c85-cfc82b9dd3ab}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\yalaa_fp_impl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\kernel\nonaff\chebyshevfp.cpp">
+      <Filter>Header Files\kernel\nonaff</Filter>
+    </ClCompile>
+    <ClCompile Include="src\kernel\nonaff\minrangefp.cpp">
+      <Filter>Header Files\kernel\nonaff</Filter>
+    </ClCompile>
+    <ClCompile Include="src\kernel\nonaff\mulfp.cpp">
+      <Filter>Header Files\kernel\nonaff</Filter>
+    </ClCompile>
+    <ClCompile Include="src\helper\fphelper.cpp">
+      <Filter>Source Files\helper</Filter>
+    </ClCompile>
+    <ClCompile Include="src\comb\affinecombimpl.cpp">
+      <Filter>Header Files\comb</Filter>
+    </ClCompile>
+    <ClCompile Include="src\comb\affinecombopimpl.cpp">
+      <Filter>Header Files\comb</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\affineform.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\affineform_double.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\affineform_fwd.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\errortermimpl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\yalaa.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\yalaa_assert.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\yalaa_fwd.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\yalaa_ios.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\kernel\aff\exacterroraffinefp.hpp">
+      <Filter>Header Files\kernel\aff</Filter>
+    </ClInclude>
+    <ClInclude Include="src\kernel\nonaff\chebyshevfp.hpp">
+      <Filter>Header Files\kernel\nonaff</Filter>
+    </ClInclude>
+    <ClInclude Include="src\kernel\nonaff\minrangefp.hpp">
+      <Filter>Header Files\kernel\nonaff</Filter>
+    </ClInclude>
+    <ClInclude Include="src\kernel\nonaff\mulfp.hpp">
+      <Filter>Header Files\kernel\nonaff</Filter>
+    </ClInclude>
+    <ClInclude Include="src\kernel\arithmeticerror.hpp">
+      <Filter>Header Files\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="src\kernel\exacterror.hpp">
+      <Filter>Header Files\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pol\af0.hpp">
+      <Filter>Header Files\pol</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pol\errorpoldec.hpp">
+      <Filter>Header Files\pol</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pol\errorpolstd.hpp">
+      <Filter>Header Files\pol</Filter>
+    </ClInclude>
+    <ClInclude Include="src\comb\affinecombimpl.hpp">
+      <Filter>Header Files\comb</Filter>
+    </ClInclude>
+    <ClInclude Include="src\comb\affinecombopimpl.hpp">
+      <Filter>Header Files\comb</Filter>
+    </ClInclude>
+    <ClInclude Include="src\helper\fastia.hpp">
+      <Filter>Header Files\helper</Filter>
+    </ClInclude>
+    <ClInclude Include="src\helper\fphelper.hpp">
+      <Filter>Header Files\helper</Filter>
+    </ClInclude>
+    <ClInclude Include="src\traits\base_traits.hpp">
+      <Filter>Header Files\traits</Filter>
+    </ClInclude>
+    <ClInclude Include="src\traits\cxsc_traits.hpp">
+      <Filter>Header Files\traits</Filter>
+    </ClInclude>
+    <ClInclude Include="src\traits\double_traits.hpp">
+      <Filter>Header Files\traits</Filter>
+    </ClInclude>
+    <ClInclude Include="src\traits\filib_traits.hpp">
+      <Filter>Header Files\traits</Filter>
+    </ClInclude>
+    <ClInclude Include="src\traits\float_traits.hpp">
+      <Filter>Header Files\traits</Filter>
+    </ClInclude>
+    <ClInclude Include="src\traits\l_double_traits.hpp">
+      <Filter>Header Files\traits</Filter>
+    </ClInclude>
+    <ClInclude Include="src\config_sel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\config_w32.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\yalaa_iv.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\kernel\aff\exacterroraffinefp.cpp">
+      <Filter>Header Files\kernel\aff</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\affineform.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="src\affineform_double.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="src\errortermimpl.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="src\kernel\arithmeticerror.inl">
+      <Filter>Header Files\kernel</Filter>
+    </None>
+    <None Include="src\pol\errorpoldec.inl">
+      <Filter>Header Files\pol</Filter>
+    </None>
+    <None Include="src\pol\errorpolstd.inl">
+      <Filter>Header Files\pol</Filter>
+    </None>
+  </ItemGroup>
+</Project>

@@ -79,8 +79,9 @@ namespace yalaa
       }                                                         \
                                                                 \
       static base_t my_pow(const base_t &i, int n)              \
-      {                                                         \
-        /*return power(i, n);*/					\
+	{                         \
+	    /*FIX*/                                                        \
+	    return base_t(0.0, 0.0);               					\
       }                                                         \
                                                                 \
       static base_t my_ln(const base_t &i)                      \
@@ -112,6 +113,16 @@ namespace yalaa
       {                                                         \
         return sqrt(i);                                         \
       }                                                         \
+																\
+	  static bool is_empty(const base_t &i)						\
+	  {															\
+		return my_inf(i) > my_sup(i);							\
+	  }															\
+																\
+	 static bool is_special(const base_t &i)					\
+	 {															\
+		return is_empty(i) || !_finite(my_sup(i)) || !_finite(my_inf(i)) || _isnan(my_inf(i)) || _isnan(my_sup(i)); \
+	 } \
     };
 
     YALAA_FILIB_TRAITS(float)

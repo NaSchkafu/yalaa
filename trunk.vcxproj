@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B91825E8-8BC9-4427-A2C6-B582B5847F4A}</ProjectGuid>
+    <RootNamespace>trunk</RootNamespace>
+    <ProjectName>yalaa_lib</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>src;F:\Devel\filib++\include;F:\Devel\Boost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>F:\Devel\filib++\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>filib++d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>src;F:\Devel\filib++\include;F:\Devel\Boost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>filib++.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\comb\affinecombimpl.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\comb\affinecombopimpl.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\helper\fphelper.cpp" />
+    <ClInclude Include="src\kernel\aff\exacterroraffinefp.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClCompile Include="src\kernel\nonaff\chebyshevfp.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\kernel\nonaff\minrangefp.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\kernel\nonaff\mulfp.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\yalaa_fp_impl.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\affineform.hpp" />
+    <ClInclude Include="src\affineform_double.hpp" />
+    <ClInclude Include="src\affineform_fwd.hpp" />
+    <ClInclude Include="src\comb\affinecombimpl.hpp" />
+    <ClInclude Include="src\comb\affinecombopimpl.hpp" />
+    <ClInclude Include="src\config_sel.h" />
+    <ClInclude Include="src\config_w32.h" />
+    <ClInclude Include="src\errortermimpl.hpp" />
+    <ClInclude Include="src\helper\fastia.hpp" />
+    <ClInclude Include="src\helper\fphelper.hpp" />
+    <ClInclude Include="src\kernel\aff\exacterroraffinefp.hpp" />
+    <ClInclude Include="src\kernel\arithmeticerror.hpp" />
+    <ClInclude Include="src\kernel\exacterror.hpp" />
+    <ClInclude Include="src\kernel\nonaff\chebyshevfp.hpp" />
+    <ClInclude Include="src\kernel\nonaff\minrangefp.hpp" />
+    <ClInclude Include="src\kernel\nonaff\mulfp.hpp" />
+    <ClInclude Include="src\pol\af0.hpp" />
+    <ClInclude Include="src\pol\errorpoldec.hpp" />
+    <ClInclude Include="src\pol\errorpolstd.hpp" />
+    <ClInclude Include="src\traits\base_traits.hpp" />
+    <ClInclude Include="src\traits\cxsc_traits.hpp" />
+    <ClInclude Include="src\traits\double_traits.hpp" />
+    <ClInclude Include="src\traits\filib_traits.hpp" />
+    <ClInclude Include="src\traits\float_traits.hpp" />
+    <ClInclude Include="src\traits\l_double_traits.hpp" />
+    <ClInclude Include="src\yalaa.hpp" />
+    <ClInclude Include="src\yalaa_assert.hpp" />
+    <ClInclude Include="src\yalaa_fwd.hpp" />
+    <ClInclude Include="src\yalaa_ios.hpp" />
+    <ClInclude Include="src\yalaa_iv.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\affineform.inl" />
+    <None Include="src\affineform_double.inl" />
+    <None Include="src\errortermimpl.inl" />
+    <None Include="src\kernel\arithmeticerror.inl" />
+    <None Include="src\pol\errorpoldec.inl" />
+    <None Include="src\pol\errorpolstd.inl" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

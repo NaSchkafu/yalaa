@@ -1,7 +1,28 @@
 #include "fphelper.hpp"
 
-#include <fenv.h>
 #include <math.h>
+
+#ifdef _MSC_VER
+#include <float.h>
+
+#define FE_DOWNWARD RC_DOWN
+#define FE_UPWARD RC_UP
+#define FE_TONEAREST RC_NEAR
+#define FE_TOWARDZERO RC_CHOP
+
+void fesetround(unsigned m) 
+{
+	_controlfp(MCW_RC, m);
+}
+
+unsigned fegetround() 
+{
+	return _controlfp(0,0) & (RC_DOWN | RC_UP | RC_NEAR | RC_CHOP);
+}
+
+#else
+#include <fenv.h>
+#endif
 
 namespace yalaa
 {
@@ -21,8 +42,8 @@ namespace yalaa
     void RndControl::downward()
     {
       if(m_mode != FE_DOWNWARD) {
-	fesetround(FE_DOWNWARD);
-	m_mode = FE_DOWNWARD;
+		fesetround(FE_DOWNWARD);
+		m_mode = FE_DOWNWARD;
       }
     }
 
@@ -52,7 +73,7 @@ namespace yalaa
 
     inline bool is_infinity(double r)
     {
-#ifdef _WIN32
+#ifdef _MSC_VER
       return _finite(r);
 #else
       return isinf(r);
@@ -62,7 +83,7 @@ namespace yalaa
     // TODO: unterscheiden!
     inline bool is_quiet_NaN(double r)
     {
-#ifdef _WIN32
+#ifdef _MSC_VER
       return _isnan(r);
 #else
       return isnan(r);
@@ -71,7 +92,7 @@ namespace yalaa
 
     inline bool is_signaling_NaN(double r)
     {
- #ifdef _WIN32
+ #ifdef _MSC_VER
       return _isnan(r);
 #else
       return isnan(r);
@@ -90,10 +111,10 @@ namespace yalaa
 
     unsigned get_flags(double val)
     {
-      if(isnan(val))
-	return 32;
+      if(is_nan(val))
+		return 32;
       else if(is_infinity(val))
-	return 16;
+		return 16;
       return 0;
     }
 

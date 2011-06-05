@@ -249,8 +249,14 @@ namespace yalaa
     ac_t m_a;
     /// flag for special forms
     typename ep_t::special_t m_special;
-
+// NOTE: befriending templates is disallowed in C++ 03
+#ifdef _MSC_VER
+	// MSVC accepts the new C++ 0x syntax
+	friend EP<T, IV>;
+#else
+	// g++ and clang++ accept this
     friend class EP<T, IV>;
+#endif
   };
   
   /** 

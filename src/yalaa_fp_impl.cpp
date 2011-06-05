@@ -1,7 +1,7 @@
 #include "yalaa.hpp"
 
 // config
-#include "config.h"
+#include "config_sel.h"
 
 // Rounding control
 #include "helper/fphelper.hpp"

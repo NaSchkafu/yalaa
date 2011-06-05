@@ -114,11 +114,14 @@ YALAA_SPEC_TEMPLATE_DEF
 bool ErrorPolDec<T, IV>::new_form(YALAA_SPEC_TEMPLATE_T *af, base_ref_t s)
 {
   
+  // TODO
+  return true;
 }
 
 template<typename T, typename IV>
 YALAA_SPEC_TEMPLATE_DEF
 bool ErrorPolDec<T, IV>::new_form(YALAA_SPEC_TEMPLATE_T *af, const iv_t& iv)
 {
-  
+	// TODO
+  return true;
 }
