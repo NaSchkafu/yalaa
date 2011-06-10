@@ -1,3 +1,4 @@
+// -*-c++-*-
 /*
   Copyright 2011 Stefan Kiel <kiel@inf.uni-due.de>
   
@@ -16,8 +17,6 @@
   along with yalaa.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-// -*-c++-*-
 #define YALAA_AFF_TEMPLATE template<typename T, template<typename> class ET, \
                                     template<typename, template<typename> class> class AC, \
                                     template<typename, template<typename> class, template<typename, template<typename> class> class, class> class AR, \

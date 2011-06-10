@@ -1,3 +1,5 @@
+// -*-c++-*-
+// Spezialisierung double
 /*
   Copyright 2011 Stefan Kiel <kiel@inf.uni-due.de>
   
@@ -17,8 +19,6 @@
 */
 
 
-// -*-c++-*-
-// Spezialisierung double
 #include "helper/fphelper.hpp"
 
 namespace yalaa
