@@ -78,6 +78,7 @@ namespace yalaa
       static aerror_t exp(ac_t *ac, const IV &d);
       static aerror_t ln(ac_t *ac, const IV &d);
       static aerror_t inv(ac_t *ac, const IV &d);
+      //static aerror_t asin(ac_t *ac, IV d);
       // static aerror_t log(ac_t *ac, const IV &d);
 
       // private:

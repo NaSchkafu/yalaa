@@ -54,6 +54,7 @@ namespace yalaa
   template aff_e_f ln(aff_e_f);
   template aff_e_f sin(aff_e_f);
   template aff_e_f cos(aff_e_f);
+  template aff_e_f asin(aff_e_f);
   template aff_e_f sqr(aff_e_f);
   template aff_e_f pow(aff_e_f, int);
   template details::float_iv_t to_iv(const aff_e_f&);
@@ -67,6 +68,7 @@ namespace yalaa
   template aff_e_f_dec ln(aff_e_f_dec);
   template aff_e_f_dec sin(aff_e_f_dec);
   template aff_e_f_dec cos(aff_e_f_dec);
+  template aff_e_f_dec asin(aff_e_f_dec);
   template aff_e_f_dec sqr(aff_e_f_dec);
   template aff_e_f_dec pow(aff_e_f_dec, int);
   template details::float_iv_t to_iv(const aff_e_f_dec&);
@@ -83,6 +85,8 @@ namespace yalaa
   template aff_e_d ln(aff_e_d);
   template aff_e_d sin(aff_e_d);
   template aff_e_d cos(aff_e_d);
+  template aff_e_d asin(aff_e_d);
+  template aff_e_d acos(aff_e_d);
   template aff_e_d sqr(aff_e_d);
   template aff_e_d pow(aff_e_d, int);
   template details::double_iv_t to_iv(const aff_e_d&);
@@ -96,6 +100,8 @@ namespace yalaa
   template aff_e_d_dec ln(aff_e_d_dec);
   template aff_e_d_dec sin(aff_e_d_dec);
   template aff_e_d_dec cos(aff_e_d_dec);
+  template aff_e_d_dec asin(aff_e_d_dec);
+  template aff_e_d_dec acos(aff_e_d_dec);
   template aff_e_d_dec sqr(aff_e_d_dec);
   template aff_e_d_dec pow(aff_e_d_dec, int);
   template details::double_iv_t to_iv(const aff_e_d_dec&);
@@ -112,6 +118,7 @@ namespace yalaa
   template aff_e_ld ln(aff_e_ld);
   template aff_e_ld sin(aff_e_ld);
   template aff_e_ld cos(aff_e_ld);
+  template aff_e_ld asin(aff_e_ld);
   template aff_e_ld sqr(aff_e_ld);
   template aff_e_ld pow(aff_e_ld, int);
   template details::l_double_iv_t to_iv(const aff_e_ld&);
@@ -124,6 +131,7 @@ namespace yalaa
   template aff_e_ld_dec ln(aff_e_ld_dec);
   template aff_e_ld_dec sin(aff_e_ld_dec);
   template aff_e_ld_dec cos(aff_e_ld_dec);
+  template aff_e_ld_dec asin(aff_e_ld_dec);
   template aff_e_ld_dec sqr(aff_e_ld_dec);
   template aff_e_ld_dec pow(aff_e_ld_dec, int);
   template details::l_double_iv_t to_iv(const aff_e_ld_dec&);

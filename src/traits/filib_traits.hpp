@@ -26,6 +26,26 @@ namespace yalaa
 {
   namespace details
   {
+    template<typename T>
+    bool my_is_nan(T t)
+    {
+#ifdef _MSC_VER
+      return _isnan(t);
+#else
+      return isnan(t);
+#endif
+    }
+
+    template<typename T>
+    bool my_is_infinity(T t)
+    {
+#ifdef _MSC_VER
+      return !_finite(t);
+#else
+      return isinf(t);
+#endif  
+    }
+
 #define YALAA_FILIB_TRAITS(BASE)  template<>                    \
     struct base_traits<filib::interval<BASE> >                  \
     {                                                           \
@@ -133,15 +153,21 @@ namespace yalaa
         return sqrt(i);                                         \
       }                                                         \
 																\
-	  static bool is_empty(const base_t &i)						\
-	  {															\
-		return my_inf(i) > my_sup(i);							\
-	  }															\
-																\
-	 static bool is_special(const base_t &i)					\
-	 {															\
-		return is_empty(i) || !_finite(my_sup(i)) || !_finite(my_inf(i)) || _isnan(my_inf(i)) || _isnan(my_sup(i)); \
-	 } \
+      static bool is_empty(const base_t &i)				\
+      {									\
+	return my_inf(i) > my_sup(i);					\
+      }									\
+      									\
+      static bool is_special(const base_t &i)				\
+      {									\
+	return is_empty(i) || my_is_infinity(my_sup(i)) || my_is_infinity(my_inf(i)) || my_is_nan(my_inf(i)) || my_is_nan(my_sup(i)); \
+      }									\
+									\
+      static base_t my_asin(const base_t &i)				\
+      {									\
+	return asin(i);							\
+      }									\
+									\
     };
 
     YALAA_FILIB_TRAITS(float)

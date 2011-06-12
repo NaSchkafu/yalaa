@@ -261,6 +261,12 @@ namespace yalaa
     YALAA_FRIEND_DECL ln(AF);
     YALAA_FRIEND_DECL sin(AF);
     YALAA_FRIEND_DECL cos(AF);
+    YALAA_FRIEND_DECL tan(AF);
+    YALAA_FRIEND_DECL asin(AF);
+    YALAA_FRIEND_DECL acos(AF);
+    YALAA_FRIEND_DECL sinh(AF);
+    YALAA_FRIEND_DECL cosh(AF);
+    YALAA_FRIEND_DECL tanh(AF);
 
   private:
     /// affine combination

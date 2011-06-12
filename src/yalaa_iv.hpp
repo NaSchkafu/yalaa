@@ -29,8 +29,10 @@
 #ifdef HAVE_CXSC
     #include <interval.hpp>
     #include <imath.hpp>
+#include "traits/cxsc_traits.hpp"
 #elif HAVE_FILIB
     #include <interval/interval.hpp>
+#include "traits/filib_traits.hpp"
 #endif
 
 namespace yalaa 

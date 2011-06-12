@@ -93,7 +93,7 @@ namespace yalaa
     inline bool is_infinity(double r)
     {
 #ifdef _MSC_VER
-      return _finite(r);
+      return !_finite(r);
 #else
       return isinf(r);
 #endif

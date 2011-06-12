@@ -19,6 +19,7 @@
 
 
 #include "minrangefp.hpp"
+#include <math.h>
 
 namespace yalaa
 {
@@ -108,7 +109,6 @@ namespace yalaa
 	  return aerror_t(0.0, aerror_t::C_D_VIOL);
 	else if(iv_traits::my_inf(d) <= 0)
 	  return aerror_t(0.0, aerror_t::UNBOUND | aerror_t::P_D_VIOL);
-
 	yalaa::fp::RndControl rnd;
 	const iv_t &l = iv_traits::my_ln(d);
 	rnd.upward();
@@ -149,6 +149,9 @@ namespace yalaa
 	err += err2;
 	return aerror_t(err, yalaa::fp::get_flags(err));
       }
+
+
+      
     }
   }
 }

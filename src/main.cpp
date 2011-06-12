@@ -19,7 +19,7 @@ yalaa::details::double_iv_t intersect(const yalaa::details::double_iv_t &iv1, co
 #endif
 }
 
-void test(const yalaa::details::double_iv_t &iv, const aff &af, const yalaa::details::double_iv_t &input) 
+void test2(const yalaa::details::double_iv_t &iv, const aff &af, const yalaa::details::double_iv_t &input) 
 {
   using namespace yalaa::details;
   double_iv_t ieaff(to_iv(af));
@@ -45,7 +45,7 @@ void test_exp(const yalaa::details::double_iv_t &i)
   using namespace yalaa::details;
   yalaa::details::double_iv_t eiv(exp(i));
   aff eaff(exp(aff(i)));
-  test(eiv, eaff, i);
+  test2(eiv, eaff, i);
 }
 
 void test_sqrt(const yalaa::details::double_iv_t &i) 
@@ -53,7 +53,7 @@ void test_sqrt(const yalaa::details::double_iv_t &i)
   using namespace yalaa::details;
   double_iv_t eiv(sqrt(i));
   aff eaff(sqrt(aff(i)));
-  test(eiv, eaff, i);
+  test2(eiv, eaff, i);
 }
 
 void test_sqr(const yalaa::details::double_iv_t &i) 
@@ -61,7 +61,7 @@ void test_sqr(const yalaa::details::double_iv_t &i)
   using namespace yalaa::details;
   double_iv_t eiv(sqr(i));
   aff eaff(sqr(aff(i)));
-  test(eiv, eaff, i);
+  test2(eiv, eaff, i);
 }
 
 void test_pow(const yalaa::details::double_iv_t &i) 
@@ -70,7 +70,7 @@ void test_pow(const yalaa::details::double_iv_t &i)
   int n = rand() % 10;
   double_iv_t eiv(power(i, n));
   aff eaff(pow(aff(i), n));
-  test(eiv, eaff, i);
+  test2(eiv, eaff, i);
 }
 
 void test_ln(const yalaa::details::double_iv_t &i) 
@@ -78,7 +78,7 @@ void test_ln(const yalaa::details::double_iv_t &i)
   using namespace yalaa::details;
   double_iv_t eiv(iv_traits::my_ln(i));
   aff eaff(ln(aff(i)));
-  test(eiv, eaff, i);
+  test2(eiv, eaff, i);
 }
 
 void test_sin(const yalaa::details::double_iv_t &i) 
@@ -86,7 +86,7 @@ void test_sin(const yalaa::details::double_iv_t &i)
   using namespace yalaa::details;
   double_iv_t eiv(sin(i));
   aff eaff(sin(aff(i)));
-  test(eiv, eaff, i);
+  test2(eiv, eaff, i);
 }
 
 void test_cos(const yalaa::details::double_iv_t &i) 
@@ -94,7 +94,7 @@ void test_cos(const yalaa::details::double_iv_t &i)
   using namespace yalaa::details;
   double_iv_t eiv(cos(i));
   aff eaff(cos(aff(i)));
-  test(eiv, eaff, i);
+  test2(eiv, eaff, i);
 }
 
 void test_mul(const yalaa::details::double_iv_t &i)
@@ -102,8 +102,27 @@ void test_mul(const yalaa::details::double_iv_t &i)
   using namespace yalaa::details;
   double_iv_t eiv(i*i);
   aff eaff(aff(i)*aff(i));
-  test(eiv, eaff, i);
+  test2(eiv, eaff, i);
 }
+
+void test_asin(const yalaa::details::double_iv_t &i)
+{
+  using namespace yalaa::details;
+  double_iv_t eiv(asin(i));
+  aff eaff(asin(aff(i)));
+  test2(eiv, eaff, i);
+}
+
+void test_acos(const yalaa::details::double_iv_t &i)
+{
+  using namespace yalaa::details;
+  double_iv_t eiv(acos(i));
+  aff eaff(acos(aff(i)));
+  test2(eiv, eaff, i);
+}
+
+
+
 
 void rec_split(const yalaa::details::double_iv_t &i, double eps, void (*f)(const yalaa::details::double_iv_t&))
 {
@@ -178,8 +197,8 @@ int main(int argc, char *argv[])
   // std::cout << "sin sx " << sin(sx) << std::endl;
   // std::cout << "sin asx " << sin(asx) << std::endl;
   // std::cout << base_traits<double_iv_t>::my_w(sin(sx)) <<"   " << base_traits<double_iv_t>::my_w(to_iv(sin(asx))) << std::endl;
-  // double_iv_t ssx(-100,100);
-  // rec_split(ssx, 0.0001, &test_cos);
+  yalaa::details::double_iv_t ssx(-1.0,1.0);
+  rec_split(ssx, 0.0001, &test_asin);
 
 
   // aff x(double_iv_t(1.9,2));

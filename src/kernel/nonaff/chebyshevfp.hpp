@@ -53,6 +53,9 @@ namespace yalaa
 	static aerror_t sin(ac_t *ac, const iv_t &d);
 	static aerror_t cos(ac_t *ac, const iv_t &d);
 
+	static aerror_t asin(ac_t *ac,  iv_t d);
+	static aerror_t acos(ac_t *ac, iv_t d);
+
 	//static void init();
 
       private:
@@ -71,6 +74,8 @@ namespace yalaa
 
 	static short sgn(T s);
 	static iv_t neg_sin(const iv_t&);
+	static iv_t dx_asin(const iv_t&i);
+	static iv_t dx_acos(const iv_t&i);
 
 	// static const iv_t S_X[][2];
 	// static const T S_PINF;

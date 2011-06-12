@@ -96,6 +96,64 @@ namespace yalaa
       	       template<typename, template<typename> class> class AC,
       	       class AFFOP,
       	       class IV>
+      typename ChebyshevFP<T, ET, AC, AFFOP, IV>::aerror_t 
+      ChebyshevFP<T, ET, AC, AFFOP, IV>::acos(ac_t *ac, iv_t d) 
+      {
+	if(iv_traits::my_sup(d) < -1.0 || iv_traits::my_inf(d) > 1.0)
+	  return aerror_t(0.0, aerror_t::C_D_VIOL);
+	unsigned flags = 0;
+	if(iv_traits::my_sup(d) > 1.0 || iv_traits::my_inf(d) < -1.0) {
+	  flags = aerror_t::P_D_VIOL;
+	  d = iv_t(std::min(iv_traits::my_sup(d),1.0), std::max(iv_traits::my_inf(d), -1.0));
+	}
+	yalaa::fp::RndControl rnd;
+	return chebyshev(ac, d, &iv_traits::my_acos, false, &dx_acos, rnd);
+      }
+
+
+      template<typename T, template<typename> class ET, 
+      	       template<typename, template<typename> class> class AC,
+      	       class AFFOP,
+      	       class IV>
+      typename ChebyshevFP<T, ET, AC, AFFOP, IV>::aerror_t 
+      ChebyshevFP<T, ET, AC, AFFOP, IV>::asin(ac_t *ac, iv_t d) 
+      {
+	std::cout << "blub1" << std::endl;
+	if(iv_traits::my_sup(d) < -1.0 || iv_traits::my_inf(d) > 1.0)
+	  return aerror_t(0.0, aerror_t::C_D_VIOL);
+	unsigned flags = 0;
+	std::cout << "blub" << std::endl;
+	if(iv_traits::my_sup(d) > 1.0 || iv_traits::my_inf(d) < -1.0) {
+	  flags = aerror_t::P_D_VIOL;
+	  d = iv_t(std::min(iv_traits::my_sup(d),1.0), std::max(iv_traits::my_inf(d), -1.0));
+	}
+	yalaa::fp::RndControl rnd;
+	return chebyshev(ac, d, &iv_traits::my_asin, false, &dx_asin, rnd);
+      }
+
+      template<typename T, template<typename> class ET, 
+	       template<typename, template<typename> class> class AC,
+	       class AFFOP,
+      	       class IV>
+      typename ChebyshevFP<T, ET, AC, AFFOP, IV>::iv_t ChebyshevFP<T, ET, AC, AFFOP, IV>::dx_asin(const iv_t& iv)
+      {
+	return iv_traits::my_one()/iv_traits::my_sqrt(iv_traits::my_sub(iv_traits::my_one(),iv_traits::my_sqr(iv)));
+      }
+
+      template<typename T, template<typename> class ET, 
+      	       template<typename, template<typename> class> class AC,
+      	       class AFFOP,
+      	       class IV>
+      typename ChebyshevFP<T, ET, AC, AFFOP, IV>::iv_t ChebyshevFP<T, ET, AC, AFFOP, IV>::dx_acos(const iv_t& iv)
+      {
+	return iv_traits::my_neg(iv_traits::my_one())/iv_traits::my_sqrt(iv_traits::my_sub(iv_traits::my_one(),iv_traits::my_sqr(iv)));
+      }
+      
+
+      template<typename T, template<typename> class ET, 
+      	       template<typename, template<typename> class> class AC,
+      	       class AFFOP,
+      	       class IV>
       typename ChebyshevFP<T, ET, AC, AFFOP, IV>::iv_t ChebyshevFP<T, ET, AC, AFFOP, IV>::neg_sin(const iv_t& iv)
       {
 	return -iv_traits::my_sin(iv);
@@ -139,7 +197,7 @@ namespace yalaa
 	iv_t c1(fast_add_ii_up<iv_t>(fx0, iv_traits::my_mul(fx1,S_X[order][1])));
 	c0 *= S_HALF;
 	T w(iv_traits::my_w(d));
-	
+
 	T err = 0.0;
 	if(w <= 1.0)
 	  err = aff_op_t::scale_add(ac, 0.0, 0.0, 

@@ -41,8 +41,21 @@ namespace yalaa
       // ****************************************************************
       // ErrorPol Concept Impl
       // ****************************************************************
+
+      /// affine decorations
+      /**
+       * D5: certainly defined, continuous and bounded
+       * D4: defined and cont
+       * D3: defined
+       * D2: possibly defined
+       * D1: certainly undefined
+       * D0: empty set
+       * DE: error occurred
+       */
+      enum deco_t { D5 = 6, D4 = 5, D3 = 4, D2 = 3, D1 = 2, D0 = 1, DE = 0 };
+
       typedef T base_t;
-      typedef unsigned short special_t;
+      typedef deco_t special_t;
       typedef IV iv_t;
       typedef typename boost::mpl::if_<boost::is_fundamental<base_t>, base_t, typename boost::add_const<typename boost::add_reference<base_t>::type>::type>::type base_ref_t;
       typedef yalaa::details::ArithmeticError<T> aerror_t;
@@ -104,9 +117,9 @@ namespace yalaa
 
 
     private:
-      YALAA_SPEC_TEMPLATE_DEF
-      inline static special_t empty_undef(const YALAA_SPEC_TEMPLATE_T &af);
       inline static special_t to_deco(const aerror_t &err);
+      inline static special_t iv_deco(const iv_t &err);
+      inline static special_t scal_deco(const base_t &err);
     };
 
     #include "errorpoldec.inl"

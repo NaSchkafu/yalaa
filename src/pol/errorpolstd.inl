@@ -53,28 +53,28 @@ template<typename T, typename IV>
 YALAA_SPEC_TEMPLATE_DEF
 bool ErrorPolStd<T, IV>::pre_op(YALAA_SPEC_TEMPLATE_T *af1, const YALAA_SPEC_TEMPLATE_T &af2)
 {
-  return af1->m_special = std::max(af1->m_special, af2.m_special);
+  return !(af1->m_special = std::max(af1->m_special, af2.m_special));
 }
 
 template<typename T, typename IV>
 YALAA_SPEC_TEMPLATE_DEF
 bool ErrorPolStd<T, IV>::pre_op(YALAA_SPEC_TEMPLATE_T *af, const iv_t &iv)
 {
-  return af->m_special = std::max(af->m_special, iv_special<T, IV>(iv));
+  return !(af->m_special = std::max(af->m_special, iv_special<T, IV>(iv)));
 }
 
 template<typename T, typename IV>
 YALAA_SPEC_TEMPLATE_DEF
 bool ErrorPolStd<T, IV>::pre_op(YALAA_SPEC_TEMPLATE_T *af, base_ref_t s)
 {
-  return af->m_special = std::max(af->m_special, base_special<T, IV>(s));
+  return !(af->m_special = std::max(af->m_special, base_special<T, IV>(s)));
 }
 
 template<typename T, typename IV>
 YALAA_SPEC_TEMPLATE_DEF
 bool ErrorPolStd<T, IV>::pre_op(YALAA_SPEC_TEMPLATE_T *af)
 {
-  return af->m_special;
+  return !af->m_special;
 }
 
 template<typename T, typename IV>
@@ -122,13 +122,13 @@ template<typename T, typename IV>
 YALAA_SPEC_TEMPLATE_DEF
 bool ErrorPolStd<T, IV>::new_form(YALAA_SPEC_TEMPLATE_T *af, base_ref_t s)
 {
-  return af->m_special = base_special<T, IV>(s);
+  return !(af->m_special = base_special<T, IV>(s));
 }
 
 template<typename T, typename IV>
 YALAA_SPEC_TEMPLATE_DEF
 bool ErrorPolStd<T, IV>::new_form(YALAA_SPEC_TEMPLATE_T *af, const iv_t& iv)
 {
-  return af->m_special = iv_special<T, IV>(iv);
+  return !(af->m_special = iv_special<T, IV>(iv));
 }
 

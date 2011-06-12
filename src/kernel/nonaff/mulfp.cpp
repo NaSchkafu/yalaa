@@ -139,8 +139,7 @@ namespace yalaa
       template<typename T, template<typename> class ET,
              template<typename, template<typename> class> class AC,
              class AFFOP, class IV>
-    const typename MultiplicationFP<T, ET, AC, AFFOP, IV>::ac_t 
-    MultiplicationFP<T, ET, AC, AFFOP, IV>::S_DUMMY = MultiplicationFP<T, ET, AC, AFFOP, IV>::ac_t(0.0);
+    const typename MultiplicationFP<T, ET, AC, AFFOP, IV>::ac_t MultiplicationFP<T, ET, AC, AFFOP, IV>::S_DUMMY = typename MultiplicationFP<T, ET, AC, AFFOP, IV>::ac_t(0.0);
     }
   }
 }

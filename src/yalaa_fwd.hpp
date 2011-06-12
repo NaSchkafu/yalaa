@@ -29,6 +29,7 @@
 #include "config_sel.h"
 
 // iv selector
+#include "traits/base_traits.hpp"
 #include "yalaa_iv.hpp"
 
 // AffineForm
