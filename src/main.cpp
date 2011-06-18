@@ -10,7 +10,7 @@ int it = 0;
 typedef yalaa::aff_e_d aff;
 typedef yalaa::details::base_traits<yalaa::details::double_iv_t> iv_traits;
 
-yalaa::details::double_iv_t intersect(const yalaa::details::double_iv_t &iv1, const yalaa::details::double_iv_t &iv2) 
+yalaa::details::double_iv_t intersect(const yalaa::details::double_iv_t &iv1, const yalaa::details::double_iv_t &iv2)
 {
 #ifdef HAVE_CXSC
   return iv1 & iv2;
@@ -19,7 +19,7 @@ yalaa::details::double_iv_t intersect(const yalaa::details::double_iv_t &iv1, co
 #endif
 }
 
-void test2(const yalaa::details::double_iv_t &iv, const aff &af, const yalaa::details::double_iv_t &input) 
+void test2(const yalaa::details::double_iv_t &iv, const aff &af, const yalaa::details::double_iv_t &input)
 {
   using namespace yalaa::details;
   double_iv_t ieaff(to_iv(af));
@@ -31,13 +31,22 @@ void test2(const yalaa::details::double_iv_t &iv, const aff &af, const yalaa::de
     std::cout << "IV: " << iv << std::endl;
     exit(-1);
   }
-  if(base_traits<double_iv_t>::my_sup(ieaff) - base_traits<double_iv_t>::my_inf(ieaff) < base_traits<double_iv_t>::my_sup(iv) - base_traits<double_iv_t>::my_inf(iv))
+  if(iv_traits::my_w(ieaff) < iv_traits::my_w(iv)) {
     n++;
+    std::cout << "INP: " << input << std::endl;
+    // std::cout << af << std::endl;
+    // std::cout << "w: " << base_traits<double_iv_t>::my_sup(input) - base_traits<double_iv_t>::my_inf(input)  << " AFF: " << base_traits<double_iv_t>::my_sup(ieaff) - base_traits<double_iv_t>::my_inf(ieaff) << " IV: " <<
+    //   base_traits<double_iv_t>::my_sup(iv) - base_traits<double_iv_t>::my_inf(iv) << std::endl;
+    std::cout << "AFF: "<< to_iv(af) << std::endl;
+    std::cout << "IV:  "<<iv << std::endl;
+    std::cout << "AFF: " << af << std::endl;
+    exit(-1);
+  }
+
+  std::cout << iv_traits::my_w(input) - iv_traits::my_w(ieaff) << std::endl;
+
   it++;
-  std::cout << input << std::endl;
-  std::cout << af << std::endl;
-  std::cout << "w: " << base_traits<double_iv_t>::my_sup(input) - base_traits<double_iv_t>::my_inf(input)  << " AFF: " << base_traits<double_iv_t>::my_sup(ieaff) - base_traits<double_iv_t>::my_inf(ieaff) << " IV: " << 
-    base_traits<double_iv_t>::my_sup(iv) - base_traits<double_iv_t>::my_inf(iv) << std::endl;
+
 }
 
 void test_exp(const yalaa::details::double_iv_t &i)
@@ -48,7 +57,7 @@ void test_exp(const yalaa::details::double_iv_t &i)
   test2(eiv, eaff, i);
 }
 
-void test_sqrt(const yalaa::details::double_iv_t &i) 
+void test_sqrt(const yalaa::details::double_iv_t &i)
 {
   using namespace yalaa::details;
   double_iv_t eiv(sqrt(i));
@@ -56,7 +65,7 @@ void test_sqrt(const yalaa::details::double_iv_t &i)
   test2(eiv, eaff, i);
 }
 
-void test_sqr(const yalaa::details::double_iv_t &i) 
+void test_sqr(const yalaa::details::double_iv_t &i)
 {
   using namespace yalaa::details;
   double_iv_t eiv(sqr(i));
@@ -64,7 +73,7 @@ void test_sqr(const yalaa::details::double_iv_t &i)
   test2(eiv, eaff, i);
 }
 
-void test_pow(const yalaa::details::double_iv_t &i) 
+void test_pow(const yalaa::details::double_iv_t &i)
 {
   using namespace yalaa::details;
   int n = rand() % 10;
@@ -73,7 +82,7 @@ void test_pow(const yalaa::details::double_iv_t &i)
   test2(eiv, eaff, i);
 }
 
-void test_ln(const yalaa::details::double_iv_t &i) 
+void test_ln(const yalaa::details::double_iv_t &i)
 {
   using namespace yalaa::details;
   double_iv_t eiv(iv_traits::my_ln(i));
@@ -81,7 +90,7 @@ void test_ln(const yalaa::details::double_iv_t &i)
   test2(eiv, eaff, i);
 }
 
-void test_sin(const yalaa::details::double_iv_t &i) 
+void test_sin(const yalaa::details::double_iv_t &i)
 {
   using namespace yalaa::details;
   double_iv_t eiv(sin(i));
@@ -89,7 +98,7 @@ void test_sin(const yalaa::details::double_iv_t &i)
   test2(eiv, eaff, i);
 }
 
-void test_cos(const yalaa::details::double_iv_t &i) 
+void test_cos(const yalaa::details::double_iv_t &i)
 {
   using namespace yalaa::details;
   double_iv_t eiv(cos(i));
@@ -148,6 +157,72 @@ void rec_split(const yalaa::details::double_iv_t &i, double eps, void (*f)(const
 // #define MULTIPLIER 0.5
 // #endif
 
+#include "helper/fastia.hpp"
+
+void test(const yalaa::details::double_iv_t &d)
+{
+  using namespace yalaa::details;
+  typedef double_iv_t iv_t;
+  typedef base_traits<double_iv_t> iv_traits;
+  typedef double T;
+  
+  // TODO: thread safe
+  static const iv_t S_X[2][2] = {
+    { iv_traits::my_div(iv_t(1.0),iv_traits::my_sqrt(iv_t(2.0))), iv_traits::my_div(iv_t(-1.0),iv_traits::my_sqrt(iv_t(2.0)))},
+    { iv_traits::my_div(iv_traits::my_sqrt(iv_t(3)),iv_t(2.0)), iv_t(0.0) }
+  };
+  static const T S_HALF(0.5);
+  static const T S_RMND1(192);
+  static const T S_RMND2(16);
+
+  using namespace yalaa::fp;
+
+  unsigned short order = 0;
+  
+  // TODO: cleanup, nur eine Modi Änderung
+  T a = iv_traits::my_inf(d);
+  T b = iv_traits::my_sup(d);
+
+  // 1 Wechsel + 3 IV Mult + 2 IV Auswertungen von f
+  //rnd.upward();
+  iv_t ibsia(fast_sub_dd_up<T, iv_t>(b,a));
+  iv_t iapib(fast_add_dd_up<T, iv_t>(a,b));
+  iv_t x0(S_HALF*fast_add_ii_up(iv_traits::my_mul(ibsia,S_X[order][0]), iapib));
+  iv_t x1(S_HALF*fast_add_ii_up(iv_traits::my_mul(ibsia,S_X[order][1]), iapib));
+  iv_t fx0(iv_traits::my_sin(x0));
+  iv_t fx1(iv_traits::my_sin(x1));
+  iv_t c0(fast_add_ii_up<iv_t>(fx0, fx1));
+  iv_t c1(fast_add_ii_up<iv_t>(iv_traits::my_mul(fx0,S_X[order][0]), iv_traits::my_mul(fx1,S_X[order][1])));
+  c0 *= S_HALF;
+  T w(iv_traits::my_w(d));
+
+  T err = 0.0;
+  std::cout << "w: " << w << " c1: " << c1 << std::endl;
+  iv_t remainder((order ? w*w : w)*(-iv_traits::my_cos(d))/(order ? S_RMND1 : S_RMND2));
+  iv_t bound(c0 + c1*double_iv_t(-1,1));
+  std::cout << "Bounding P(x): " << bound + remainder << " w: " << iv_traits::my_w(bound+remainder) << std::endl;
+  std::cout << "sin(d): " << iv_traits::my_sin(d) << " w: " << iv_traits::my_w(iv_traits::my_sin(d)) << std::endl;
+  
+
+  // if(w <= 1.0)
+  //   err = aff_op_t::scale_add(ac, 0.0, 0.0,
+  //                             iv_traits::my_inf(c1), iv_traits::my_sup(c1),
+  //                             iv_traits::my_inf(c0), iv_traits::my_sup(c0), rnd);
+  // else {
+  //   iv_t c12(iv_traits::my_inf(c1)*2, iv_traits::my_sup(c1)*2);
+  //   c12 = fast_div_id_up(fast_sub_ii_up(c12, iapib), w);
+  //   err = aff_op_t::scale_add(ac, 0.0, 0.0, iv_traits::my_inf(c12), iv_traits::my_sup(c12),
+  //                             iv_traits::my_inf(c0), iv_traits::my_sup(c0), rnd);
+  // }
+
+  // w *= w;
+  // iv_t remainder((order ? w*w : w)*(*ddf)(d)/(order ? S_RMND1 : S_RMND2));
+  // err += iv_traits::my_w(remainder);
+  // err *= 0.5;
+  // return aerror_t(err, yalaa::fp::get_flags(err));
+}
+
+
 int main(int argc, char *argv[])
 {
 #ifdef HAVE_FILIB
@@ -157,7 +232,7 @@ int main(int argc, char *argv[])
   // std::cout << sin(-97.412110) << std::endl;
   // std::cout << sin(-3.16433) << std::endl;
   // return 0;
-  
+
 
   // yalaa::fp::RndControl rnd;
   // rnd.upward();
@@ -173,7 +248,7 @@ int main(int argc, char *argv[])
 
 
 
-  
+
   // aff x(double_iv_t(1,3));
   // aff y(double_iv_t(-1,-3));
 
@@ -197,8 +272,17 @@ int main(int argc, char *argv[])
   // std::cout << "sin sx " << sin(sx) << std::endl;
   // std::cout << "sin asx " << sin(asx) << std::endl;
   // std::cout << base_traits<double_iv_t>::my_w(sin(sx)) <<"   " << base_traits<double_iv_t>::my_w(to_iv(sin(asx))) << std::endl;
-  yalaa::details::double_iv_t ssx(-1.0,1.0);
-  rec_split(ssx, 0.0001, &test_asin);
+  using namespace yalaa::details;
+  test(double_iv_t(0.4, 0.5));
+  test(double_iv_t(0.49, 0.5));
+  test(double_iv_t(0.499, 0.5));
+  test(double_iv_t(0.4999, 0.5));
+  test(double_iv_t(0.49999, 0.5));
+
+
+
+  yalaa::details::double_iv_t ssx(-1.0, 1.0);
+  rec_split(ssx, 0.000001, &test_sin);
 
 
   // aff x(double_iv_t(1.9,2));
@@ -226,7 +310,7 @@ int main(int argc, char *argv[])
   // cout << y << endl;
   // cout << x << endl;
   // x += y;
-  
+
   // aff x(double_iv_t(1,3));
   // std::cout << x << std::endl;
   // x = sqrt(x);
@@ -250,7 +334,7 @@ int main(int argc, char *argv[])
   // std::cout << "y: " << y << std::endl;
   // x -= y;
   // std::cout << x << std::endl;
-  // std::cout << "it: " << it << " n: " << n << std::endl;
-  // return 0;
+  std::cout << "it: " << it << " n: " << n << std::endl;
+  return 0;
 }
 

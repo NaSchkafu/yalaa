@@ -142,9 +142,20 @@ namespace yalaa
 	  return sqrt(i);
 	}
 
+      static base_t my_asin(const base_t& i)
+	{
+	  return asin(i);
+	}
+
+      static base_t my_acos(const base_t& i)
+	{
+	  return acos(i);
+	}
+
+
       static bool is_empty(const base_t& i)
 	{
-	  return is_empty(i);
+	  return cxsc::IsEmpty(i);
 	}
 
       static bool is_special(const base_t &i)
