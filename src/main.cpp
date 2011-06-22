@@ -273,16 +273,16 @@ int main(int argc, char *argv[])
   // std::cout << "sin asx " << sin(asx) << std::endl;
   // std::cout << base_traits<double_iv_t>::my_w(sin(sx)) <<"   " << base_traits<double_iv_t>::my_w(to_iv(sin(asx))) << std::endl;
   using namespace yalaa::details;
-  test(double_iv_t(0.4, 0.5));
-  test(double_iv_t(0.49, 0.5));
-  test(double_iv_t(0.499, 0.5));
-  test(double_iv_t(0.4999, 0.5));
-  test(double_iv_t(0.49999, 0.5));
+  // test(double_iv_t(0.4, 0.5));
+  // test(double_iv_t(0.49, 0.5));
+  // test(double_iv_t(0.499, 0.5));
+  // test(double_iv_t(0.4999, 0.5));
+  // test(double_iv_t(0.49999, 0.5));
 
 
 
   yalaa::details::double_iv_t ssx(-1.0, 1.0);
-  rec_split(ssx, 0.000001, &test_sin);
+  rec_split(ssx, 0.000001, &test_asin);
 
 
   // aff x(double_iv_t(1.9,2));
