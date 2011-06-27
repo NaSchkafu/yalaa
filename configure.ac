@@ -52,12 +52,12 @@ dnl Compiler specific settings
 AS_CASE([$CXX],[clang++],[
 CXXFLAGS+=" -msse2 -Wno-logical-op-parentheses"
 ],[g++],[
-CXXFLAGS+=" -frounding-math -mfpmath=sse -msse2"],[
+CXXFLAGS+=" -frounding-math -mfpmath=sse -msse2 -std=c++0x"],[
 AC_MSG_NOTICE([Unknown compiler. Please set flags for rounding math if necessary!])])
 
 dnl Libtool
 LT_INIT
-
+ 
 
 dnl Ausgeben
 AC_OUTPUT

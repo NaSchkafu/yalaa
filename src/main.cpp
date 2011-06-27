@@ -222,9 +222,16 @@ void test(const yalaa::details::double_iv_t &d)
   // return aerror_t(err, yalaa::fp::get_flags(err));
 }
 
+void ltest(int (*f)(int, int))
+{
+  
+}
 
 int main(int argc, char *argv[])
 {
+  ltest([](int x, int y)->int{ return x + y; });
+  
+
 #ifdef HAVE_FILIB
   filib::fp_traits<double>::setup();
 #endif

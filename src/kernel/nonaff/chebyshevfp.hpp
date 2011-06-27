@@ -72,10 +72,21 @@ namespace yalaa
 	 */
 	static aerror_t chebyshev(ac_t *ac, const iv_t &d, iv_t (*f)(const iv_t&), bool odd, iv_t (*ddf)(const iv_t&), yalaa::fp::RndControl &rnd);
 
+	/** 
+	 * Lagrange Remainder
+	 * 
+	 * @param d domain
+	 * @param bdf bound on derivative on d
+	 * 
+	 * @return upper bound on approximation error
+	 */
+	static T lag_rem(const iv_t &d, const iv_t& bdf );
+
+
 	static short sgn(T s);
-	static iv_t neg_sin(const iv_t&);
-	static iv_t dx_asin(const iv_t&i);
-	static iv_t dx_acos(const iv_t&i);
+	// static iv_t sin(const iv_t&);
+	// static iv_t dx_asin(const iv_t&i);
+	// static iv_t dx_acos(const iv_t&i);
 
 	// static const iv_t S_X[][2];
 	// static const T S_PINF;
