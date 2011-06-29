@@ -24,35 +24,8 @@ namespace yalaa
   {
     namespace details
     {
-      template<typename T, template<typename> class ET,
-               template<typename, template<typename> class> class AC,
-               class AFFOP,
-               class IV>
-      short ChebyshevFP<T, ET, AC, AFFOP, IV>::sgn(T s)
-      {
-	if(s < 0)
-	  return -1.0;
-	return 1.0;
-      }
 
-    // template<template<typename> class ET,
-    //         template<typename, template<typename> class> class AC,
-    //         class AFFOP,
-    //         class IV>
-
-
-    // template<template<typename> class ET,
-    //         template<typename, template<typename> class> class AC,
-    //         class AFFOP,
-    //         class IV>
-    // const T ChebyshevD<ET, AC, AFFOP, IV>::S_PINF = iv_traits::my_inf(iv_traits::my_pi());
-
-    // template<template<typename> class ET,
-    //         template<typename, template<typename> class> class AC,
-    //         class AFFOP,
-    //         class IV>
-    // const T ChebyshevD<ET, AC, AFFOP, IV>::S_PSUP = iv_traits::my_sup(iv_traits::my_pi());
-
+    // Trig. Funktionen
     template<typename T, template<typename> class ET,
              template<typename, template<typename> class> class AC,
              class AFFOP,
@@ -70,7 +43,8 @@ namespace yalaa
 	ac->set_central(0.0);
 	return aerror_t(1.0, false);
       }
-      return chebyshev(ac, d, &iv_traits::my_sin, false, [&d](const iv_t&, const iv_t&)->T { return lag_rem(d, iv_traits::my_cos(d)); }, rnd);
+      return chebyshev(ac, d, &iv_traits::my_sin, false, [&d](const iv_t&, const iv_t&)->T { 
+	  return ChebyshevFP<T, ET, AC, AFFOP, IV>::lag_rem(d, iv_traits::my_cos(d)); }, rnd);
     }
 
 
@@ -90,26 +64,40 @@ namespace yalaa
 	return aerror_t(1.0, false);
       }
       return chebyshev(ac, d, &iv_traits::my_cos, false, 
-		       [&d](const iv_t&, const iv_t&)->T { return lag_rem(d, iv_traits::my_neg(iv_traits::my_sin(d))); } , rnd);
+		       [&d](const iv_t&, const iv_t&)->T { return self_t::lag_rem(d, iv_traits::my_neg(iv_traits::my_sin(d))); } , rnd);
     }
 
     template<typename T, template<typename> class ET,
 	     template<typename, template<typename> class> class AC,
 	     class AFFOP,
 	     class IV>
-    T ChebyshevFP<T, EC, AC, AFFOP, IV>::eval_poly_lb(T lbc0, T lbc1, T lbx)
+    typename ChebyshevFP<T, ET, AC, AFFOP, IV>::aerror_t ChebyshevFP<T, ET, AC, AFFOP, IV>::tan(ac_t *ac, const iv_t &d)
     {
-      // Gesucht wird der LB der Polyauswertung
-      // Annahme: rnd.upward()
-      return -(lbc0 - (-iv_traits::my_inf(lbc1))*iv_traits::my_inf(lbx));
-    }
-      
+      // TODO: Thread safe
+      static const T S_PINF = iv_traits::my_inf(iv_traits::my_pi());
+      yalaa::fp::RndControl rnd;
 
+      T p(((unsigned)iv_traits::my_inf(d)/S_PINF)*S_PINF + S_PINF*0.5);
+      rnd.upward();
+      if(iv_traits::my_sup(d) - iv_traits::my_inf(d) >= S_PINF || (p >= iv_traits::my_inf(d) && p <= iv_traits::my_sup(d))) {
+	ac->clear();
+	ac->set_central(0.0);
+	return aerror_t(0.0, aerror_t::P_D_VIOL | aerror_t::UNBOUND);
+      }
+      return chebyshev(ac, d, &iv_traits::my_tan, false, 
+		       [&d](const iv_t&, const iv_t&)->T  { return self_t::lag_rem(d, iv_traits::my_add(iv_traits::my_one(),iv_traits::my_sqr(iv_traits::my_tan(d)))); }
+		       ,rnd);
+    }
+
+
+
+
+      // Arkusfunktionen    
     template<typename T, template<typename> class ET,
 	     template<typename, template<typename> class> class AC,
 	     class AFFOP,
 	     class IV>
-    typename ChebyshevFP<T, ET, AC, AFFOP, IV>::aerror_t ChebyshevFP<T, ET, AC, AFFOP, IV>::asin(ac_t *ac, iv_t d)
+    typename ChebyshevFP<T, ET, AC, AFFOP, IV>::aerror_t ChebyshevFP<T, ET, AC, AFFOP, IV>::acos_asin(ac_t *ac, iv_t d, bool is_acos)
     {
       if(iv_traits::my_sup(d) < -1.0 || iv_traits::my_inf(d) > 1.0)
 	return aerror_t(0.0, aerror_t::C_D_VIOL);
@@ -119,83 +107,129 @@ namespace yalaa
 	d = iv_t(std::min(iv_traits::my_sup(d),1.0), std::max(iv_traits::my_inf(d), -1.0));
       }
       yalaa::fp::RndControl rnd;
-      return chebyshev(ac, d, &iv_traits::my_asin, false, [&d](const iv_t &c0, const iv_t &c1)->T {
-	  auto dasin = [](const iv_t &a) { return iv_traits::my_one()/iv_traits::my_sqrt(iv_traits::my_sub(iv_traits::my_one(),iv_traits::my_sqr(a))); };
+      iv_t (*f)(const iv_t&) = is_acos ? &iv_traits::my_acos : &iv_traits::my_asin;
+      return chebyshev(ac, d, f, false, [&d, is_acos, f](const iv_t &c0, const iv_t &c1)->T {
 
+	  // In der Mitte Lag. - Rem.
 	  if(iv_traits::my_inf(d) > -0.7 && iv_traits::my_sup(d) < 0.7)
-	    return lag_rem(d, dasin(d));
+	    return self_t::lag_rem(d, (is_acos ? iv_traits::my_neg(iv_traits::my_one()) : iv_traits::my_one())
+		  /iv_traits::my_sqrt(iv_traits::my_sub(iv_traits::my_one(),iv_traits::my_sqr(d))));
+	  
+	  // Sonst exakten Fehler bestimmen
+	  // Maximaler Fehler liegt bei +/- e
 	  iv_t e(iv_traits::my_sqrt(iv_traits::my_sub(iv_traits::my_one(),iv_traits::my_div(iv_traits::my_one(),iv_traits::my_sqr(c1)))));
 	  
-	  iv_traits x1(iv_traits::my_asin(e));
-	  
-	  eval_poly(
+	  // rnd.upward()
+	  iv_t fe((*f)(e));
+	  iv_t fd((*f)(d));
+	  T lbc0(iv_traits::my_inf(c0));
+	  T lbc1(iv_traits::my_inf(c1));
+	  T ae1(fabs(iv_traits::my_sup(fe) - self_t::eval_poly_lb(lbc0, lbc1, iv_traits::my_inf(e))));
+	  T ae2(fabs(iv_traits::my_sup(iv_traits::my_neg(fe)) - self_t::eval_poly_lb(lbc0, lbc1, -iv_traits::my_sup(e))));
+	  T ae3(fabs((is_acos ? iv_traits::my_sup(fd) : iv_traits::my_inf(fd)) - self_t::eval_poly_lb(lbc0, lbc1, iv_traits::my_inf(d))));
+	  T ae4(fabs((is_acos ? iv_traits::my_inf(fd) : iv_traits::my_sup(fd)) - self_t::eval_poly_lb(lbc0, lbc1, iv_traits::my_sup(d))));
+
+	  return std::max(std::max(std::max(ae1, ae2), ae3), ae4);
 
 	}, rnd);
     }
 
+    template<typename T, template<typename> class ET,
+	     template<typename, template<typename> class> class AC,
+	     class AFFOP,
+	     class IV>
+    typename ChebyshevFP<T, ET, AC, AFFOP, IV>::aerror_t ChebyshevFP<T, ET, AC, AFFOP, IV>::asin(ac_t *ac, const iv_t &d)
+    {
+      return acos_asin(ac, d, false);
+    }
 
-      template<typename T, template<typename> class ET,
-               template<typename, template<typename> class> class AC,
-               class AFFOP,
-               class IV>
-      typename ChebyshevFP<T, ET, AC, AFFOP, IV>::aerror_t
-      ChebyshevFP<T, ET, AC, AFFOP, IV>::acos(ac_t *ac, iv_t d)
-               {
-                 if(iv_traits::my_sup(d) < -1.0 || iv_traits::my_inf(d) > 1.0)
-                   return aerror_t(0.0, aerror_t::C_D_VIOL);
-                 unsigned flags = 0;
-                 if(iv_traits::my_sup(d) > 1.0 || iv_traits::my_inf(d) < -1.0) {
-                   flags = aerror_t::P_D_VIOL;
-                   d = iv_t(std::min(iv_traits::my_sup(d),1.0), std::max(iv_traits::my_inf(d), -1.0));
-                 }
-                 yalaa::fp::RndControl rnd;
-                 return chebyshev(ac, d, &iv_traits::my_asin, false, &dx_asin, rnd);
-               }
+    template<typename T, template<typename> class ET,
+	     template<typename, template<typename> class> class AC,
+	     class AFFOP,
+	     class IV>
+    typename ChebyshevFP<T, ET, AC, AFFOP, IV>::aerror_t ChebyshevFP<T, ET, AC, AFFOP, IV>::acos(ac_t *ac, const iv_t &d)
+    {
+      return acos_asin(ac, d, true);
+    }
 
-      // template<typename T, template<typename> class ET,
-      // 	       template<typename, template<typename> class> class AC,
-      // 	       class AFFOP,
-      // 	       class IV>
-      // // typename ChebyshevFP<T, ET, AC, AFFOP, IV>::iv_t ChebyshevFP<T, ET, AC, AFFOP, IV>::dx_asin(const iv_t& iv)
-      // {
-      // 	return iv_traits::my_one()/iv_traits::my_sqrt(iv_traits::my_sub(iv_traits::my_one(),iv_traits::my_sqr(iv)));
-      // }
-
-      // template<typename T, template<typename> class ET,
-      // 	       template<typename, template<typename> class> class AC,
-      // 	       class AFFOP,
-      // 	       class IV>
-      // typename ChebyshevFP<T, ET, AC, AFFOP, IV>::iv_t ChebyshevFP<T, ET, AC, AFFOP, IV>::dx_acos(const iv_t& iv)
-      // {
-      // 	return iv_traits::my_neg(iv_traits::my_one())/iv_traits::my_sqrt(iv_traits::my_sub(iv_traits::my_one(),iv_traits::my_sqr(iv)));
-      // }
-    
-      
-      // template<typename T, template<typename> class ET,
-      // 	       template<typename, template<typename> class> class AC,
-      // 	       class AFFOP,
-      // 	       class IV>
-      // typename ChebyshevFP<T, ET, AC, AFFOP, IV>::iv_t ChebyshevFP<T, ET, AC, AFFOP, IV>::neg_sin(const iv_t& iv)
-      // {
-      // 	return -iv_traits::my_sin(iv);
-      // }
-      
-      // Lagrange Remainder
-      template<typename T, template<typename> class ET,
-	       template<typename, template<typename> class> class AC,
-	       class AFFOP,
-	       class IV>
-      T ChebyshevFP<T, ET, AC, AFFOP, IV>::lag_rem(const iv_t &d, const iv_t &bdf)
-      {
-	//static const T S_RMND1(192);
-	static const iv_t S_RMND2(16, 16);
-	T wd(iv_traits::my_w(d));
-	// rnd.upward();
-	wd *= wd;
-	iv_t w(wd, wd);
-	return iv_traits::my_sup(iv_traits::my_div(iv_traits::my_mul(w,bdf),S_RMND2));
+    template<typename T, template<typename> class ET,
+	     template<typename, template<typename> class> class AC,
+	     class AFFOP,
+	     class IV>
+    typename ChebyshevFP<T, ET, AC, AFFOP, IV>::aerror_t ChebyshevFP<T, ET, AC, AFFOP, IV>::atan(ac_t *ac, const iv_t &d)
+    {
+      yalaa::fp::RndControl rnd;
+      static const T S_PINF_H = 0.5*iv_traits::my_inf(iv_traits::my_pi());
+      unsigned flags = 0;
+      if(iv_traits::my_sup(d) < -S_PINF_H || iv_traits::my_inf(d) > S_PINF_H)
+	flags = aerror_t::C_D_VIOL;
+      else if((iv_traits::my_inf(d) < -S_PINF_H && iv_traits::my_sup(d) > -S_PINF_H) ||
+	      (iv_traits::my_inf(d) < S_PINF_H && iv_traits::my_sup(d) > S_PINF_H)) {
+	flags = aerror_t::P_D_VIOL | aerror_t::UNBOUND;
       }
- 
+      if(flags) {
+	ac->clear();
+	ac->set_central(0.0);
+	return aerror_t(0.0, flags);
+      }
+      return chebyshev(ac, d, &iv_traits::my_tanh, false, [&d](const iv_t&, const iv_t&)->T  
+		       { return self_t::lag_rem(d, iv_traits::my_div(iv_traits::my_one(), 
+								     iv_traits::my_add(iv_traits::my_one(), iv_traits::my_sqr(d)))); }, rnd);
+    }
+
+
+    // Hyperbelfunktionen
+    template<typename T, template<typename> class ET,
+	     template<typename, template<typename> class> class AC,
+	     class AFFOP,
+	     class IV>
+    typename ChebyshevFP<T, ET, AC, AFFOP, IV>::aerror_t ChebyshevFP<T, ET, AC, AFFOP, IV>::sinh(ac_t *ac, const iv_t &d)
+    {
+      yalaa::fp::RndControl rnd;
+      return chebyshev(ac, d, &iv_traits::my_sinh, false, [&d](const iv_t&, const iv_t&)->T  { return self_t::lag_rem(d, iv_traits::my_sinh(d)); }, rnd);
+    }
+
+    template<typename T, template<typename> class ET,
+	     template<typename, template<typename> class> class AC,
+	     class AFFOP,
+	     class IV>
+    typename ChebyshevFP<T, ET, AC, AFFOP, IV>::aerror_t ChebyshevFP<T, ET, AC, AFFOP, IV>::tanh(ac_t *ac, const iv_t &d)
+    {
+      yalaa::fp::RndControl rnd;
+      return chebyshev(ac, d, &iv_traits::my_tanh, false, [&d](const iv_t&, const iv_t&)->T  
+		       { return self_t::lag_rem(d, iv_traits::my_div(iv_traits::my_one(), iv_traits::my_sqr(iv_traits::my_cosh(d)))); }, rnd);
+    }
+
+
+    // Area Funktionen
+    template<typename T, template<typename> class ET,
+	     template<typename, template<typename> class> class AC,
+	     class AFFOP,
+	     class IV>
+    typename ChebyshevFP<T, ET, AC, AFFOP, IV>::aerror_t ChebyshevFP<T, ET, AC, AFFOP, IV>::asinh(ac_t *ac, const iv_t &d)
+    {
+      yalaa::fp::RndControl rnd;
+      return chebyshev(ac, d, &iv_traits::my_asinh, false, [&d](const iv_t&, const iv_t&)->T  
+		       { return self_t::lag_rem(d, iv_traits::my_div(iv_traits::my_one(), iv_traits::my_add(iv_traits::my_one(),iv_traits::my_sqr(d)))); }, rnd);
+    }  
+      
+
+    // Lagrange Remainder
+    template<typename T, template<typename> class ET,
+	     template<typename, template<typename> class> class AC,
+	     class AFFOP,
+	     class IV>
+    T ChebyshevFP<T, ET, AC, AFFOP, IV>::lag_rem(const iv_t &d, const iv_t &bdf)
+    {
+      //static const T S_RMND1(192);
+      static const iv_t S_RMND2(16.0, 16.0);
+      T wd(iv_traits::my_w(d));
+      // rnd.upward();
+      wd *= wd;
+      iv_t w(wd, wd);
+      return iv_traits::my_sup(iv_traits::my_div(iv_traits::my_mul(w,bdf),S_RMND2));
+    }
+      
       template<typename T, template<typename> class ET,
                template<typename, template<typename> class> class AC,
                class AFFOP,
@@ -203,7 +237,7 @@ namespace yalaa
       typename ChebyshevFP<T, ET, AC, AFFOP, IV>::aerror_t
       ChebyshevFP<T, ET, AC, AFFOP, IV>::chebyshev(ac_t *ac, const iv_t &d,
                                                    iv_t (*f)(const iv_t&), bool odd,
-                                                   T (*apprerr)(const iv_t&, const iv_t&),
+                                                   std::function<T (const iv_t&, const iv_t&)> apprerr,
                                                    yalaa::fp::RndControl &rnd)
       {
 	// TODO: thread safe
@@ -238,11 +272,33 @@ namespace yalaa
 	c12 = iv_traits::my_div(c12, ibsia);
 	err = aff_op_t::scale_add(ac, 0.0, 0.0, iv_traits::my_inf(c12), iv_traits::my_sup(c12),
 				  iv_traits::my_inf(c0), iv_traits::my_sup(c0), rnd);
-	
+	err += apprerr(c0, c12);
 	
 	err *= 0.5;
 	return aerror_t(err, yalaa::fp::get_flags(err));
       }
+
+    template<typename T, template<typename> class ET,
+	     template<typename, template<typename> class> class AC,
+	     class AFFOP,
+	     class IV>
+    T ChebyshevFP<T, ET, AC, AFFOP, IV>::eval_poly_lb(T lbc0, T lbc1, T lbx)
+    {
+      // Gesucht wird der LB der Polyauswertung
+      // Annahme: rnd.upward()
+      return -(lbc0 - (-lbc1)*lbx);
+    }
+      template<typename T, template<typename> class ET,
+               template<typename, template<typename> class> class AC,
+               class AFFOP,
+               class IV>
+      short ChebyshevFP<T, ET, AC, AFFOP, IV>::sgn(T s)
+      {
+	if(s < 0)
+	  return -1.0;
+	return 1.0;
+      }
+
     }
   }
 }

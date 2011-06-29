@@ -84,10 +84,10 @@ namespace yalaa
 	       class AFFOP,
 	       class IV>
       typename MinRangeFP<T, ET, AC, AFFOP, IV>::aerror_t
-      MinRangeFP<T, ET, AC, AFFOP, IV>::exp(ac_t *ac, const IV &d)
+      MinRangeFP<T, ET, AC, AFFOP, IV>::expx(ac_t *ac, const IV &d, iv_t (*f)(const iv_t&))
       {
 	yalaa::fp::RndControl rnd;
-	const iv_t &e = iv_traits::my_exp(d);
+	const iv_t &e = (*f)(d);
 	T c;
 	rnd.upward();
 	T err = min_range(iv_traits::my_inf(d), iv_traits::my_sup(d), iv_traits::my_inf(e),
@@ -103,14 +103,75 @@ namespace yalaa
 	       class AFFOP,
 	       class IV>
       typename MinRangeFP<T, ET, AC, AFFOP, IV>::aerror_t
-      MinRangeFP<T, ET, AC, AFFOP, IV>::ln(ac_t *ac, const IV &d)
+      MinRangeFP<T, ET, AC, AFFOP, IV>::exp(ac_t *ac, const IV &d)
+      {
+	return expx(ac, d, &iv_traits::my_exp);
+      }
+
+      template<typename T, template<typename> class ET,
+	       template<typename, template<typename> class> class AC,
+	       class AFFOP,
+	       class IV>
+      typename MinRangeFP<T, ET, AC, AFFOP, IV>::aerror_t
+      MinRangeFP<T, ET, AC, AFFOP, IV>::exp2(ac_t *ac, const IV &d)
+      {
+	return expx(ac, d, &iv_traits::my_exp2);
+      }
+
+      template<typename T, template<typename> class ET,
+	       template<typename, template<typename> class> class AC,
+	       class AFFOP,
+	       class IV>
+      typename MinRangeFP<T, ET, AC, AFFOP, IV>::aerror_t
+      MinRangeFP<T, ET, AC, AFFOP, IV>::exp10(ac_t *ac, const IV &d)
+      {
+	return expx(ac, d, &iv_traits::my_exp10);
+      }
+
+      template<typename T, template<typename> class ET,
+	       template<typename, template<typename> class> class AC,
+	       class AFFOP,
+	       class IV>
+      typename MinRangeFP<T, ET, AC, AFFOP, IV>::aerror_t
+      MinRangeFP<T, ET, AC, AFFOP, IV>::expm1(ac_t *ac, const IV &d)
+      {
+	return expx(ac, d, &iv_traits::my_expm1);
+      }
+
+      template<typename T, template<typename> class ET,
+	       template<typename, template<typename> class> class AC,
+	       class AFFOP,
+	       class IV>
+      typename MinRangeFP<T, ET, AC, AFFOP, IV>::aerror_t
+      MinRangeFP<T, ET, AC, AFFOP, IV>::exp2m1(ac_t *ac, const IV &d)
+      {
+	return expx(ac, d, &iv_traits::my_exp2m1);
+      }
+
+      template<typename T, template<typename> class ET,
+	       template<typename, template<typename> class> class AC,
+	       class AFFOP,
+	       class IV>
+      typename MinRangeFP<T, ET, AC, AFFOP, IV>::aerror_t
+      MinRangeFP<T, ET, AC, AFFOP, IV>::exp10m1(ac_t *ac, const IV &d)
+      {
+	return expx(ac, d, &iv_traits::my_exp10m1);
+      }
+
+
+      template<typename T, template<typename> class ET,
+	       template<typename, template<typename> class> class AC,
+	       class AFFOP,
+	       class IV>
+      typename MinRangeFP<T, ET, AC, AFFOP, IV>::aerror_t
+      MinRangeFP<T, ET, AC, AFFOP, IV>::logx(ac_t *ac, const iv_t &d, iv_t (*f)(const iv_t&))
       {
 	if(iv_traits::my_sup(d) <= 0)
 	  return aerror_t(0.0, aerror_t::C_D_VIOL);
 	else if(iv_traits::my_inf(d) <= 0)
 	  return aerror_t(0.0, aerror_t::UNBOUND | aerror_t::P_D_VIOL);
 	yalaa::fp::RndControl rnd;
-	const iv_t &l = iv_traits::my_ln(d);
+	const iv_t &l = (*f)(d);
 	rnd.upward();
 	T dx = 1/iv_traits::my_sup(d);
 	T c;
@@ -121,6 +182,124 @@ namespace yalaa
 	err += err2;
 	return aerror_t(err, yalaa::fp::get_flags(err));	
       }
+
+      template<typename T, template<typename> class ET,
+	       template<typename, template<typename> class> class AC,
+	       class AFFOP,
+	       class IV>
+      typename MinRangeFP<T, ET, AC, AFFOP, IV>::aerror_t
+      MinRangeFP<T, ET, AC, AFFOP, IV>::log(ac_t *ac, const IV &d)
+      {
+	return logx(ac, d, &iv_traits::my_log);
+      }
+
+      template<typename T, template<typename> class ET,
+	       template<typename, template<typename> class> class AC,
+	       class AFFOP,
+	       class IV>
+      typename MinRangeFP<T, ET, AC, AFFOP, IV>::aerror_t
+      MinRangeFP<T, ET, AC, AFFOP, IV>::log2(ac_t *ac, const IV &d)
+      {
+	return logx(ac, d, &iv_traits::my_log2);
+      }
+
+      template<typename T, template<typename> class ET,
+	       template<typename, template<typename> class> class AC,
+	       class AFFOP,
+	       class IV>
+      typename MinRangeFP<T, ET, AC, AFFOP, IV>::aerror_t
+      MinRangeFP<T, ET, AC, AFFOP, IV>::log10(ac_t *ac, const IV &d)
+      {
+	return logx(ac, d, &iv_traits::my_log10);
+      }
+
+      template<typename T, template<typename> class ET,
+	       template<typename, template<typename> class> class AC,
+	       class AFFOP,
+	       class IV>
+      typename MinRangeFP<T, ET, AC, AFFOP, IV>::aerror_t
+      MinRangeFP<T, ET, AC, AFFOP, IV>::logxp1(ac_t *ac, const iv_t &d, iv_t (*f)(const iv_t&))
+      {
+	if(iv_traits::my_sup(d) <= 1.0)
+	  return aerror_t(0.0, aerror_t::C_D_VIOL);
+	else if(iv_traits::my_inf(d) <= 1.0)
+	  return aerror_t(0.0, aerror_t::UNBOUND | aerror_t::P_D_VIOL);
+	yalaa::fp::RndControl rnd;
+	const iv_t &l = (*f)(d);
+	rnd.upward();
+	T dx = 1/(1.0 + iv_traits::my_sup(d));
+	T c;
+	T err = min_range(iv_traits::my_inf(d), iv_traits::my_sup(d), 
+			  iv_traits::my_inf(l), iv_traits::my_sup(l), dx, c);
+	T err2 = aff_op_t::scale_add(ac, dx, dx, c, rnd);
+	rnd.upward();
+	err += err2;
+	return aerror_t(err, yalaa::fp::get_flags(err));	
+      }      
+
+      template<typename T, template<typename> class ET,
+	       template<typename, template<typename> class> class AC,
+	       class AFFOP,
+	       class IV>
+      typename MinRangeFP<T, ET, AC, AFFOP, IV>::aerror_t
+      MinRangeFP<T, ET, AC, AFFOP, IV>::logp1(ac_t *ac, const IV &d)
+      {
+	return logxp1(ac, d, &iv_traits::my_logp1);
+      }
+
+      template<typename T, template<typename> class ET,
+	       template<typename, template<typename> class> class AC,
+	       class AFFOP,
+	       class IV>
+      typename MinRangeFP<T, ET, AC, AFFOP, IV>::aerror_t
+      MinRangeFP<T, ET, AC, AFFOP, IV>::log2p1(ac_t *ac, const IV &d)
+      {
+	return logxp1(ac, d, &iv_traits::my_log2p1);
+      }
+
+      template<typename T, template<typename> class ET,
+	       template<typename, template<typename> class> class AC,
+	       class AFFOP,
+	       class IV>
+      typename MinRangeFP<T, ET, AC, AFFOP, IV>::aerror_t
+      MinRangeFP<T, ET, AC, AFFOP, IV>::log10p1(ac_t *ac, const IV &d)
+      {
+	return logxp1(ac, d, &iv_traits::my_log10p1);
+      }
+
+
+      template<typename T, template<typename> class ET,
+	       template<typename, template<typename> class> class AC,
+	       class AFFOP,
+	       class IV>
+      typename MinRangeFP<T, ET, AC, AFFOP, IV>::aerror_t
+      MinRangeFP<T, ET, AC, AFFOP, IV>::cosh(ac_t *ac, const IV &d)
+      {
+	yalaa::fp::RndControl rnd;
+
+	T lbd(iv_traits::my_inf(d));
+	T ubd(iv_traits::my_sup(d));
+	T ubf(0);
+	T lbf(0);
+	if(0 > lbd && 0 < ubd)  {
+	  ubf = iv_traits::my_sup(iv_traits::my_cosh(iv_t(ubd)));
+	  lbf = iv_traits::my_inf(iv_traits::my_cosh(iv_t(lbd)));
+	} 
+	else {
+	  iv_t f(iv_traits::my_cosh(d));
+	  lbf = iv_traits::my_inf(f);
+	  ubf = iv_traits::my_sup(f);
+	}
+	if(0 > ubd)
+	  std::swap(lbf, ubf);
+	T c;
+	T err = min_range(lbd, ubd, lbf, ubf, lbf, c);
+	rnd.upward();
+	T err2 = aff_op_t::scale_add(ac, lbf, lbf, c, rnd);
+	err += err2;
+	return aerror_t(err, yalaa::fp::get_flags(err));
+      }
+      
 
       template<typename T, template<typename> class ET,
 	       template<typename, template<typename> class> class AC,

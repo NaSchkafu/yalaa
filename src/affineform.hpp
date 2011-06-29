@@ -254,16 +254,43 @@ namespace yalaa
     // Elementary functions
     // (friends)
     // ****************************************************************
+
+    /** 
+     * Squares an affine form
+     * 
+     * @param AF form to square
+     * 
+     * @return square 
+     */
     YALAA_FRIEND_DECL sqr(AF);
+
+    /** 
+     * Square root of an affine form
+     * 
+     * @param AF form
+     * 
+     * @return square root
+     */
     YALAA_FRIEND_DECL sqrt(AF);
-    YALAA_FRIEND_DECL pow(AF, int);
+    YALAA_FRIEND_DECL pown(AF, int);
     YALAA_FRIEND_DECL exp(AF);
-    YALAA_FRIEND_DECL ln(AF);
+    YALAA_FRIEND_DECL exp2(AF);
+    YALAA_FRIEND_DECL exp10(AF);
+    YALAA_FRIEND_DECL expm1(AF);
+    YALAA_FRIEND_DECL exp2m1(AF);
+    YALAA_FRIEND_DECL exp10m1(AF);
+    YALAA_FRIEND_DECL log(AF);
+    YALAA_FRIEND_DECL log2(AF);
+    YALAA_FRIEND_DECL log10(AF);
+    YALAA_FRIEND_DECL logp1(AF);
+    YALAA_FRIEND_DECL log2p1(AF);
+    YALAA_FRIEND_DECL log10p1(AF);
     YALAA_FRIEND_DECL sin(AF);
     YALAA_FRIEND_DECL cos(AF);
     YALAA_FRIEND_DECL tan(AF);
     YALAA_FRIEND_DECL asin(AF);
     YALAA_FRIEND_DECL acos(AF);
+    YALAA_FRIEND_DECL atan(AF);
     YALAA_FRIEND_DECL sinh(AF);
     YALAA_FRIEND_DECL cosh(AF);
     YALAA_FRIEND_DECL tanh(AF);

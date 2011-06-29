@@ -50,6 +50,35 @@ namespace yalaa
 	  return exp(i);
 	}
 
+      static base_t my_exp2(const base_t &i)
+	{
+	  // TODO: Thread Safe
+	  static cxsc::interval S_LN_2(ln(base_t(2.0)));
+	  return exp(i*S_LN_2);
+	}
+
+      static base_t my_exp10(const base_t &i)
+	{
+	  // TODO: Thread Safe
+	  static cxsc::interval S_LN_10(ln(base_t(10.0)));
+	  return exp(i*S_LN_10);
+	}
+
+      static base_t my_expm1(const base_t &i)
+	{
+	  return expm1(i);
+	}
+
+      static base_t my_exp2m1(const base_t &i)
+	{
+	  return my_exp2(i) - 1.0;
+	}
+
+      static base_t my_exp10m1(const base_t &i)
+	{
+	  return my_exp10(i) - 1.0;
+	}
+
       static double my_inf(const base_t &i) 
 	{
 	  return _double(Inf(i));
@@ -106,9 +135,34 @@ namespace yalaa
 	  return power(i, n);
 	}
 
-      static base_t my_ln(const base_t &i) 
+      static base_t my_log(const base_t &i) 
 	{
 	  return ln(i);
+	}
+
+      static base_t my_log2(const base_t &i) 
+	{
+	  return log2(i);
+	}
+
+      static base_t my_log10(const base_t &i) 
+	{
+	  return log10(i);
+	}
+
+      static base_t my_logp1(const base_t &i) 
+	{
+	  return lnp1(i);
+	}
+
+      static base_t my_log2p1(const base_t &i) 
+	{
+	  return log2(i+1.0);
+	}
+
+      static base_t my_log10p1(const base_t &i) 
+	{
+	  return log10(i+1.0);
 	}
 
       static iv_base_t my_rad(const base_t &i)
@@ -151,6 +205,42 @@ namespace yalaa
 	{
 	  return acos(i);
 	}
+
+      static base_t my_tan(const base_t& i)
+	{
+	  return tan(i);
+	}
+
+      static base_t my_sinh(const base_t& i)
+	{
+	  return sinh(i);
+	}
+
+      static base_t my_cosh(const base_t& i)
+	{
+	  return cosh(i);
+	}
+      
+      static base_t my_tanh(const base_t& i)
+	{
+	  return tanh(i);
+	}
+
+      static base_t my_asinh(const base_t& i)
+	{
+	  return asinh(i);
+	}
+
+      static base_t my_acosh(const base_t& i)
+	{
+	  return acosh(i);
+	}
+      
+      static base_t my_atanh(const base_t& i)
+	{
+	  return atanh(i);
+	}
+      
 
 
       static bool is_empty(const base_t& i)

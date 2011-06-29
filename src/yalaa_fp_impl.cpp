@@ -82,28 +82,60 @@ namespace yalaa
 			    kernel::ExactErrorFP, pol::AF0, pol::ErrorPolStd, details::double_iv_t>;
   template aff_e_d exp(aff_e_d);
   template aff_e_d sqrt(aff_e_d);
-  template aff_e_d ln(aff_e_d);
+  template aff_e_d log(aff_e_d);
   template aff_e_d sin(aff_e_d);
   template aff_e_d cos(aff_e_d);
   template aff_e_d asin(aff_e_d);
   template aff_e_d acos(aff_e_d);
   template aff_e_d sqr(aff_e_d);
-  template aff_e_d pow(aff_e_d, int);
+  template aff_e_d pown(aff_e_d, int);
   template details::double_iv_t to_iv(const aff_e_d&);
   template double rad(const aff_e_d&);
 
   // aff_e_d_dec
   template class AffineForm<double, details::ErrorTermImpl, details::AffineCombImpl, 
 			    kernel::ExactErrorFP, pol::AF0, pol::ErrorPolDec, details::double_iv_t>;
-  template aff_e_d_dec exp(aff_e_d_dec);
+  template aff_e_d_dec sqr(aff_e_d_dec);
+  template aff_e_d_dec pown(aff_e_d_dec, int);
   template aff_e_d_dec sqrt(aff_e_d_dec);
-  template aff_e_d_dec ln(aff_e_d_dec);
+
+  template aff_e_d_dec exp(aff_e_d_dec);
+  template aff_e_d_dec exp2(aff_e_d_dec);
+  template aff_e_d_dec exp10(aff_e_d_dec);
+
+  template aff_e_d_dec log(aff_e_d_dec);
+  template aff_e_d_dec log2(aff_e_d_dec);
+  template aff_e_d_dec log10(aff_e_d_dec);
+
+  template aff_e_d_dec expm1(aff_e_d_dec);
+  template aff_e_d_dec exp2m1(aff_e_d_dec);
+  template aff_e_d_dec exp10m1(aff_e_d_dec);
+
+  template aff_e_d_dec logp1(aff_e_d_dec);
+  template aff_e_d_dec log2p1(aff_e_d_dec);
+  template aff_e_d_dec log10p1(aff_e_d_dec);
+
   template aff_e_d_dec sin(aff_e_d_dec);
   template aff_e_d_dec cos(aff_e_d_dec);
+  template aff_e_d_dec tan(aff_e_d_dec);
+
   template aff_e_d_dec asin(aff_e_d_dec);
   template aff_e_d_dec acos(aff_e_d_dec);
-  template aff_e_d_dec sqr(aff_e_d_dec);
-  template aff_e_d_dec pow(aff_e_d_dec, int);
+  template aff_e_d_dec atan(aff_e_d_dec);
+
+  template aff_e_d_dec sinh(aff_e_d_dec);
+  template aff_e_d_dec cosh(aff_e_d_dec);
+  template aff_e_d_dec tanh(aff_e_d_dec);
+
+  // template aff_e_d_dec asinh(aff_e_d_dec);
+  // template aff_e_d_dec acosh(aff_e_d_dec);
+  // template aff_e_d_dec atanh(aff_e_d_dec);
+
+  // template aff_e_d_dec abs(aff_e_d_dec);
+  // template aff_e_d_dec rSqrt(aff_e_d_dec);
+  // template aff_e_d_dec hypot(aff_e_d_dec);
+  // template aff_e_d_dec compundm1(aff_e_d_dec);
+  
   template details::double_iv_t to_iv(const aff_e_d_dec&);
   template double rad(const aff_e_d_dec&);
 #endif

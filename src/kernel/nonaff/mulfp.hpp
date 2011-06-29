@@ -51,7 +51,7 @@ namespace yalaa
 
         static aerror_t mul(ac_t *ac1, const ac_t &ac2, T rad1, T rad2);
         static aerror_t sqr(ac_t *ac, T rad);
-        static aerror_t pow(ac_t *ac, unsigned n, T rad);
+        static aerror_t pown(ac_t *ac, unsigned n, T rad);
 
       private:
         static unsigned binom(unsigned n, unsigned k);

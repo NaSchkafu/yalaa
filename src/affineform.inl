@@ -29,6 +29,7 @@
 #define YALAA_FRIEND_DECL   template<typename AF>                       \
   friend typename boost::enable_if<details::has_trait_is_aff_t<AF>,AF>::type
 
+
 namespace yalaa
 {
   YALAA_AFF_TEMPLATE
@@ -280,8 +281,6 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return false;
   }
 
-
-
   // elementary
   YALAA_FRIEND_DEF
   exp(AF af)
@@ -293,6 +292,62 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     }
     return af;
   }
+
+  YALAA_FRIEND_DEF
+  exp2(AF af)
+  {
+    if(AF::ep_t::pre_op(&af)) {
+      typename AF::ar_t::aerror_t error(AF::ar_t::exp2(&af.m_a, to_iv(af)));
+      AF::ap_t::add_errors(&af.m_a, error);
+      AF::ep_t::post_op(&af, error);
+    }
+    return af;
+  }
+
+  YALAA_FRIEND_DEF
+  exp10(AF af)
+  {
+    if(AF::ep_t::pre_op(&af)) {
+      typename AF::ar_t::aerror_t error(AF::ar_t::exp10(&af.m_a, to_iv(af)));
+      AF::ap_t::add_errors(&af.m_a, error);
+      AF::ep_t::post_op(&af, error);
+    }
+    return af;
+  }
+
+  YALAA_FRIEND_DEF
+  expm1(AF af)
+  {
+    if(AF::ep_t::pre_op(&af)) {
+      typename AF::ar_t::aerror_t error(AF::ar_t::expm1(&af.m_a, to_iv(af)));
+      AF::ap_t::add_errors(&af.m_a, error);
+      AF::ep_t::post_op(&af, error);
+    }
+    return af;
+  }
+
+  YALAA_FRIEND_DEF
+  exp2m1(AF af)
+  {
+    if(AF::ep_t::pre_op(&af)) {
+      typename AF::ar_t::aerror_t error(AF::ar_t::exp2m1(&af.m_a, to_iv(af)));
+      AF::ap_t::add_errors(&af.m_a, error);
+      AF::ep_t::post_op(&af, error);
+    }
+    return af;
+  }
+
+  YALAA_FRIEND_DEF
+  exp10m1(AF af)
+  {
+    if(AF::ep_t::pre_op(&af)) {
+      typename AF::ar_t::aerror_t error(AF::ar_t::exp10m1(&af.m_a, to_iv(af)));
+      AF::ap_t::add_errors(&af.m_a, error);
+      AF::ep_t::post_op(&af, error);
+    }
+    return af;
+  }
+
 
   YALAA_FRIEND_DEF
   sqrt(AF af)
@@ -320,7 +375,7 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
   }
 
   YALAA_FRIEND_DEF
-  pow(AF af, int exp)
+  pown(AF af, int exp)
   {
     if(exp < 0 && AF::ep_t::pre_op(&af)) {
       typename AF::ar_t::aerror_t error1(AF::ar_t::inv(&af.m_a, to_iv(af)));
@@ -329,7 +384,7 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     }
 
     if(AF::ep_t::pre_op(&af)) {
-      typename AF::ar_t::aerror_t error2(AF::ar_t::pow(&af.m_a, abs(exp), rad(af)));
+      typename AF::ar_t::aerror_t error2(AF::ar_t::pown(&af.m_a, abs(exp), rad(af)));
       AF::ap_t::add_errors(&af.m_a, error2);
       AF::ep_t::post_op(&af, error2);
     }
@@ -337,11 +392,71 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
   }
 
   YALAA_FRIEND_DEF
-  ln(AF af)
+  log(AF af)
   {
     if(AF::ep_t::pre_op(&af)) {
       const typename AF::iv_t& domain = to_iv(af);
-      typename AF::ar_t::aerror_t error(AF::ar_t::ln(&af.m_a, domain));
+      typename AF::ar_t::aerror_t error(AF::ar_t::log(&af.m_a, domain));
+      AF::ap_t::add_errors(&af.m_a, error);
+      AF::ep_t::post_op(&af, error);
+    }
+    return af;
+  }
+
+  YALAA_FRIEND_DEF
+  log2(AF af)
+  {
+    if(AF::ep_t::pre_op(&af)) {
+      const typename AF::iv_t& domain = to_iv(af);
+      typename AF::ar_t::aerror_t error(AF::ar_t::log2(&af.m_a, domain));
+      AF::ap_t::add_errors(&af.m_a, error);
+      AF::ep_t::post_op(&af, error);
+    }
+    return af;
+  }
+
+  YALAA_FRIEND_DEF
+  log10(AF af)
+  {
+    if(AF::ep_t::pre_op(&af)) {
+      const typename AF::iv_t& domain = to_iv(af);
+      typename AF::ar_t::aerror_t error(AF::ar_t::log10(&af.m_a, domain));
+      AF::ap_t::add_errors(&af.m_a, error);
+      AF::ep_t::post_op(&af, error);
+    }
+    return af;
+  }
+
+  YALAA_FRIEND_DEF
+  logp1(AF af)
+  {
+    if(AF::ep_t::pre_op(&af)) {
+      const typename AF::iv_t& domain = to_iv(af);
+      typename AF::ar_t::aerror_t error(AF::ar_t::logp1(&af.m_a, domain));
+      AF::ap_t::add_errors(&af.m_a, error);
+      AF::ep_t::post_op(&af, error);
+    }
+    return af;
+  }
+
+  YALAA_FRIEND_DEF
+  log2p1(AF af)
+  {
+    if(AF::ep_t::pre_op(&af)) {
+      const typename AF::iv_t& domain = to_iv(af);
+      typename AF::ar_t::aerror_t error(AF::ar_t::log2p1(&af.m_a, domain));
+      AF::ap_t::add_errors(&af.m_a, error);
+      AF::ep_t::post_op(&af, error);
+    }
+    return af;
+  }
+
+  YALAA_FRIEND_DEF
+  log10p1(AF af)
+  {
+    if(AF::ep_t::pre_op(&af)) {
+      const typename AF::iv_t& domain = to_iv(af);
+      typename AF::ar_t::aerror_t error(AF::ar_t::log10p1(&af.m_a, domain));
       AF::ap_t::add_errors(&af.m_a, error);
       AF::ep_t::post_op(&af, error);
     }
@@ -402,6 +517,18 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     if(AF::ep_t::pre_op(&af)) {
       const typename AF::iv_t&domain = to_iv(af);
       typename AF::ar_t::aerror_t error(AF::ar_t::asin(&af.m_a, domain));
+      AF::ap_t::add_errors(&af.m_a, error);
+      AF::ep_t::post_op(&af, error);
+    }
+    return af;
+  }
+
+  YALAA_FRIEND_DEF
+  atan(AF af)
+  {
+    if(AF::ep_t::pre_op(&af)) {
+      const typename AF::iv_t&domain = to_iv(af);
+      typename AF::ar_t::aerror_t error(AF::ar_t::atan(&af.m_a, domain));
       AF::ap_t::add_errors(&af.m_a, error);
       AF::ep_t::post_op(&af, error);
     }

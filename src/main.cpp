@@ -78,15 +78,15 @@ void test_pow(const yalaa::details::double_iv_t &i)
   using namespace yalaa::details;
   int n = rand() % 10;
   double_iv_t eiv(power(i, n));
-  aff eaff(pow(aff(i), n));
+  aff eaff(pown(aff(i), n));
   test2(eiv, eaff, i);
 }
 
 void test_ln(const yalaa::details::double_iv_t &i)
 {
   using namespace yalaa::details;
-  double_iv_t eiv(iv_traits::my_ln(i));
-  aff eaff(ln(aff(i)));
+  double_iv_t eiv(iv_traits::my_log(i));
+  aff eaff(log(aff(i)));
   test2(eiv, eaff, i);
 }
 

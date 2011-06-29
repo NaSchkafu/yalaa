@@ -46,7 +46,7 @@ namespace yalaa
 	       template<typename, template<typename> class> class AC,
 	       class AFFOP, class IV>
       typename MultiplicationFP<T, ET, AC, AFFOP,IV>::aerror_t
-      MultiplicationFP<T, ET, AC, AFFOP, IV>::pow(ac_t *ac, unsigned n, T rad)
+      MultiplicationFP<T, ET, AC, AFFOP, IV>::pown(ac_t *ac, unsigned n, T rad)
       {
 	// Sonderfaelle
 	if(n < 2) {
