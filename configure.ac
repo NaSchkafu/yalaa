@@ -55,6 +55,16 @@ CXXFLAGS+=" -msse2 -Wno-logical-op-parentheses"
 CXXFLAGS+=" -frounding-math -mfpmath=sse -msse2 -std=c++0x"],[
 AC_MSG_NOTICE([Unknown compiler. Please set flags for rounding math if necessary!])])
 
+dnl TESTS
+AC_ARG_ENABLE([tests], AS_HELP_STRING([--enable-tests],[Enable unit tests, requires Google Test (GTEST)]), dnl
+[AS_IF([test x"$withval" != x], [enable_tests=yes],[enable_tests=])])
+AS_IF([test x"$with_gtest" != x], [AC_MSG_NOTICE([--with-gtest is set. Assuming --enable-tests flag!]) 
+enable_tests=yes])
+AS_IF([test x"$enable_tests" != x], [SEARCH_HEADER([gtest],[gtest.h],[], [include/gtest])
+SEARCH_LIBRARY([gtest],[], [-lpthread], [lib/.libs], [], [])
+AM_CONDITIONAL([GTEST], [test x"$enable_tests" = xyes])
+])dnl
+
 dnl Libtool
 LT_INIT
  

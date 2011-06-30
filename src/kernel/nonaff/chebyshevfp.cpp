@@ -213,6 +213,23 @@ namespace yalaa
 		       { return self_t::lag_rem(d, iv_traits::my_div(iv_traits::my_one(), iv_traits::my_add(iv_traits::my_one(),iv_traits::my_sqr(d)))); }, rnd);
     }  
       
+    template<typename T, template<typename> class ET,
+	     template<typename, template<typename> class> class AC,
+	     class AFFOP,
+	     class IV>
+    typename ChebyshevFP<T, ET, AC, AFFOP, IV>::aerror_t ChebyshevFP<T, ET, AC, AFFOP, IV>::atanh(ac_t *ac, const iv_t &d)
+    {
+      yalaa::fp::RndControl rnd;
+      if(iv_traits::my_inf(d) >= 1.0 || iv_traits::my_sup(d) <= -1.0)
+	return aerror_t(0.0, aerror_t::C_D_VIOL);
+      else if(iv_traits::my_inf(d) <= -1.0 || iv_traits::my_sup(d) >= 1.0)
+	return aerror_t(0.0, aerror_t::P_D_VIOL | aerror_t::UNBOUND);
+      return chebyshev(ac, d, &iv_traits::my_atanh, false, [&d](const iv_t&, const iv_t&)->T  
+		       { return self_t::lag_rem(d, iv_traits::my_div(iv_traits::my_one(), iv_traits::my_add(iv_traits::my_one(),iv_traits::my_sqr(d)))); }, rnd);
+    }  
+      
+
+
 
     // Lagrange Remainder
     template<typename T, template<typename> class ET,

@@ -294,6 +294,9 @@ namespace yalaa
     YALAA_FRIEND_DECL sinh(AF);
     YALAA_FRIEND_DECL cosh(AF);
     YALAA_FRIEND_DECL tanh(AF);
+    YALAA_FRIEND_DECL asinh(AF);
+    YALAA_FRIEND_DECL acosh(AF);
+    YALAA_FRIEND_DECL atanh(AF);
 
   private:
     /// affine combination

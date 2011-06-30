@@ -127,9 +127,9 @@ namespace yalaa
   template aff_e_d_dec cosh(aff_e_d_dec);
   template aff_e_d_dec tanh(aff_e_d_dec);
 
-  // template aff_e_d_dec asinh(aff_e_d_dec);
-  // template aff_e_d_dec acosh(aff_e_d_dec);
-  // template aff_e_d_dec atanh(aff_e_d_dec);
+  template aff_e_d_dec asinh(aff_e_d_dec);
+  template aff_e_d_dec acosh(aff_e_d_dec);
+  template aff_e_d_dec atanh(aff_e_d_dec);
 
   // template aff_e_d_dec abs(aff_e_d_dec);
   // template aff_e_d_dec rSqrt(aff_e_d_dec);

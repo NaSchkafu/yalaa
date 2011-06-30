@@ -28,7 +28,7 @@ namespace yalaa
   {
     namespace details 
     {
-      /// Chebyshev approximation for non-affine operations
+      /// Floating-point Chebyshev approximations for non-affine operations
       /**
        * This structure adds support for non-affine operations which are
        * differentiable, but not strictly convex or concave in their domain
@@ -65,12 +65,7 @@ namespace yalaa
 	static aerror_t tanh(ac_t *ac, const iv_t &d);
 
 	static aerror_t asinh(ac_t *ac, const iv_t &d);
-	//static aerror_t tanh(ac_t *ac, const iv_t &d);
-
-
-
-
-	//static void init();
+	static aerror_t atanh(ac_t *ac, const iv_t &d);
 
       private:
 	/** 
@@ -80,9 +75,9 @@ namespace yalaa
 	 * @param d ac's domain
 	 * @param f function to approximate
 	 * @param odd true if f is odd
-	 * @param ddf second derivative of f ifnot odd, third derivative otherwise
+	 * @param ddf function for determining the approximation error
 	 * 
-	 * @return error bounds
+	 * @return error bounds and flags
 	 */
 	static aerror_t chebyshev(ac_t *ac, const iv_t &d, iv_t (*f)(const iv_t&), bool odd, 
 				  std::function<T (const iv_t&, const iv_t&)>, yalaa::fp::RndControl &rnd);
@@ -101,6 +96,15 @@ namespace yalaa
 
 	static T eval_poly_lb(T lbc0, T lbc1, T lbx);
 
+	/** 
+	 * Calculates acos and asin
+	 * 
+	 * @param ac affine combination
+	 * @param d domain
+	 * @param is_acos flag to determine function
+	 * 
+	 * @return error bounds and flags
+	 */
 	static aerror_t acos_asin(ac_t *ac, iv_t d, bool is_acos);
 
 	// static iv_t sin(const iv_t&);
