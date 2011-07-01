@@ -516,7 +516,7 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
   {
     if(AF::ep_t::pre_op(&af)) {
       const typename AF::iv_t&domain = to_iv(af);
-      typename AF::ar_t::aerror_t error(AF::ar_t::asin(&af.m_a, domain));
+      typename AF::ar_t::aerror_t error(AF::ar_t::acos(&af.m_a, domain));
       AF::ap_t::add_errors(&af.m_a, error);
       AF::ep_t::post_op(&af, error);
     }

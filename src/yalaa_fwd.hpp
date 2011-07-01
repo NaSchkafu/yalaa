@@ -65,7 +65,7 @@ namespace yalaa
 
 namespace yalaa 
 {
-#ifdef HAVE_FLOAT_IV
+#ifdef YALAA_HAVE_FLOAT_IV
   /// Standard affine form with the ExactError kernel for float
   typedef AffineForm<float, details::ErrorTermImpl, details::AffineCombImpl, kernel::ExactErrorFP, 
 		     yalaa::pol::AF0, yalaa::pol::ErrorPolStd, details::float_iv_t> aff_e_f;
@@ -75,7 +75,7 @@ namespace yalaa
 		     yalaa::pol::AF0, yalaa::pol::ErrorPolDec, details::float_iv_t> aff_e_f_dec;
 #endif
 
-#ifdef HAVE_DOUBLE_IV
+#ifdef YALAA_HAVE_DOUBLE_IV
   /// Standard affine form with the ExactError kernel for double
   typedef AffineForm<double, details::ErrorTermImpl, details::AffineCombImpl, kernel::ExactErrorFP, 
 		     yalaa::pol::AF0, yalaa::pol::ErrorPolStd, details::double_iv_t> aff_e_d;
@@ -85,7 +85,7 @@ namespace yalaa
 		     yalaa::pol::AF0, yalaa::pol::ErrorPolDec, details::double_iv_t> aff_e_d_dec;
 #endif
 
-#ifdef HAVE_L_DOUBLE_IV
+#ifdef YALAA_HAVE_L_DOUBLE_IV
   /// Standard affine form with the ExactError kernel for long double
   typedef AffineForm<long double, details::ErrorTermImpl, details::AffineCombImpl, kernel::ExactErrorFP,
 		     yalaa::pol::AF0, yalaa::pol::ErrorPolStd, details::l_double_iv_t> aff_e_ld;

@@ -241,6 +241,10 @@ namespace yalaa
 	  return atanh(i);
 	}
       
+      static base_t my_atan(const base_t& i)
+	{
+	  return atan(i);
+	}
 
 
       static bool is_empty(const base_t& i)

@@ -104,7 +104,7 @@ namespace yalaa
       unsigned flags = 0;
       if(iv_traits::my_sup(d) > 1.0 || iv_traits::my_inf(d) < -1.0) {
 	flags = aerror_t::P_D_VIOL;
-	d = iv_t(std::min(iv_traits::my_sup(d),1.0), std::max(iv_traits::my_inf(d), -1.0));
+	d = iv_t(std::max(iv_traits::my_inf(d),-1.0), std::min(iv_traits::my_sup(d), -1.0));
       }
       yalaa::fp::RndControl rnd;
       iv_t (*f)(const iv_t&) = is_acos ? &iv_traits::my_acos : &iv_traits::my_asin;
@@ -129,9 +129,9 @@ namespace yalaa
 	  T ae3(fabs((is_acos ? iv_traits::my_sup(fd) : iv_traits::my_inf(fd)) - self_t::eval_poly_lb(lbc0, lbc1, iv_traits::my_inf(d))));
 	  T ae4(fabs((is_acos ? iv_traits::my_inf(fd) : iv_traits::my_sup(fd)) - self_t::eval_poly_lb(lbc0, lbc1, iv_traits::my_sup(d))));
 
-	  return std::max(std::max(std::max(ae1, ae2), ae3), ae4);
+	  return 2*std::max(std::max(std::max(ae1, ae2), ae3), ae4);
 
-	}, rnd);
+	}, rnd, flags);
     }
 
     template<typename T, template<typename> class ET,
@@ -159,20 +159,20 @@ namespace yalaa
     typename ChebyshevFP<T, ET, AC, AFFOP, IV>::aerror_t ChebyshevFP<T, ET, AC, AFFOP, IV>::atan(ac_t *ac, const iv_t &d)
     {
       yalaa::fp::RndControl rnd;
-      static const T S_PINF_H = 0.5*iv_traits::my_inf(iv_traits::my_pi());
-      unsigned flags = 0;
-      if(iv_traits::my_sup(d) < -S_PINF_H || iv_traits::my_inf(d) > S_PINF_H)
-	flags = aerror_t::C_D_VIOL;
-      else if((iv_traits::my_inf(d) < -S_PINF_H && iv_traits::my_sup(d) > -S_PINF_H) ||
-	      (iv_traits::my_inf(d) < S_PINF_H && iv_traits::my_sup(d) > S_PINF_H)) {
-	flags = aerror_t::P_D_VIOL | aerror_t::UNBOUND;
-      }
-      if(flags) {
-	ac->clear();
-	ac->set_central(0.0);
-	return aerror_t(0.0, flags);
-      }
-      return chebyshev(ac, d, &iv_traits::my_tanh, false, [&d](const iv_t&, const iv_t&)->T  
+      // static const T S_PINF_H = 0.5*iv_traits::my_inf(iv_traits::my_pi());
+      // unsigned flags = 0;
+      // if(iv_traits::my_sup(d) < -S_PINF_H || iv_traits::my_inf(d) > S_PINF_H)
+      // 	flags = aerror_t::C_D_VIOL;
+      // else if((iv_traits::my_inf(d) < -S_PINF_H && iv_traits::my_sup(d) > -S_PINF_H) ||
+      // 	      (iv_traits::my_inf(d) < S_PINF_H && iv_traits::my_sup(d) > S_PINF_H)) {
+      // 	flags = aerror_t::P_D_VIOL | aerror_t::UNBOUND;
+      // }
+      // if(flags) {
+      // 	ac->clear();
+      // 	ac->set_central(0.0);
+      // 	return aerror_t(0.0, flags);
+      // }
+      return chebyshev(ac, d, &iv_traits::my_atan, false, [&d](const iv_t&, const iv_t&)->T  
 		       { return self_t::lag_rem(d, iv_traits::my_div(iv_traits::my_one(), 
 								     iv_traits::my_add(iv_traits::my_one(), iv_traits::my_sqr(d)))); }, rnd);
     }
@@ -186,7 +186,7 @@ namespace yalaa
     typename ChebyshevFP<T, ET, AC, AFFOP, IV>::aerror_t ChebyshevFP<T, ET, AC, AFFOP, IV>::sinh(ac_t *ac, const iv_t &d)
     {
       yalaa::fp::RndControl rnd;
-      return chebyshev(ac, d, &iv_traits::my_sinh, false, [&d](const iv_t&, const iv_t&)->T  { return self_t::lag_rem(d, iv_traits::my_sinh(d)); }, rnd);
+      return chebyshev(ac, d, &iv_traits::my_sinh, false, [&d](const iv_t&, const iv_t&)->T  { return self_t::lag_rem(d, iv_traits::my_cosh(d)); }, rnd);
     }
 
     template<typename T, template<typename> class ET,
@@ -255,7 +255,7 @@ namespace yalaa
       ChebyshevFP<T, ET, AC, AFFOP, IV>::chebyshev(ac_t *ac, const iv_t &d,
                                                    iv_t (*f)(const iv_t&), bool odd,
                                                    std::function<T (const iv_t&, const iv_t&)> apprerr,
-                                                   yalaa::fp::RndControl &rnd)
+                                                   yalaa::fp::RndControl &rnd, unsigned flags)
       {
 	// TODO: thread safe
 	static const iv_t S_X[2][2] = {
@@ -283,16 +283,27 @@ namespace yalaa
 	iv_t c1(fast_add_ii_up<iv_t>(iv_traits::my_mul(fx0,S_X[order][0]),
 				     iv_traits::my_mul(fx1,S_X[order][1])));
 	c0 *= S_HALF;
-	
+
+
+
 	T err = 0.0;
+	//std::cout << c0 << " c1 " << c1 << std::endl;
 	iv_t c12(iv_traits::my_inf(c1)*2, iv_traits::my_sup(c1)*2);
 	c12 = iv_traits::my_div(c12, ibsia);
-	err = aff_op_t::scale_add(ac, 0.0, 0.0, iv_traits::my_inf(c12), iv_traits::my_sup(c12),
+
+	// std::cout << "Lineare Funktion: " << mid(c0 - iapib*c1/ibsia) << "+" << mid(c12)<<"*x" << std::endl;
+	//std::cout << "Bound " << c0 + c1*iv_t(-1,1) << std::endl;
+	// c0 -= c1*iapib/ibsia;
+
+	err = aff_op_t::scale_add(ac, 0.0, 0.0,
+				  iv_traits::my_inf(c12), iv_traits::my_sup(c12),
 				  iv_traits::my_inf(c0), iv_traits::my_sup(c0), rnd);
 	err += apprerr(c0, c12);
-	
+
+
+	//std::cout << "c0 " << c0 << " c12 " << c12 << std::endl;
 	err *= 0.5;
-	return aerror_t(err, yalaa::fp::get_flags(err));
+	return aerror_t(err, yalaa::fp::get_flags(err) | flags);
       }
 
     template<typename T, template<typename> class ET,

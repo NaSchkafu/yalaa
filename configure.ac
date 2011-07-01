@@ -1,6 +1,7 @@
 AC_INIT([yalaa],[0.1],[kiel@inf.uni-due.de])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 AC_CONFIG_HEADERS([config.h])
+AX_PREFIX_CONFIG_H([src/yalaa-config.h])
 AC_CONFIG_FILES([
 	Makefile])
 AC_CONFIG_MACRO_DIR([m4])
@@ -62,8 +63,8 @@ AS_IF([test x"$with_gtest" != x], [AC_MSG_NOTICE([--with-gtest is set. Assuming 
 enable_tests=yes])
 AS_IF([test x"$enable_tests" != x], [SEARCH_HEADER([gtest],[gtest.h],[], [include/gtest])
 SEARCH_LIBRARY([gtest],[], [-lpthread], [lib/.libs], [], [])
+])
 AM_CONDITIONAL([GTEST], [test x"$enable_tests" = xyes])
-])dnl
 
 dnl Libtool
 LT_INIT

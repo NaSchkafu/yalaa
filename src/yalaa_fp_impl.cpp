@@ -44,7 +44,7 @@
 
 namespace yalaa 
 {
-#ifdef HAVE_FLOAT_IV
+#ifdef YALAA_HAVE_FLOAT_IV
   // aff_e_f
   template class details::AffineCombImpl<float, details::ErrorTermImpl>;
   template class AffineForm<float, details::ErrorTermImpl, details::AffineCombImpl, 
@@ -75,7 +75,7 @@ namespace yalaa
   template float rad(const aff_e_f_dec&);
 #endif
 
-#ifdef HAVE_DOUBLE_IV
+#ifdef YALAA_HAVE_DOUBLE_IV
   // aff_e_d
   template class details::AffineCombImpl<double, details::ErrorTermImpl>;
   template class AffineForm<double, details::ErrorTermImpl, details::AffineCombImpl, 
@@ -140,7 +140,7 @@ namespace yalaa
   template double rad(const aff_e_d_dec&);
 #endif
 
-#if HAVE_L_DOUBLE_IV
+#if YALAA_HAVE_L_DOUBLE_IV
   // aff_e_ld
   template class details::AffineCombImpl<long double, details::ErrorTermImpl>;
   template class AffineForm<long double, details::ErrorTermImpl, details::AffineCombImpl, 

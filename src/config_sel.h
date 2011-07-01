@@ -24,7 +24,7 @@
 #ifdef _MSC_VER
 #include "config_w32.h"
 #else
-#include "config.h"
+#include "yalaa-config.h"
 #endif
 
 #endif

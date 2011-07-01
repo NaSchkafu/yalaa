@@ -220,9 +220,9 @@ namespace yalaa
       typename MinRangeFP<T, ET, AC, AFFOP, IV>::aerror_t
       MinRangeFP<T, ET, AC, AFFOP, IV>::logxp1(ac_t *ac, const iv_t &d, iv_t (*f)(const iv_t&))
       {
-	if(iv_traits::my_sup(d) <= 1.0)
+	if(iv_traits::my_sup(d) <= -1.0)
 	  return aerror_t(0.0, aerror_t::C_D_VIOL);
-	else if(iv_traits::my_inf(d) <= 1.0)
+	else if(iv_traits::my_inf(d) <= -1.0)
 	  return aerror_t(0.0, aerror_t::UNBOUND | aerror_t::P_D_VIOL);
 	yalaa::fp::RndControl rnd;
 	const iv_t &l = (*f)(d);

@@ -189,19 +189,27 @@ void test(const yalaa::details::double_iv_t &d)
   iv_t iapib(fast_add_dd_up<T, iv_t>(a,b));
   iv_t x0(S_HALF*fast_add_ii_up(iv_traits::my_mul(ibsia,S_X[order][0]), iapib));
   iv_t x1(S_HALF*fast_add_ii_up(iv_traits::my_mul(ibsia,S_X[order][1]), iapib));
-  iv_t fx0(iv_traits::my_sin(x0));
-  iv_t fx1(iv_traits::my_sin(x1));
+  iv_t fx0(iv_traits::my_sinh(x0));
+  iv_t fx1(iv_traits::my_sinh(x1));
+  std::cout << "fx0 " << fx0 << std::endl;
+  std::cout << "fx1 " << fx1 << std::endl;
   iv_t c0(fast_add_ii_up<iv_t>(fx0, fx1));
   iv_t c1(fast_add_ii_up<iv_t>(iv_traits::my_mul(fx0,S_X[order][0]), iv_traits::my_mul(fx1,S_X[order][1])));
   c0 *= S_HALF;
   T w(iv_traits::my_w(d));
 
   T err = 0.0;
-  std::cout << "w: " << w << " c1: " << c1 << std::endl;
+  iv_t c12(iv_traits::my_inf(c1)*2, iv_traits::my_sup(c1)*2);
+  c12 /=ibsia;
+  std::cout << "Lineare Funktion: " << mid(c0 - iapib*c1/ibsia) << "+" << mid(c12)<<"*x" << std::endl;
+  std::cout << "w: " << w << " c0: " << c0 << " c12: " << c12 << "c1 " << c1 << std::endl;
+
+
+
   iv_t remainder((order ? w*w : w)*(-iv_traits::my_cos(d))/(order ? S_RMND1 : S_RMND2));
   iv_t bound(c0 + c1*double_iv_t(-1,1));
-  std::cout << "Bounding P(x): " << bound + remainder << " w: " << iv_traits::my_w(bound+remainder) << std::endl;
-  std::cout << "sin(d): " << iv_traits::my_sin(d) << " w: " << iv_traits::my_w(iv_traits::my_sin(d)) << std::endl;
+  std::cout << "Bound P(x): " << bound << " w (+Rem): " << iv_traits::my_w(bound+remainder) << std::endl;
+  //std::cout << "sin(d): " << iv_traits::my_sin(d) << " w: " << iv_traits::my_w(iv_traits::my_sin(d)) << std::endl;
   
 
   // if(w <= 1.0)
@@ -229,6 +237,14 @@ void ltest(int (*f)(int, int))
 
 int main(int argc, char *argv[])
 {
+  using namespace yalaa;
+  yalaa::details::double_iv_t ssx1(2.5, 3.75);
+  aff_e_d a(ssx1);
+  std::cout << sinh(a) << std::endl;
+  test(ssx1);
+  std::cout << iv_traits::my_sinh(ssx1) << std::endl;
+  return 0;
+
   ltest([](int x, int y)->int{ return x + y; });
   
 

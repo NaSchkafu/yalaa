@@ -11,7 +11,7 @@ namespace yalaa
 {
   namespace tests 
   {
-    enum d_t { OPEN, RIGHTOPEN, CLOSED, LEFTOPEN };
+    enum d_t { OPEN = 3, RIGHTOPEN = 2, CLOSED = 0, LEFTOPEN = 1 };
 
     struct FTMeta 
     {

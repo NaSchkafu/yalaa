@@ -76,11 +76,12 @@ namespace yalaa
 	 * @param f function to approximate
 	 * @param odd true if f is odd
 	 * @param ddf function for determining the approximation error
+	 * @param flags error flags to add
 	 * 
 	 * @return error bounds and flags
 	 */
 	static aerror_t chebyshev(ac_t *ac, const iv_t &d, iv_t (*f)(const iv_t&), bool odd, 
-				  std::function<T (const iv_t&, const iv_t&)>, yalaa::fp::RndControl &rnd);
+				  std::function<T (const iv_t&, const iv_t&)>, yalaa::fp::RndControl &rnd, unsigned flags = 0);
 
 	/** 
 	 * Lagrange Remainder
