@@ -27,11 +27,7 @@
 // internal IA operations
 #include "helper/fastia.hpp" 
 
-// Affine Operations
-#include "comb/affinecombopimpl.hpp"
-#include "comb/affinecombopimpl.cpp"
-
-// Affine Comb.
+// Affine Comb. // Ops
 #include "comb/affinecombimpl.cpp"
 
 // Arithmetic Kernels

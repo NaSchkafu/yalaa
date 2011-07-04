@@ -273,6 +273,19 @@ namespace yalaa
 
 	// 1 Wechsel + 3 IV Mult + 2 IV Auswertungen von f
 	rnd.upward();
+	if(iv_traits::my_w(d) < S_USE_IV) {
+	  iv_t range((*f)(d));
+	  ac->clear();
+	  if(iv_traits::my_inf(range) > iv_traits::my_sup(range))
+	    flags |= aerror_t::I_ERROR;
+	  else {
+	    ac->set_central(iv_traits::my_mid(range));
+	    flags |= yalaa::fp::get_flags(iv_traits::my_inf(range)) | 
+	      yalaa::fp::get_flags(iv_traits::my_sup(range));
+	  }
+	  return aerror_t(iv_traits::my_w(range), flags);
+	}
+
 	iv_t ibsia(fast_sub_dd_up<T, iv_t>(b,a));
 	iv_t iapib(fast_add_dd_up<T, iv_t>(a,b));
 	iv_t x0(S_HALF*fast_add_ii_up(iv_traits::my_mul(ibsia,S_X[order][0]), iapib));

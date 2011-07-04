@@ -89,11 +89,28 @@ namespace yalaa
        */
       inline void print(std::ostream &os) const;
 
+      /** 
+       * Determines whether this ErrorTerm is a "special term"
+       * 
+       * @return 0 if not a special term, the type otherwise
+       */
+      inline unsigned short special() const;
+      
+      /** 
+       * Marks this error term as a special term
+       * Note: type has to be greater than 0
+       * 
+       * @param type type of the term
+       */
+      inline void set_special(unsigned short type);
+
     private:
       inline static unsigned long long new_symbol();
 
     private:
       unsigned long long m_eps;
+      unsigned short m_special;
+
       T m_dev;
 
       static unsigned long long CURRENT_EPS;

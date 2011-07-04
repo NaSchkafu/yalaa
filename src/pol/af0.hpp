@@ -16,6 +16,16 @@
   along with yalaa.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * @file   af0.hpp
+ * @author Stefan Kiel <kiel@inf.uni-due.de>
+ * @date   Mon Jul  4 12:38:23 2011
+ * 
+ * @brief  Provides the standard affine policy for uncertainty handling
+ * 
+ * 
+ */
+
 
 #ifndef __AF0_HPP__
 #define __AF0_HPP__
@@ -29,6 +39,12 @@ namespace yalaa
     // T Basis
     // ET<T> ErrorTerm
     // AC<T, ET<T> > AffComb
+    /// Implements the handling of approximation/rounding errors as in standard affine arithmetic
+    /**
+     * Rounding and approximation errors are added in form of new independet terms to the affine
+     * form. Introduction of uncertainty also yields a new noise symbol as introduction of a new
+     * affine form does. 
+     */
     template<typename T, template<typename> class ET, 
 	     template<typename, template<typename> class> class AC>
     class AF0

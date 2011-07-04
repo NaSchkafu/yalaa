@@ -115,6 +115,8 @@ namespace yalaa
 	// static const iv_t S_X[][2];
 	// static const T S_PINF;
 	// static const T S_PSUP;
+
+	static const T S_USE_IV = 10e-70;
       };
     }
   }

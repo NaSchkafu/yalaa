@@ -17,8 +17,8 @@
 */
 
 
-#ifndef __AFFINECOMBIMPL_HPP__
-#define __AFFINECOMBIMPL_HPP__
+#ifndef __AFFINECOMBBASEIMPL_HPP__
+#define __AFFINECOMBBASEIMPL_HPP__
 
 #include <algorithm>
 #include <vector>
@@ -39,13 +39,13 @@ namespace yalaa
      * The class uses internally an sorted vector for storing the affine combination.
      */
     template<typename T, template<typename> class ET>
-    class AffineCombImpl
+    class AffineCombBaseImpl
     {
     public:
       typedef T base_t;
       typedef ET<T> error_t;
       typedef typename boost::mpl::if_<boost::is_fundamental<base_t>, base_t, typename boost::add_const<typename boost::add_reference<base_t>::type>::type>::type base_ref_t;
-      typedef AffineCombImpl<T, ET> self_t;
+      typedef AffineCombBaseImpl<T, ET> self_t;
 
       typedef typename std::vector<ET<T> >::size_type size_t;
       // TODO: Bessere Adapter mit Boost.Iterator statt vector-It nach außen geben
@@ -62,14 +62,14 @@ namespace yalaa
        * @param central central value
        * 
        */
-      explicit AffineCombImpl(base_ref_t central);
+      explicit AffineCombBaseImpl(base_ref_t central);
 
       /** 
        * Ctor
        * 
        * 
        */
-      AffineCombImpl();
+      AffineCombBaseImpl();
 
       /** 
        * Gets an iterator pointing to the combination's first element
@@ -190,4 +190,4 @@ namespace yalaa
   }
 }
 
-#endif /*__AFFINECOMBIMPL_HPP__*/
+#endif /*__AFFINECOMBBASEIMPL_HPP__*/

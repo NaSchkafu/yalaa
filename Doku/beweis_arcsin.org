@@ -29,8 +29,6 @@ $$\sqrt{1 - \frac{(b-a)^2}{2\sqrt{2} \left (
 
 
 
-
-
 * Monotonie im linearen Fall
 Im Fall von YalAA ist $p_n$ das Interpolationspolynom ersten Grades an den
 Tschebyschow-Punkten $x_0, x_1$. Wir erhalten daher

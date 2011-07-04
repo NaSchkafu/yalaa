@@ -55,7 +55,7 @@ namespace yalaa
 	       template<typename, template<typename> class> class AC>
       typename ExactErrorAffineFP<T, ET, AC>::aerror_t ExactErrorAffineFP<T, ET,AC>::neg(ac_t *ac)
       {
-	neg_ac(ac);
+	ac_t::neg_ac(ac);
         return yalaa::details::ArithmeticError<T>(0.0, true);
       }
 
@@ -72,16 +72,16 @@ namespace yalaa
 	T scalec = (scalec_up + scalec_down)/2;
 	T scalen = (scalen_up + scalen_down)/2;
 	T add = (add_up + add_down)/2;
-        mul_ac_s(ac, scalec, scalen);
-        add_ac_s(ac, add);
+	ac_t::mul_ac_s(ac, scalec, scalen);
+	ac_t::add_ac_s(ac, add);
 
         rnd.downward();
-        mul_ac_s(&down, scalec_down, scalen_down);
-        add_ac_s(&down, add_down);
+	ac_t::mul_ac_s(&down, scalec_down, scalen_down);
+	ac_t::add_ac_s(&down, add_down);
 
         rnd.upward();
-        mul_ac_s(&up, scalec_up, scalen_up);
-        add_ac_s(&up, add_up);
+	ac_t::mul_ac_s(&up, scalec_up, scalen_up);
+	ac_t::add_ac_s(&up, add_up);
 
         return sum_error(*ac, down, up);
       }
@@ -106,25 +106,36 @@ namespace yalaa
         ac_t up2(ac2);
 
         rnd.to_nearest();
-        mul_ac_s(ac1, scale1, scale1);
-        mul_ac_s(&ac2, scale2, scale2);
-        yalaa::details::add_ac_ac<ac_t, CENTRAL>(ac1, ac2);
-        if(CENTRAL)
-          add_ac_s(ac1, add);
+	ac_t::mul_ac_s(ac1, scale1, scale1);
+	ac_t::mul_ac_s(&ac2, scale2, scale2);
+	if(CENTRAL) {
+	  ac_t::add_ac_ac(ac1, ac2);
+	  ac_t::add_ac_s(ac1, add);
+	}
+	else
+	  ac_t::add_ac_ac_noc(ac1, ac2);
 
         rnd.downward();
-        mul_ac_s(&down1, scale1, scale1);
-        mul_ac_s(&down2, scale2, scale2);
-        yalaa::details::add_ac_ac<ac_t, CENTRAL>(&down1, down2);
-        if(CENTRAL)
-          add_ac_s(&down1, add);
+	ac_t::mul_ac_s(&down1, scale1, scale1);
+	ac_t::mul_ac_s(&down2, scale2, scale2);
+
+        if(CENTRAL) {
+	  ac_t::add_ac_s(&down1, add);
+	  ac_t::add_ac_ac(&down1, down2);
+	}
+	else
+	  ac_t::add_ac_ac_noc(&down1, down2);
 
         rnd.upward();
-        mul_ac_s(&up1, scale1, scale1);
-        mul_ac_s(&up2, scale2, scale2);
-        yalaa::details::add_ac_ac<ac_t, CENTRAL>(&up1, up2);
-        if(CENTRAL)
-          add_ac_s(&up1, add);
+	ac_t::mul_ac_s(&up1, scale1, scale1);
+	ac_t::mul_ac_s(&up2, scale2, scale2);
+
+        if(CENTRAL) {
+	  ac_t::add_ac_ac(&up1, up2);
+	  ac_t::add_ac_s(&up1, add);
+	}
+	else
+	  ac_t::add_ac_ac_noc(&up1, up2);
 
         if(!CENTRAL) {
           ac1->set_central(central);
@@ -196,15 +207,15 @@ namespace yalaa
         yalaa::fp::RndControl rnd;
         // Approx
         rnd.to_nearest();
-        add_ac_ac(ac1, ac2);
+	ac_t::add_ac_ac(ac1, ac2);
 
         // Untere Schranke
         rnd.downward();
-        add_ac_ac(&down, ac2);
+	ac_t::add_ac_ac(&down, ac2);
 
         // Obere Schranke
         rnd.upward();
-        add_ac_ac(&up,ac2);
+	ac_t::add_ac_ac(&up,ac2);
 
         // Fehler zurückgeben
         T err = sum_error(*ac1, down, up);
@@ -227,15 +238,15 @@ namespace yalaa
           yalaa::fp::RndControl rnd;
           // Approx
           rnd.to_nearest();
-          sub_ac_ac(ac1, ac2);
+	  ac_t::sub_ac_ac(ac1, ac2);
 
           // Untere Schranke
           rnd.downward();
-          sub_ac_ac(&down, ac2);
+	  ac_t::sub_ac_ac(&down, ac2);
 
           // Obere Schranke
           rnd.upward();
-          sub_ac_ac(&up,ac2);
+	  ac_t::sub_ac_ac(&up,ac2);
 
           // Fehler zurückgeben
           err = sum_error(*ac1, down, up);
@@ -273,15 +284,15 @@ namespace yalaa
         yalaa::fp::RndControl rnd;
         // Approx
         rnd.to_nearest();
-        mul_ac_s(ac, inv ? 1/s : s, inv ? 1/s : s);
+	ac_t::mul_ac_s(ac, inv ? 1/s : s, inv ? 1/s : s);
 
         // Untere Schranke
         rnd.downward();
-        mul_ac_s(&down, inv ? 1/s : s, inv ? 1/s : s);
+	ac_t::mul_ac_s(&down, inv ? 1/s : s, inv ? 1/s : s);
 
         // Obere Schranke
         rnd.upward();
-        mul_ac_s(&up, inv ? 1/s : s, inv ? 1/s : s);
+	ac_t::mul_ac_s(&up, inv ? 1/s : s, inv ? 1/s : s);
 
         // Fehler zurückgeben
         T err = sum_error(*ac, down, up);
