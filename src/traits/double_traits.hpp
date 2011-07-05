@@ -20,6 +20,8 @@
 #ifndef __DOUBLE_TRAITS_HPP__
 #define __DOUBLE_TRAITS_HPP__
 
+#include "helper/fphelper.hpp"
+
 namespace yalaa 
 {
   namespace details 
@@ -28,32 +30,34 @@ namespace yalaa
     template<>
     struct base_traits<double>
     {
-      static double my_zero() 
+      typedef double base_t;
+
+      static base_t my_zero() 
 	{
 	  return 0.0;
 	}
 
-      static double my_one() 
+      static base_t my_one() 
 	{
 	  return 1.0;
 	}
 
-      static double my_two()
+      static base_t my_two()
 	{
 	  return 2.0;
 	}
 
-      static double my_sqrt(double sqr) 
+      static base_t my_sqrt(base_t sqr) 
 	{
 	  return sqrt(sqr);
 	}
 
-      static double my_neg(double d) 
+      static base_t my_neg(base_t d) 
 	{
 	  return -d;
 	}
 
-      static bool is_special(double d)
+      static bool is_special(base_t d)
 	{
 #ifdef _MSC_VER
 	  return _isnan || !_finite(d);
@@ -62,7 +66,7 @@ namespace yalaa
 #endif
 	}
 
-      static bool is_infinity(double d)
+      static bool is_infinity(base_t d)
 	{
 #ifdef _MSC_VER
 	  return !_finite(d);
@@ -71,13 +75,21 @@ namespace yalaa
 #endif
 	}
 
-      static bool is_nan(double d)
+      static bool is_nan(base_t d)
 	{
 #ifdef _MSC_VER
 		return _isnan(d);
 #else
 	  return isnan(d);
 #endif
+	}
+
+      static base_t my_add_up(base_t d1, base_t d2) 
+	{
+	  // TODO: posteriori Fehlerabschätzung
+	  yalaa::fp::RndControl rnd;
+	  rnd.upward();
+	  return d1+d2;
 	}
     };
   }

@@ -76,4 +76,20 @@ void ErrorTermImpl<T>::print(std::ostream &os) const
 }
 
 template<typename T>
+unsigned ErrorTermImpl<T>::special() const
+{
+  if(m_eps < 0)
+    return abs(m_eps);
+  return 0;
+}
+
+template<typename T>
+void ErrorTermImpl<T>::set_special(unsigned type)
+{
+  m_eps = -type;
+}
+
+
+
+template<typename T>
 unsigned long long ErrorTermImpl<T>::CURRENT_EPS = 0;

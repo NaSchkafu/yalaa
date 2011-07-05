@@ -94,7 +94,7 @@ namespace yalaa
        * 
        * @return 0 if not a special term, the type otherwise
        */
-      inline unsigned short special() const;
+      inline unsigned special() const;
       
       /** 
        * Marks this error term as a special term
@@ -102,14 +102,13 @@ namespace yalaa
        * 
        * @param type type of the term
        */
-      inline void set_special(unsigned short type);
+      inline void set_special(unsigned type);
 
     private:
       inline static unsigned long long new_symbol();
 
     private:
-      unsigned long long m_eps;
-      unsigned short m_special;
+      long long m_eps;
 
       T m_dev;
 

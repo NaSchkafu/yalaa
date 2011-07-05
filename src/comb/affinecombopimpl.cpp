@@ -40,7 +40,7 @@ namespace yalaa
 	else if(*it2 < *it)
 	  it = ac1->insert(*it2, it);
 	else if(*it == *it2) {
-	  it->set_dev(it->dev( )+ (ADD ? it2->dev() : -it2->dev()));
+	  it->set_dev(it->dev( ) + ((ADD || it->special()) ? it2->dev() : -it2->dev()));
 	  ++it; ++it2; ++ops;
 	}
       }
@@ -87,7 +87,7 @@ namespace yalaa
       //std::cout << sc << " " << sn << std::endl;
       ac->set_central(sc*ac->central());
       for(typename ac_t::aff_comb_iter it(ac->begin()); it != ac->end();++it)
-	it->set_dev(sn*it->dev());
+	it->set_dev((it->special() ? fabs(sn) : sn) *it->dev());
       return ac->size()+1;
     }
     
@@ -105,7 +105,8 @@ namespace yalaa
     {
       ac->set_central(-ac->central());
       for(typename ac_t::aff_comb_iter it(ac->begin()); it != ac->end();++it)
-	it->set_dev(-it->dev());
+	if(!it->special())
+	  it->set_dev(-it->dev());
       return ac->size()+1;
       }
   }
