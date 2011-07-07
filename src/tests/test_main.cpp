@@ -3,11 +3,17 @@
 #include <deque>
 #include <boost/foreach.hpp>
 
+
 // yalaa
 #include "yalaa.hpp"
 
+//#define AFF_TYPE yalaa::aff_af1_e_d_dec
+#define AFF_TYPE yalaa::aff_e_d_dec
+
 // Funktionsmeta
 #include "ftmeta.hpp"
+
+
 
 namespace yalaa
 {
@@ -23,6 +29,7 @@ namespace yalaa
 #endif
     }
 
+
     class YalaaEleFunctionTest : public ::testing::TestWithParam<FTMeta>
     {
     public:
@@ -30,29 +37,26 @@ namespace yalaa
       typedef yalaa::details::double_iv_t iv_t;
       typedef iv_t (*iv_f_t)(const iv_t&);
       typedef yalaa::details::base_traits<iv_t> iv_traits;
-
+      
     protected:
       void SetUp()
-        {
-          m_meta = GetParam();
-          iv_t d(m_meta.d);
-          if(m_meta.dt & LEFTOPEN)
-            //d = iv_t(nextafter(iv_traits::my_inf(d),iv_traits::my_sup(d)) , iv_traits::my_sup(d));
-            d = iv_t(iv_traits::my_inf(d) + S_OPEN_EPS , iv_traits::my_sup(d));
-          if(m_meta.dt & RIGHTOPEN)
-//          d = iv_t(iv_traits::my_inf(d), nextafter(iv_traits::my_sup(d), iv_traits::my_inf(d)));
-            d = iv_t(iv_traits::my_inf(d), iv_traits::my_sup(d) - S_OPEN_EPS);
-          m_x.push_back(d);
-        }
-
+	{
+	  m_meta = GetParam();
+	  iv_t d(m_meta.d);
+	  if(m_meta.dt & LEFTOPEN)
+	    d = iv_t(iv_traits::my_inf(d) + S_OPEN_EPS , iv_traits::my_sup(d));
+	  if(m_meta.dt & RIGHTOPEN)
+	    d = iv_t(iv_traits::my_inf(d), iv_traits::my_sup(d) - S_OPEN_EPS);
+	  m_x.push_back(d);
+	}
+      
     protected:
       std::deque<iv_t> m_x;
       FTMeta m_meta;
-
-      // max. Unterteilung
       static const base_t S_EPS = 10e-4;
       static const base_t S_OPEN_EPS = 10e-10;
     };
+    
 
     // Range Test
     TEST_P(YalaaEleFunctionTest, RangeTest)
@@ -60,7 +64,7 @@ namespace yalaa
       while(!m_x.empty()) {
         iv_t x(m_x.front());
         iv_t fiv((*m_meta.ivf)(x));
-        aff_e_d faff((*m_meta.afff)(aff_e_d(x)));
+        AFF_TYPE faff((*m_meta.afff)(AFF_TYPE(x)));
         iv_t faffiv (to_iv(faff));
         ASSERT_TRUE(iv_traits::my_inf(faffiv) <= iv_traits::my_sup(fiv) &&
                     iv_traits::my_sup(faffiv) >= iv_traits::my_inf(fiv))
@@ -82,12 +86,12 @@ namespace yalaa
     }
 
     // Range Test fuer degenerierte Formen ohne Abhängigkeiten
-    TEST_P(YalaaEleFunctionTest, RangeTestPoin)
+    TEST_P(YalaaEleFunctionTest , RangeTestPoin)
     {
       while(!m_x.empty()) {
         iv_t x(mid(m_x.front()));
         iv_t fiv((*m_meta.ivf)(x));
-        aff_e_d faff((*m_meta.afff)(aff_e_d(x)));
+        AFF_TYPE faff((*m_meta.afff)(AFF_TYPE(x)));
         iv_t faffiv (to_iv(faff));
         ASSERT_TRUE(iv_traits::my_inf(faffiv) <= iv_traits::my_sup(fiv) &&
                     iv_traits::my_sup(faffiv) >= iv_traits::my_inf(fiv))
@@ -124,8 +128,8 @@ namespace yalaa
         while(!m_x.empty()) {
           iv_t x(m_x.front());
           iv_t fiv(iv_traits::my_pow(x, exp));
-          aff_e_d aarg(x);
-          aff_e_d faff(pown(aarg, exp));
+          AFF_TYPE aarg(x);
+          AFF_TYPE faff(pown(aarg, exp));
           iv_t faffiv (to_iv(faff));
           iv_t isect(intersect(faffiv, fiv));
           if(!exp)
@@ -160,10 +164,10 @@ namespace yalaa
     // iv_t faffiv (to_iv(faff));
     // iv_t isect(intersect(faffiv, fiv));
 
-    // ASSERT_EQ(to_iv(pown(aff_e_d(x1),2)), pow(x1, 4));
-    // ASSERT_EQ(to_iv(pown(aff_e_d(x2),4)), x2);
-    // ASSERT_EQ(to_iv(pown(aff_e_d(x3),6)), x3);
-    // ASSERT_EQ(to_iv(pown(aff_e_d(x4),8)), x4);
+    // ASSERT_EQ(to_iv(pown(AFF_TYPE(x1),2)), pow(x1, 4));
+    // ASSERT_EQ(to_iv(pown(AFF_TYPE(x2),4)), x2);
+    // ASSERT_EQ(to_iv(pown(AFF_TYPE(x3),6)), x3);
+    // ASSERT_EQ(to_iv(pown(AFF_TYPE(x4),8)), x4);
   }
 }
 

@@ -99,14 +99,11 @@ namespace yalaa
 	yalaa::fp::RndControl rnd;
 	iv_t csqr(iv_traits::my_sqr(iv_t(ac->central())));
 	T center = iv_traits::my_mid(csqr);
-	T err = aff_op_t::affine(ac, S_DUMMY, 2*ac->central(), 0.0, 0.0, 0.0, rnd);
+	T err = aff_op_t::scale_add(ac, 0.0, 2*ac->central(), center, rnd);
 	rnd.upward();
 	err += iv_traits::my_w(csqr);
 	rad *= rad;
-	T ncenter = center + 0.5*rad;
-	err += std::max(ncenter - center, (center + rad) - ncenter);
-	ac->set_central(ncenter);
-	return yalaa::details::ArithmeticError<T>(err, yalaa::fp::get_flags(err));
+	return yalaa::details::ArithmeticError<T>(err, rad, 0.0, yalaa::fp::get_flags(err));
       }
 
       template<typename T, template<typename> class ET,

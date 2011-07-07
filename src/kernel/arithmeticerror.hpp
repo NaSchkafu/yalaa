@@ -64,20 +64,6 @@ namespace yalaa
        * @param gen general error
        * @param pos positive error
        * @param neg negative error
-       * @param sum sum of errors
-       * @param error flags
-       */
-      ArithmeticError(base_ref_t gen, base_ref_t pos, base_ref_t neg, 
-		      base_ref_t sum, unsigned error);
-
-      /** 
-       * Ctor
-       * Constructs a new ArithmeticError object
-       * The sum is calculated by ArithmeticError using the base_traits<base_t>::add_up function
-       * 
-       * @param gen general error
-       * @param pos positive error
-       * @param neg negative error
        * @param error flags
        */
       ArithmeticError(base_ref_t gen, base_ref_t pos, base_ref_t neg, unsigned error);
@@ -88,7 +74,7 @@ namespace yalaa
        * 
        * @return error sum
        */
-      inline base_t sum() const;
+      //inline base_t sum() const;
 
       /** 
        * Gets the positive error
@@ -127,7 +113,6 @@ namespace yalaa
       T m_gen;
       T m_pos;
       T m_neg;
-      T m_sum;
       unsigned m_error;
     };
 

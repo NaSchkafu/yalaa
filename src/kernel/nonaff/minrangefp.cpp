@@ -46,7 +46,8 @@ namespace yalaa
         T ubfa = (-alpha)*ubx;
         T ubd = ubf - ubfa;
         T err = ubd - lbd;
-        inde = (ubd + lbd)/2; 
+        inde = (ubd + lbd)/2;
+	err /= 2;
         return err;
       }
       // ****************************************************************
@@ -61,8 +62,10 @@ namespace yalaa
 	unsigned flags = 0;
 	if(ubx < 0)
 	  return aerror_t(0.0,aerror_t::C_D_VIOL);
-	else if(lbx < 0)
+	else if(lbx < 0) {
 	  flags |= aerror_t::P_D_VIOL;
+	  lbx = 0;
+	}
 
 	yalaa::fp::RndControl rnd;
 	rnd.downward();
@@ -310,6 +313,7 @@ namespace yalaa
       {
 	yalaa::fp::RndControl rnd;
 	unsigned flags = 0;
+	T err;
 	if(iv_traits::my_sup(d) < 1)
 	  return aerror_t(0.0, aerror_t::C_D_VIOL);
 	else if(iv_traits::my_inf(d) < 1) {
@@ -317,13 +321,29 @@ namespace yalaa
 	  d = iv_t(1.0, iv_traits::my_sup(d));
 	}
 	iv_t fd(iv_traits::my_acosh(d));
-	T c;
 	rnd.upward();
-	T err = min_range(iv_traits::my_inf(d), iv_traits::my_sup(d), iv_traits::my_inf(fd), iv_traits::my_sup(fd),
-			  iv_traits::my_sup(fd), c);
-	T err2 = aff_op_t::scale_add(ac, iv_traits::my_inf(fd), iv_traits::my_inf(fd), c, rnd);
-	rnd.upward();
-	err += err2;
+	if(iv_traits::my_inf(d) == iv_traits::my_sup(d)) {
+	  // Kein Minrange für Point, alpha ist undefiniert für [1,1]
+	  ac->clear();
+	  if(iv_traits::my_inf(fd) > iv_traits::my_sup(fd))
+	    flags |= aerror_t::I_ERROR;
+	  else {
+	    ac->set_central(iv_traits::my_mid(fd));
+	    flags |= yalaa::fp::get_flags(iv_traits::my_inf(fd)) | 
+	      yalaa::fp::get_flags(iv_traits::my_sup(fd));
+	  }
+	  err = iv_traits::my_w(fd);
+	} 
+	else {  
+	  T c;
+	  rnd.upward();
+	  T alpha(1/(b_traits::my_sqrt(iv_traits::my_sup(d)-1)*b_traits::my_sqrt(iv_traits::my_sup(d)+1)));
+	  err = min_range(iv_traits::my_inf(d), iv_traits::my_sup(d), iv_traits::my_inf(fd), 
+			  iv_traits::my_sup(fd), alpha, c);
+	  T err2 = aff_op_t::scale_add(ac, alpha, alpha, c, rnd);
+	  rnd.upward();
+	  err += err2;
+	}
 	return aerror_t(err, yalaa::fp::get_flags(err) | flags);
       }
     
@@ -352,7 +372,6 @@ namespace yalaa
 	  c = -c;
 	T err2 = aff_op_t::scale_add(ac, alpha, alpha, c, rnd);
 	rnd.upward();
-	err += err2;
 	return aerror_t(err, yalaa::fp::get_flags(err));
       }
 

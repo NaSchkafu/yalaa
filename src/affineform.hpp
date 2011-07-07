@@ -56,7 +56,11 @@ namespace yalaa
   YALAA_AFF_TEMPLATE
   class AffineForm : boost::arithmetic<AffineForm<T, ET, AC, AR, AP, EP, IV>,
                      boost::arithmetic<AffineForm<T, ET, AC, AR, AP, EP, IV>, IV,
-                     boost::arithmetic<AffineForm<T, ET, AC, AR, AP, EP, IV>, T> > >
+	             boost::subtractable2_left<AffineForm<T, ET, AC, AR, AP, EP, IV>, IV,
+		     boost::dividable2_left<AffineForm<T, ET, AC, AR, AP, EP, IV>, IV,
+                     boost::arithmetic<AffineForm<T, ET, AC, AR, AP, EP, IV>, T,
+	             boost::subtractable2_left<AffineForm<T, ET, AC, AR, AP, EP, IV>, T,
+                     boost::dividable2_left<AffineForm<T, ET, AC, AR, AP, EP, IV>, T > > > > > > >
   {
   public:
     // ****************************************************************

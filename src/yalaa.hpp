@@ -38,6 +38,7 @@
 #include "kernel/exacterror.hpp"
 // aff pol
 #include "pol/af0.hpp"
+#include "pol/af1.hpp"
 // err pol
 #include "pol/errorpolstd.hpp"
 #include "pol/errorpoldec.hpp"

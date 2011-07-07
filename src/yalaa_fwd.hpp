@@ -59,6 +59,8 @@ namespace yalaa
     template<typename T, typename IV> class ErrorPolDec;
     template<typename, template<typename> class, template<typename, template<typename> class> class>
     class AF0;
+    template<typename, template<typename> class, template<typename, template<typename> class> class>
+    class AF1;
   }
 
 }
@@ -83,6 +85,10 @@ namespace yalaa
   /// Standard affine form with the ExactError kernel for double with decorations
   typedef AffineForm<double, details::ErrorTermImpl, details::AffineCombImpl, kernel::ExactErrorFP, 
 		     yalaa::pol::AF0, yalaa::pol::ErrorPolDec, details::double_iv_t> aff_e_d_dec;
+
+  /// Extended affine form AF1 with the ExactError kernel for double with decorations
+  typedef AffineForm<double, details::ErrorTermImpl, details::AffineCombImpl, kernel::ExactErrorFP, 
+		     yalaa::pol::AF1, yalaa::pol::ErrorPolDec, details::double_iv_t> aff_af1_e_d_dec;
 #endif
 
 #ifdef YALAA_HAVE_L_DOUBLE_IV

@@ -31,6 +31,7 @@
 #define __AF1_HPP__
 
 #include "kernel/arithmeticerror.hpp"
+#include "specialterms.hpp"
 
 namespace yalaa
 {
@@ -44,7 +45,7 @@ namespace yalaa
      * Rounding/approximation errors and uncertainty are added 
      * to the same term, which is treated independently and does not model an affine dependency
      * between forms. New noise symbols are only introduced in the computation process
-     * by creating a new affine form.  
+     *  by creating a new affine form.  
      */
     template<typename T, template<typename> class ET, 
 	     template<typename, template<typename> class> class AC>
@@ -53,18 +54,20 @@ namespace yalaa
     public:
       typedef T base_t;
       typedef typename boost::mpl::if_<boost::is_fundamental<base_t>, base_t, typename boost::add_const<typename boost::add_reference<base_t>::type>::type>::type base_ref_t;
- 
+      typedef ET<base_t> error_t;
+      typedef AC<base_t, ET> ac_t;
+      typedef yalaa::details::base_traits<base_t> b_traits_t;
+
      /// Called for adding errors (approximation, rounding errors, ...)
       /** 
-       * In AF1 this adds a new independet error symbol for the error's sum
+       * In AF1 this adds all errors to a special form
        * 
        * @param ac affine combination
        * @param err error
        */
       static void add_errors(AC<T, ET> *ac, const yalaa::details::ArithmeticError<T> &err)
         {
-	  if(err.sum() != yalaa::details::base_traits<base_t>::my_zero())
-	    ac->insert(typename AC<T, ET>::error_t(err.sum()));
+	  //  add_uncert(ac, err.sum());
         }
 
       /// Called for creating by creating a new affine form
@@ -76,7 +79,8 @@ namespace yalaa
        */
       static void new_form(AC<T, ET> *ac, base_ref_t uncert) 
 	{
-	  ac->insert(typename AC<T,ET>::error_t(uncert));
+	  if(uncert != yalaa::details::base_traits<base_t>::my_zero())
+	    ac->insert(typename AC<T,ET>::error_t(uncert));
 	}
 
       /// Called for introducing uncertainty into an existing form
@@ -89,9 +93,17 @@ namespace yalaa
        */
       static void add_uncert(AC<T, ET> *ac, base_ref_t uncert)
 	{
-	  ac->insert(typename AC<T,ET>::error_t(uncert));
+	  if(uncert != yalaa::details::base_traits<base_t>::my_zero()) {
+	    typename ac_t::aff_comb_iter it(ac->find(error_t(yalaa::details::SpecialErrTerm::GEN_ERR)));
+	    if(it != ac->end())
+	      it->set_dev(b_traits_t::my_add_up(it->dev(), b_traits_t::my_abs(uncert)));
+	    else {
+	      typename ac_t::error_t errt(uncert);
+	      errt.set_special(yalaa::details::SpecialErrTerm::GEN_ERR);
+	      ac->insert(errt);
+	    }
+	  }
 	}
-
     };
   }
 }

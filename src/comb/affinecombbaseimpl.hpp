@@ -182,6 +182,15 @@ namespace yalaa
        */
       void push_back(const ET<T> &term);
 
+      /** 
+       * Finds an element inside the combination
+       * 
+       * @param term error term
+       * 
+       * @return element
+       */
+      aff_comb_iter find(const ET<T> &term);
+
     private:
       std::vector<ET<T> > m_errors;
       T m_central;

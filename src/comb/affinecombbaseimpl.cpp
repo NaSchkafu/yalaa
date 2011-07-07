@@ -48,7 +48,7 @@ namespace yalaa
     }
 
     template<typename T, template<typename> class ET>
-    void AffineCombBaseImpl<T,ET>::remove(const ET<T> &term)
+    void AffineCombBaseImpl<T,ET>::remove(const error_t &term)
     {
       aff_comb_iter it(std::lower_bound(m_errors.begin(), m_errors.end(), term));
       if(*it == term && it != m_errors.end())
@@ -68,7 +68,7 @@ namespace yalaa
 // }
 
     template<typename T, template<typename> class ET>
-    typename AffineCombBaseImpl<T,ET>::aff_comb_iter AffineCombBaseImpl<T,ET>::insert(const ET<T> &term)
+    typename AffineCombBaseImpl<T,ET>::aff_comb_iter AffineCombBaseImpl<T,ET>::insert(const error_t &term)
     {
       aff_comb_iter it(std::lower_bound(m_errors.begin(), m_errors.end(), term));
       YALAA_ASSERT(it == m_errors.end() || !(*it == term), "Term is already in affine combination.");
@@ -76,7 +76,7 @@ namespace yalaa
     }
 
     template<typename T, template<typename> class ET>
-    typename AffineCombBaseImpl<T,ET>::aff_comb_iter AffineCombBaseImpl<T,ET>::insert(const ET<T> &term,
+    typename AffineCombBaseImpl<T,ET>::aff_comb_iter AffineCombBaseImpl<T,ET>::insert(const error_t &term,
                                                                               const aff_comb_iter &pos)
     {
       return m_errors.insert(pos, term);
@@ -120,9 +120,16 @@ namespace yalaa
     }
 
     template<typename T, template<typename> class ET>
-    void AffineCombBaseImpl<T, ET>::push_back(const ET<T> &term)
+    void AffineCombBaseImpl<T, ET>::push_back(const error_t &term)
     {
       m_errors.push_back(term);
     }
+
+    template<typename T, template<typename> class ET>
+    typename AffineCombBaseImpl<T,ET>::aff_comb_iter AffineCombBaseImpl<T, ET>::find(const error_t &t)
+    {
+      return std::lower_bound(m_errors.begin(), m_errors.end(), t);
+    }
+    
   }
 }

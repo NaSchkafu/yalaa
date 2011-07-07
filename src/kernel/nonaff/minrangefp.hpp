@@ -68,12 +68,14 @@ namespace yalaa
 	       class IV>
     struct MinRangeFP
     {
-      typedef ET<T> error_t;
-      typedef AC<T, ET> ac_t;
-      typedef yalaa::details::ArithmeticError<T> aerror_t;
+      typedef T base_t;
+      typedef ET<base_t> error_t;
+      typedef AC<base_t, ET> ac_t;
+      typedef yalaa::details::ArithmeticError<base_t> aerror_t;
       typedef AFFOP aff_op_t;
       typedef IV iv_t;
       typedef yalaa::details::base_traits<iv_t> iv_traits;
+      typedef yalaa::details::base_traits<base_t> b_traits;
 
       static aerror_t exp(ac_t *ac, const iv_t &d);
       static aerror_t exp2(ac_t *ac, const iv_t &d);

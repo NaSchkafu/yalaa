@@ -237,12 +237,24 @@ void ltest(int (*f)(int, int))
 
 int main(int argc, char *argv[])
 {
+  // sqr(1-sqrt(sqr(x0)+sqr(x1)))+pow(sin(x2),3)-0.125
+
   using namespace yalaa;
-  yalaa::details::double_iv_t ssx1(2.5, 3.75);
-  aff_e_d a(ssx1);
-  std::cout << sinh(a) << std::endl;
-  test(ssx1);
-  std::cout << iv_traits::my_sinh(ssx1) << std::endl;
+  yalaa::details::double_iv_t ssx1(-10,0);
+  aff_e_d_dec x0(ssx1);
+  aff_e_d_dec x1(ssx1);
+  aff_e_d_dec x2(ssx1);
+  aff_e_d_dec erg(sqr(x0));//+pown(sin(x2),3));
+  std::cout << erg << std::endl;
+  1.0-erg-1.0;
+  
+  //return sqr(1-sqrt(sqr(x0)+sqr(x1)))+pow(sin(x2),3)-0.125;
+  // std::cout << acosh(a) << std::endl;
+  // std::cout << iv_traits::my_acosh(ssx1) << std::endl;
+  // aff_e_d a(ssx1);
+  // std::cout << sinh(a) << std::endl;
+  // test(ssx1);
+  // std::cout << iv_traits::my_sinh(ssx1) << std::endl;
   return 0;
 
   ltest([](int x, int y)->int{ return x + y; });

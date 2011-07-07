@@ -91,6 +91,48 @@ namespace yalaa
 	  rnd.upward();
 	  return d1+d2;
 	}
+
+      static base_t my_sub_up(base_t d1, base_t d2) 
+	{
+	  // TODO: posteriori Fehlerabschätzung
+	  yalaa::fp::RndControl rnd;
+	  rnd.upward();
+	  return d1-d2;
+	}
+
+      static base_t my_add_down(base_t d1, base_t d2) 
+	{
+	  // TODO: posteriori Fehlerabschätzung
+	  yalaa::fp::RndControl rnd;
+	  rnd.downward();
+	  return d1+d2;
+	}
+
+      static base_t my_sub_down(base_t d1, base_t d2) 
+	{
+	  // TODO: posteriori Fehlerabschätzung
+	  yalaa::fp::RndControl rnd;
+	  rnd.downward();
+	  return d1-d2;
+	}
+
+      static base_t my_half_up(base_t d1) 
+	{
+	  // TODO Underflow
+	  return 0.5*d1;
+	}
+
+      static base_t my_half_down(base_t d1) 
+	{
+	  // TODO Underflow
+	  return 0.5*d1;
+	}
+      
+
+      static base_t my_abs(base_t d) 
+	{
+	  return fabs(d);
+	}
     };
   }
 }

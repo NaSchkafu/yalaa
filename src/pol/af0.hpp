@@ -52,6 +52,7 @@ namespace yalaa
     public:
       typedef T base_t;
       typedef typename boost::mpl::if_<boost::is_fundamental<base_t>, base_t, typename boost::add_const<typename boost::add_reference<base_t>::type>::type>::type base_ref_t;
+      typedef yalaa::details::base_traits<base_t> b_traits_t;
 
       /// Called for adding errors (approximation, rounding errors, ...)
       /** 
@@ -62,8 +63,27 @@ namespace yalaa
        */
       static void add_errors(AC<T, ET> *ac, const yalaa::details::ArithmeticError<T> &err)
         {
-	  if(err.sum() != yalaa::details::base_traits<base_t>::my_zero())
-	    ac->insert(typename AC<T, ET>::error_t(err.sum()));
+	  T errn(err.gen());
+	  // Scaling Pos Fehler
+	  if(err.pos() != b_traits_t::my_zero()) {
+	    base_t errn_p(b_traits_t::my_half_up(err.pos()));
+	    base_t nc(b_traits_t::my_add_up(ac->central(), errn_p));
+	    errn = b_traits_t::my_add_up(errn, b_traits_t::my_sub_up(nc,b_traits_t::my_add_down(ac->central(), b_traits_t::my_half_down(err.pos()))));
+	    errn = b_traits_t::my_add_up(errn, errn_p);
+	    ac->set_central(nc);
+	  }
+	  if(err.neg() != b_traits_t::my_zero()) {
+	    base_t errn_n(b_traits_t::my_half_up(err.neg()));
+	    base_t nc(b_traits_t::my_sub_up(ac->central(), errn_n));
+	    errn = b_traits_t::my_add_up(errn, b_traits_t::my_sub_up(nc, b_traits_t::my_sub_down(ac->central(), b_traits_t::my_half_down(err.neg()))));
+	    errn = b_traits_t::my_add_up(errn, errn_n);
+	    ac->set_central(nc);
+	  }
+
+	  std::cout << errn << std::endl;
+
+	  if(errn != b_traits_t::my_zero())
+	    ac->insert(typename AC<T, ET>::error_t(errn));
         }
 
       /// Called for creating by creating a new affine form
@@ -88,6 +108,7 @@ namespace yalaa
        */
       static void add_uncert(AC<T, ET> *ac, base_ref_t uncert)
 	{
+
 	  ac->insert(typename AC<T,ET>::error_t(uncert));
 	}
 
