@@ -65,10 +65,7 @@ namespace yalaa
        * @param ac affine combination
        * @param err error
        */
-      static void add_errors(AC<T, ET> *ac, const yalaa::details::ArithmeticError<T> &err)
-        {
-	  //  add_uncert(ac, err.sum());
-        }
+      inline static void add_errors(AC<T, ET> *ac, const yalaa::details::ArithmeticError<T> &err);
 
       /// Called for creating by creating a new affine form
       /** 
@@ -77,11 +74,7 @@ namespace yalaa
        * @param ac affine combination
        * @param uncert uncertainty
        */
-      static void new_form(AC<T, ET> *ac, base_ref_t uncert) 
-	{
-	  if(uncert != yalaa::details::base_traits<base_t>::my_zero())
-	    ac->insert(typename AC<T,ET>::error_t(uncert));
-	}
+      inline static void new_form(AC<T, ET> *ac, base_ref_t uncert);
 
       /// Called for introducing uncertainty into an existing form
       /** 
@@ -91,20 +84,11 @@ namespace yalaa
        * @param ac affine combination
        * @param uncert uncertainty
        */
-      static void add_uncert(AC<T, ET> *ac, base_ref_t uncert)
-	{
-	  if(uncert != yalaa::details::base_traits<base_t>::my_zero()) {
-	    typename ac_t::aff_comb_iter it(ac->find(error_t(yalaa::details::SpecialErrTerm::GEN_ERR)));
-	    if(it != ac->end())
-	      it->set_dev(b_traits_t::my_add_up(it->dev(), b_traits_t::my_abs(uncert)));
-	    else {
-	      typename ac_t::error_t errt(uncert);
-	      errt.set_special(yalaa::details::SpecialErrTerm::GEN_ERR);
-	      ac->insert(errt);
-	    }
-	  }
-	}
+      inline static void add_uncert(AC<T, ET> *ac, base_ref_t uncert);
     };
+
+    #include "af1.inl"
+
   }
 }
 

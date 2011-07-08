@@ -7,8 +7,10 @@
 // yalaa
 #include "yalaa.hpp"
 
+
+//#define AFF_TYPE yalaa::aff_e_d_dec
 //#define AFF_TYPE yalaa::aff_af1_e_d_dec
-#define AFF_TYPE yalaa::aff_e_d_dec
+#define AFF_TYPE yalaa::aff_af2_e_d_dec
 
 // Funktionsmeta
 #include "ftmeta.hpp"
@@ -140,7 +142,9 @@ namespace yalaa
             ASSERT_EQ(faff, aarg)
               << "pown(x,1) does not preserve identity of x!"
               << "Input was " << x << "^" << exp << " fiv: " << fiv << " faff " << faff << std::endl;
-          ASSERT_LE(iv_traits::my_inf(isect), iv_traits::my_sup(isect))
+
+	  ASSERT_TRUE(iv_traits::my_inf(faffiv) <= iv_traits::my_sup(fiv) &&
+		      iv_traits::my_sup(faffiv) >= iv_traits::my_inf(fiv))
             << "Interval and affine evaluation do not intersect!" << std::endl
             << "Input was " << x << "^" << exp << " fiv: " << fiv << " faff " << faff << std::endl;
           // ASSERT_LE(iv_traits::my_inf(faffiv), iv_traits::my_inf(fiv))

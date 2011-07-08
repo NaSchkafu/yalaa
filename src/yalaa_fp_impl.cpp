@@ -173,6 +173,46 @@ namespace yalaa
   // template aff_af1_e_d_dec compundm1(aff_af1_e_d_dec);
   template details::double_iv_t to_iv(const aff_af1_e_d_dec&);
   template double rad(const aff_af1_e_d_dec&);
+
+
+  // ****************************************************************
+  // AF2 DEC
+  // ****************************************************************
+  template class AffineForm<double, details::ErrorTermImpl, details::AffineCombImpl, 
+			    kernel::ExactErrorFP, pol::AF2, pol::ErrorPolDec, details::double_iv_t>;
+  template aff_af2_e_d_dec sqr(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec pown(aff_af2_e_d_dec, int);
+  template aff_af2_e_d_dec sqrt(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec exp(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec exp2(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec exp10(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec log(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec log2(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec log10(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec expm1(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec exp2m1(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec exp10m1(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec logp1(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec log2p1(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec log10p1(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec sin(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec cos(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec tan(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec asin(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec acos(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec atan(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec sinh(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec cosh(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec tanh(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec asinh(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec acosh(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec atanh(aff_af2_e_d_dec);
+  // template aff_af2_e_d_dec abs(aff_af2_e_d_dec);
+  // template aff_af2_e_d_dec rSqrt(aff_af2_e_d_dec);
+  // template aff_af2_e_d_dec hypot(aff_af2_e_d_dec);
+  // template aff_af2_e_d_dec compundm1(aff_af2_e_d_dec);
+  template details::double_iv_t to_iv(const aff_af2_e_d_dec&);
+  template double rad(const aff_af2_e_d_dec&);
 #endif
 
 #if YALAA_HAVE_L_DOUBLE_IV

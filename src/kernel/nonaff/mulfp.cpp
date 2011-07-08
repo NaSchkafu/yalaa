@@ -65,12 +65,10 @@ namespace yalaa
 	// central interval
 	iv_t ix0(iv_traits::my_pow(iv_t(ac->central()), (int)n));
 	iv_t iscale(iv_traits::my_mul(iv_t(static_cast<T>(n)), iv_traits::my_pow(iv_t(ac->central()), (int)n-1)));
-	T nx0 = iv_traits::my_mid(ix0);
 
+	// Approx Fehler
 	rnd.upward();
-	T err = iv_traits::my_w(ix0);
-
-	// TODO: positiven und negativen fehler propagieren
+	T err = 0;
 	T perr = 0.0, serr = 0.0;
 	T prad = rad;
 	for(unsigned k = 2; k <= n; k++) {
@@ -78,16 +76,15 @@ namespace yalaa
 	  (n % 2 ? serr : perr) += fabs(binom(n,k)*prad*s_pow(ac->central(), n - k));
 	}
 	perr *= 0.5;     
-	err += perr + serr;
+	err = serr;
 	
 	// Affine OP
-	ac->set_central(nx0);
-	T err2 = aff_op_t::scale_add(ac, 1.0, 1.0, iv_traits::my_inf(iscale), 
-					  iv_traits::my_sup(iscale), perr, perr, rnd);
+	T err2 = aff_op_t::scale_add(ac, 0.0, 0.0, iv_traits::my_inf(iscale), 
+				     iv_traits::my_sup(iscale), iv_traits::my_inf(ix0), iv_traits::my_sup(ix0), rnd);
 	rnd.upward();
 	err += err2;
 	
-	return yalaa::details::ArithmeticError<T>(err, yalaa::fp::get_flags(err));
+	return yalaa::details::ArithmeticError<T>(err, perr, 0.0, yalaa::fp::get_flags(err));
       }
       
       template<typename T, template<typename> class ET,
