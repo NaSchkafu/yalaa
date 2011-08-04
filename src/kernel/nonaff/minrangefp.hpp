@@ -93,19 +93,20 @@ namespace yalaa
       static aerror_t log2p1(ac_t *ac, const iv_t &d);
       static aerror_t log10p1(ac_t *ac, const iv_t &d);
 
-
       static aerror_t inv(ac_t *ac, const iv_t &d);
       
       static aerror_t cosh(ac_t *ac, const iv_t &d);
       static aerror_t acosh(ac_t *ac, iv_t d);
 
+      static aerror_t minr_powr(ac_t *ac, const iv_t &d, int p, unsigned q);
 
     private:
       static aerror_t expx(ac_t *ac, const iv_t &d, iv_t (*f)(const iv_t&));
       static aerror_t logx(ac_t *ac, const iv_t &d, iv_t (*f)(const iv_t&));
       static aerror_t logxp1(ac_t *ac, const iv_t &d, iv_t (*f)(const iv_t&));
+      
 
-
+      
       //static aerror_t asin(ac_t *ac, IV d);
       // static aerror_t log(ac_t *ac, const IV &d);
 

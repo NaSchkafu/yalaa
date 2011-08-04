@@ -253,7 +253,7 @@ namespace yalaa
                class IV>
       typename ChebyshevFP<T, ET, AC, AFFOP, IV>::aerror_t
       ChebyshevFP<T, ET, AC, AFFOP, IV>::chebyshev(ac_t *ac, const iv_t &d,
-                                                   iv_t (*f)(const iv_t&), bool odd,
+                                                   std::function<iv_t (const iv_t&)> f, bool odd,
                                                    std::function<T (const iv_t&, const iv_t&)> apprerr,
                                                    yalaa::fp::RndControl &rnd, unsigned flags)
       {
@@ -274,7 +274,7 @@ namespace yalaa
 	// 1 Wechsel + 3 IV Mult + 2 IV Auswertungen von f
 	rnd.upward();
 	if(iv_traits::my_w(d) < S_USE_IV) {
-	  iv_t range((*f)(d));
+	  iv_t range(f(d));
 	  ac->clear();
 	  if(iv_traits::my_inf(range) > iv_traits::my_sup(range))
 	    flags |= aerror_t::I_ERROR;
@@ -290,8 +290,8 @@ namespace yalaa
 	iv_t iapib(fast_add_dd_up<T, iv_t>(a,b));
 	iv_t x0(S_HALF*fast_add_ii_up(iv_traits::my_mul(ibsia,S_X[order][0]), iapib));
 	iv_t x1(S_HALF*fast_add_ii_up(iv_traits::my_mul(ibsia,S_X[order][1]), iapib));
-	iv_t fx0((*f)(x0));
-	iv_t fx1((*f)(x1));
+	iv_t fx0(f(x0));
+	iv_t fx1(f(x1));
 	iv_t c0(fast_add_ii_up<iv_t>(fx0, fx1));
 	iv_t c1(fast_add_ii_up<iv_t>(iv_traits::my_mul(fx0,S_X[order][0]),
 				     iv_traits::my_mul(fx1,S_X[order][1])));
@@ -329,6 +329,8 @@ namespace yalaa
       // Annahme: rnd.upward()
       return -(lbc0 - (-lbc1)*lbx);
     }
+
+
       template<typename T, template<typename> class ET,
                template<typename, template<typename> class> class AC,
                class AFFOP,
@@ -338,6 +340,20 @@ namespace yalaa
 	if(s < 0)
 	  return -1.0;
 	return 1.0;
+      }
+
+      template<typename T, template<typename> class ET,
+               template<typename, template<typename> class> class AC,
+               class AFFOP,
+               class IV>
+      typename ChebyshevFP<T, ET, AC, AFFOP, IV>::aerror_t 
+      ChebyshevFP<T, ET, AC, AFFOP, IV>::cheb_powr(ac_t *ac, const iv_t &d, int p, unsigned q) 
+      {
+	yalaa::fp::RndControl rnd;
+	return chebyshev(ac, d, [p, q](const iv_t &a)->iv_t { return iv_traits::my_powr(a, p, q); }, 
+			 false, [&d, p, q](const iv_t&, const iv_t&)->T  
+			 { return self_t::lag_rem(d, iv_traits::my_mul(iv_traits::my_div(iv_t(p),iv_t(q)),
+								       iv_traits::my_powr(d, p - q, q))); });
       }
 
     }

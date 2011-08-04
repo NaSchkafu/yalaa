@@ -246,6 +246,12 @@ namespace yalaa
 	  return atan(i);
 	}
 
+      static base_t my_powr(const base_t&i, int p, unsigned q) 
+	{
+	  return sqrt(power(i, p), q);
+	}
+      
+
 
       static bool is_empty(const base_t& i)
 	{

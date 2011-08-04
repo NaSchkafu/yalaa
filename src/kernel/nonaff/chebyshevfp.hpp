@@ -67,6 +67,8 @@ namespace yalaa
 	static aerror_t asinh(ac_t *ac, const iv_t &d);
 	static aerror_t atanh(ac_t *ac, const iv_t &d);
 
+	static aerror_t cheb_powr(ac_t* ac, const iv_t& d, int p, unsigned q);
+
       private:
 	/** 
 	 * Calculates an affine chebyshev interpolation
@@ -80,7 +82,7 @@ namespace yalaa
 	 * 
 	 * @return error bounds and flags
 	 */
-	static aerror_t chebyshev(ac_t *ac, const iv_t &d, iv_t (*f)(const iv_t&), bool odd, 
+	static aerror_t chebyshev(ac_t *ac, const iv_t &d, std::function<IV (const iv_t &d)>, bool odd, 
 				  std::function<T (const iv_t&, const iv_t&)>, yalaa::fp::RndControl &rnd, unsigned flags = 0);
 
 	/** 

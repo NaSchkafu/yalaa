@@ -38,7 +38,7 @@ typename ErrorPolDec<T,IV>::special_t ErrorPolDec<T,IV>::to_deco(const aerror_t 
     return D2;
   else if(aerror_t::DISCONT & err)
     return D3;
-  else if(aerror_t::OFLOW & err || aerror_t::UNBOUND)
+  else if((aerror_t::OFLOW | aerror_t::UNBOUND) & err)
     return D4;
   return D5;
 }

@@ -372,11 +372,32 @@ namespace yalaa
 	  c = -c;
 	T err2 = aff_op_t::scale_add(ac, alpha, alpha, c, rnd);
 	rnd.upward();
+	err += err2;
 	return aerror_t(err, yalaa::fp::get_flags(err));
       }
 
-
-      
+      // MinRange für die konvexen bzw. konkaven Fälle der rational Power
+      // Es muss gelten: even(q) or (odd(q) and even(p))!
+      // Sowie: ggT(p, q) = 1
+      template<typename T, template<typename> class ET,
+	       template<typename, template<typename> class> class AC,
+	       class AFFOP,
+	       class IV>
+      typename MinRangeFP<T, ET, AC, AFFOP, IV>::aerror_t
+      MinRangeFP<T, ET, AC, AFFOP, IV>::minr_powr(ac_t *ac, const iv_t& d, int p, unsigned q) 
+      {
+	yalaa::fp::RndControl rnd;
+	base_t alpha(p/q*yalaa::details::base_traits<base_t>::my_powr(
+		       (p > q) && (p >= 0) ? iv_traits::my_inf(d) : 
+		       iv_traits::my_sup(d), p - q, q));
+	iv_t r(iv_traits::my_powr(d, p, q));
+	T c, err(min_range(iv_traits::my_inf(d), iv_traits::my_sup(d), 
+			   iv_traits::my_inf(r), iv_traits::my_sup(r), alpha, c));
+	T err2 = aff_op_t::scale_add(ac, alpha, alpha, c, rnd);
+	rnd.upward();
+	err += err2;
+	return aerror_t(err, yalaa::fp::get_flags(err));
+      }      
     }
   }
 }

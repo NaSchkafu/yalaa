@@ -240,13 +240,22 @@ int main(int argc, char *argv[])
   // sqr(1-sqrt(sqr(x0)+sqr(x1)))+pow(sin(x2),3)-0.125
 
   using namespace yalaa;
-  yalaa::details::double_iv_t ssx1(-10,0);
+  yalaa::details::double_iv_t ssx1(-1,1);
   aff_e_d_dec x0(ssx1);
   aff_e_d_dec x1(ssx1);
   aff_e_d_dec x2(ssx1);
-  aff_e_d_dec erg(sqr(x0));//+pown(sin(x2),3));
-  std::cout << erg << std::endl;
-  1.0-erg-1.0;
+  double m_rx = 2, m_ry = 1, m_rz = 1;
+  double m_eps1 = 2, m_eps2 = 2;
+  std::cout <<  exp(log(exp(log(sqr(x0/m_rx))*1/m_eps2) + exp(log(sqr(x1/m_ry))*1/m_eps2))*m_eps2/m_eps1) 
+    + exp(log(sqr(x2/m_rz))*1/m_eps1) - 1 << std::endl;
+
+  // std::cout <<  exp(ln(exp(ln(sqr(ssx1/m_rx))*1/m_eps2) + exp(ln(sqr(ssx1/m_ry))*1/m_eps2))*m_eps2/m_eps1) 
+  //   + exp(ln(sqr(ssx1/m_rz))*1/m_eps1) - 1 << std::endl;
+
+  
+//  std::cout << ErrorPolDec::special(log(sqr(x0))) << std::endl;
+  // std::cout << erg << std::endl;
+  // 1.0-erg-1.0;
   
   //return sqr(1-sqrt(sqr(x0)+sqr(x1)))+pow(sin(x2),3)-0.125;
   // std::cout << acosh(a) << std::endl;

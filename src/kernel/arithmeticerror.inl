@@ -63,3 +63,9 @@ unsigned ArithmeticError<T>::error() const
 {
   return m_error;
 }
+
+template<typename T>
+void ArithmeticError<T>::set_error(unsigned error)
+{
+  m_error = error;
+}

@@ -108,6 +108,7 @@ namespace yalaa
        */
       inline unsigned error() const;
       
+      inline void set_error(unsigned e);
       
     private:
       T m_gen;

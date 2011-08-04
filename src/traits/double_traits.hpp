@@ -133,6 +133,12 @@ namespace yalaa
 	{
 	  return fabs(d);
 	}
+
+      static base_t my_powr(base_t d, int p, unsigned q) 
+	{
+	  // TODO: bessere Impl?
+	  return base_traits<double_iv_t>::my_mid(base_traits<double_iv_t>::my_powr(double_iv_t(d), p, q));
+	}
     };
   }
 }

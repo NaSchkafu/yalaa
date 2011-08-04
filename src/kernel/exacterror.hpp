@@ -164,6 +164,11 @@ namespace yalaa
     //   static aerror_t sqr(ac_t *ac, double dlow, double dhigh);
     // };
 
+    /// Arithmetic kernel that uses the exact error approach by Stolfi et al.
+    /**
+     * 
+     * 
+     */
     template<typename T, template<typename> class ET, 
 	     template<typename, template<typename> class> class AC, class IV>
     struct ExactErrorFP : public details::ExactErrorAffineFP<T, ET, AC>,
@@ -177,7 +182,61 @@ namespace yalaa
       typedef AC<T, ET> ac_t;
       typedef yalaa::details::ArithmeticError<T> aerror_t;
       typedef ExactErrorFP<T, ET, AC, IV> self_t;
+      typedef IV iv_t;
+      typedef yalaa::details::base_traits<iv_t> iv_traits;
+
+      // Waehlt konkrete Funktion aus der rationalen Potenzfunktion aus
+      static aerror_t powr(ac_t *ac, iv_t d, int p, unsigned q);
+
+
     };
+
+    template<typename T, template<typename> class ET, 
+	     template<typename, template<typename> class> class AC, class IV>
+    typename ExactErrorFP<T, ET, AC, IV>::aerror_t 
+    ExactErrorFP<T, ET, AC, IV>::powr(ac_t *ac, iv_t d, int p, unsigned q)
+    {
+      if(!q)
+	return aerror_t(0.0, aerror_t::I_ERROR);
+      unsigned p1 = abs(p), q1 = q, t;
+      while(q1) {
+	t = p1 % q1;
+	p1 = q1;
+	q1 = t;
+      }
+      p /= p1;
+      q /= q1;
+
+      unsigned flags = 0;
+      if(q & 0x1) {
+	if(p & 0x1) {
+	  // nicht konvex/konkaver case...
+	  // min_range
+	} 
+	else {
+	  // strikt konvex, konkav
+	  if(p < 0 && iv_traits::my_inf(d) <= 0 && iv_traits::my_sup(d) >= 0) {
+	    // Funktion ist undefiniert für 0
+	    // TODO: ist aerror_t::UNBOUND korrekt hier?
+	    ac->clear();
+	    return aerror_t(0.0, (iv_traits::my_inf(d) == iv_traits::my_sup(d) ? 
+				  aerror_t::C_D_VIOL : aerror_t::P_D_VIOL) | aerror_t::UNBOUND);
+	  } 
+	  return details::MinRangeFP<T, ET, AC, details::ExactErrorAffineFP<T, ET, AC>, IV>::minr_powr(ac, d, p, q);
+	}
+      } 
+      else {
+	if(iv_traits::my_sup(d) < 0) {
+	  ac->clear();
+	  return aerror_t(0.0, aerror_t::C_D_VIOL);
+	}
+	d = iv_t(0, iv_traits::my_sup(d));
+	flags |= aerror_t::P_D_VIOL;
+	aerror_t e(details::MinRangeFP<T, ET, AC, details::ExactErrorAffineFP<T, ET, AC>, IV>::minr_powr(ac, d, p, q));
+	e.set_error(e.error() | flags);
+	return e;
+      }
+    }
   }
 }
 

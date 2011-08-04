@@ -301,6 +301,8 @@ namespace yalaa
     YALAA_FRIEND_DECL asinh(AF);
     YALAA_FRIEND_DECL acosh(AF);
     YALAA_FRIEND_DECL atanh(AF);
+    YALAA_FRIEND_DECL powr(AF, int, unsigned);
+    YALAA_FRIEND_DECL pow(AF, const AF&);
 
   private:
     /// affine combination

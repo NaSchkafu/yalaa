@@ -36,8 +36,6 @@
 #include "kernel/nonaff/minrangefp.cpp"
 #include "kernel/nonaff/chebyshevfp.cpp"
 
-
-
 namespace yalaa 
 {
 #ifdef YALAA_HAVE_FLOAT_IV
@@ -92,6 +90,7 @@ namespace yalaa
   template class AffineForm<double, details::ErrorTermImpl, details::AffineCombImpl, 
 			    kernel::ExactErrorFP, pol::AF0, pol::ErrorPolDec, details::double_iv_t>;
   template aff_e_d_dec sqr(aff_e_d_dec);
+  template aff_e_d_dec pow(aff_e_d_dec, const aff_e_d_dec&);
   template aff_e_d_dec pown(aff_e_d_dec, int);
   template aff_e_d_dec sqrt(aff_e_d_dec);
 
@@ -131,7 +130,9 @@ namespace yalaa
   // template aff_e_d_dec rSqrt(aff_e_d_dec);
   // template aff_e_d_dec hypot(aff_e_d_dec);
   // template aff_e_d_dec compundm1(aff_e_d_dec);
-  
+
+  template aff_e_d_dec powr(aff_e_d_dec, int, unsigned);
+
   template details::double_iv_t to_iv(const aff_e_d_dec&);
   template double rad(const aff_e_d_dec&);
 

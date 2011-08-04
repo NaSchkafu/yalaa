@@ -392,6 +392,38 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
   }
 
   YALAA_FRIEND_DEF
+  pow(AF af, const AF &exp)
+  {
+    // af^exp = exp(ln(af)*exp)
+
+    //ln(af)
+    if(AF::ep_t::pre_op(&af)) {
+      const typename AF::iv_t & afd = to_iv(af);
+      typename AF::ar_t::aerror_t error(0.0, AF::ar_t::aerror_t::I_ERROR);
+      if(AF::iv_traits::my_inf(afd) > yalaa::details::base_traits<typename AF::base_t>::my_zero())
+	error = AF::ar_t::log(&af.m_a, afd);
+       AF::ap_t::add_errors(&af.m_a, error);
+       AF::ep_t::post_op(&af, error);
+    }
+
+    //ln(af)*exp
+    if(AF::ep_t::pre_op(&af)) {
+      typename AF::ar_t::aerror_t error(AF::ar_t::mul(&af.m_a, exp.m_a, rad(af), rad(exp)));
+      AF::ap_t::add_errors(&af.m_a, error);
+      AF::ep_t::post_op(&af, error);
+    }
+
+    //exp(ln(af)*exp)
+    if(AF::ep_t::pre_op(&af)) {
+      typename AF::ar_t::aerror_t error(AF::ar_t::exp(&af.m_a, to_iv(exp)));
+      AF::ap_t::add_errors(&af.m_a, error);
+      AF::ep_t::post_op(&af, error);
+    }
+
+    return af;
+  }
+
+  YALAA_FRIEND_DEF
   log(AF af)
   {
     if(AF::ep_t::pre_op(&af)) {
@@ -606,4 +638,18 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     }
     return af;
   }
+
+  YALAA_FRIEND_DEF
+  powr(AF af, int p, unsigned q)
+  {
+    if(AF::ep_t::pre_op(&af)) {
+      const typename AF::iv_t&domain = to_iv(af);
+      typename AF::ar_t::aerror_t error(AF::ar_t::powr(&af.m_a, domain, p, q));
+      AF::ap_t::add_errors(&af.m_a, error);
+      AF::ep_t::post_op(&af, error);
+    }
+    return af;
+  }
+
+  
 }
