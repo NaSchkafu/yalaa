@@ -240,14 +240,17 @@ int main(int argc, char *argv[])
   // sqr(1-sqrt(sqr(x0)+sqr(x1)))+pow(sin(x2),3)-0.125
 
   using namespace yalaa;
-  yalaa::details::double_iv_t ssx1(-1,1);
-  aff_e_d_dec x0(ssx1);
-  aff_e_d_dec x1(ssx1);
-  aff_e_d_dec x2(ssx1);
-  double m_rx = 2, m_ry = 1, m_rz = 1;
-  double m_eps1 = 2, m_eps2 = 2;
-  std::cout <<  exp(log(exp(log(sqr(x0/m_rx))*1/m_eps2) + exp(log(sqr(x1/m_ry))*1/m_eps2))*m_eps2/m_eps1) 
-    + exp(log(sqr(x2/m_rz))*1/m_eps1) - 1 << std::endl;
+  yalaa::details::double_iv_t ssx1(0.1,10);
+  // aff_e_d_dec x0(ssx1);
+  // aff_e_d_dec x1(ssx1);
+  // aff_e_d_dec x2(ssx1);
+  // double m_rx = 2, m_ry = 1, m_rz = 1;
+  // double m_eps1 = 2, m_eps2 = 2;
+  // std::cout <<  exp(log(exp(log(sqr(x0/m_rx))*1/m_eps2) + exp(log(sqr(x1/m_ry))*1/m_eps2))*m_eps2/m_eps1) 
+  //   + exp(log(sqr(x2/m_rz))*1/m_eps1) - 1 << std::endl;
+
+  std::cout << powr(aff_e_d_dec(ssx1), -5, 1) << std::endl;
+  std::cout << pow(ssx1, cxsc::interval(-5)) << std::endl;
 
   // std::cout <<  exp(ln(exp(ln(sqr(ssx1/m_rx))*1/m_eps2) + exp(ln(sqr(ssx1/m_ry))*1/m_eps2))*m_eps2/m_eps1) 
   //   + exp(ln(sqr(ssx1/m_rz))*1/m_eps1) - 1 << std::endl;

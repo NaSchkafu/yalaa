@@ -204,14 +204,15 @@ namespace yalaa
 	p1 = q1;
 	q1 = t;
       }
-      p /= p1;
-      q /= q1;
+      p /= static_cast<int>(p1);
+      q /= p1;
 
       unsigned flags = 0;
       if(q & 0x1) {
 	if(p & 0x1) {
 	  // nicht konvex/konkaver case...
 	  // min_range
+	  return details::ChebyshevFP<T, ET, AC, details::ExactErrorAffineFP<T, ET, AC>, IV>::cheb_powr(ac, d, p, q);
 	} 
 	else {
 	  // strikt konvex, konkav

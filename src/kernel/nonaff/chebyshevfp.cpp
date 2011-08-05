@@ -244,7 +244,7 @@ namespace yalaa
       // rnd.upward();
       wd *= wd;
       iv_t w(wd, wd);
-      return iv_traits::my_sup(iv_traits::my_div(iv_traits::my_mul(w,bdf),S_RMND2));
+      return iv_traits::my_w(iv_traits::my_div(iv_traits::my_mul(w,bdf),S_RMND2));
     }
       
       template<typename T, template<typename> class ET,
@@ -352,8 +352,8 @@ namespace yalaa
 	yalaa::fp::RndControl rnd;
 	return chebyshev(ac, d, [p, q](const iv_t &a)->iv_t { return iv_traits::my_powr(a, p, q); }, 
 			 false, [&d, p, q](const iv_t&, const iv_t&)->T  
-			 { return self_t::lag_rem(d, iv_traits::my_mul(iv_traits::my_div(iv_t(p),iv_t(q)),
-								       iv_traits::my_powr(d, p - q, q))); });
+			 { return self_t::lag_rem(d, iv_traits::my_mul(iv_traits::my_div(iv_t(p),iv_t((double)q)),
+								       iv_traits::my_powr(d, p - q, q))); }, rnd);
       }
 
     }
