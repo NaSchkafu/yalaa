@@ -69,6 +69,8 @@ namespace yalaa
 
 	static aerror_t cheb_powr(ac_t* ac, const iv_t& d, int p, unsigned q);
 
+	static aerror_t cheb_inv(ac_t *ac, const iv_t& d);
+
       private:
 	/** 
 	 * Calculates an affine chebyshev interpolation

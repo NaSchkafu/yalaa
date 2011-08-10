@@ -93,7 +93,7 @@ namespace yalaa
       static aerror_t log2p1(ac_t *ac, const iv_t &d);
       static aerror_t log10p1(ac_t *ac, const iv_t &d);
 
-      static aerror_t inv(ac_t *ac, const iv_t &d);
+      //
       
       static aerror_t cosh(ac_t *ac, const iv_t &d);
       static aerror_t acosh(ac_t *ac, iv_t d);

@@ -161,6 +161,8 @@ void rec_split(const yalaa::details::double_iv_t &i, double eps, void (*f)(const
 
 void test(const yalaa::details::double_iv_t &d)
 {
+  std::cout << (1/power(d,3))*sqr((Sup(d) - Inf(d)))/16 << std::endl;
+
   using namespace yalaa::details;
   typedef double_iv_t iv_t;
   typedef base_traits<double_iv_t> iv_traits;
@@ -189,8 +191,8 @@ void test(const yalaa::details::double_iv_t &d)
   iv_t iapib(fast_add_dd_up<T, iv_t>(a,b));
   iv_t x0(S_HALF*fast_add_ii_up(iv_traits::my_mul(ibsia,S_X[order][0]), iapib));
   iv_t x1(S_HALF*fast_add_ii_up(iv_traits::my_mul(ibsia,S_X[order][1]), iapib));
-  iv_t fx0(iv_traits::my_sinh(x0));
-  iv_t fx1(iv_traits::my_sinh(x1));
+  iv_t fx0(1/x0);
+  iv_t fx1(1/x1);
   std::cout << "fx0 " << fx0 << std::endl;
   std::cout << "fx1 " << fx1 << std::endl;
   iv_t c0(fast_add_ii_up<iv_t>(fx0, fx1));
@@ -238,9 +240,15 @@ void ltest(int (*f)(int, int))
 int main(int argc, char *argv[])
 {
   // sqr(1-sqrt(sqr(x0)+sqr(x1)))+pow(sin(x2),3)-0.125
-
+   // yalaa::details::double_iv_t d(-0.4, -0.12);
+   // test(d);
+   // return 0;
   using namespace yalaa;
-  yalaa::details::double_iv_t ssx1(0.1,10);
+  yalaa::details::double_iv_t ssx1(0.10, 0.2);
+
+  std::cout << pown(aff_e_d_dec(ssx1), -10) << std::endl;
+
+  //yalaa::details::double_iv_t ssx2(1.0, 1.0);
   // aff_e_d_dec x0(ssx1);
   // aff_e_d_dec x1(ssx1);
   // aff_e_d_dec x2(ssx1);
@@ -249,8 +257,12 @@ int main(int argc, char *argv[])
   // std::cout <<  exp(log(exp(log(sqr(x0/m_rx))*1/m_eps2) + exp(log(sqr(x1/m_ry))*1/m_eps2))*m_eps2/m_eps1) 
   //   + exp(log(sqr(x2/m_rz))*1/m_eps1) - 1 << std::endl;
 
-  std::cout << powr(aff_e_d_dec(ssx1), -5, 1) << std::endl;
-  std::cout << pow(ssx1, cxsc::interval(-5)) << std::endl;
+  //std::cout << powr(aff_e_d_dec(ssx1), -5, 2) << std::endl;
+  //std::cout << pow(ssx1, cxsc::interval(-5)/2.0) << std::endl;
+  // std::cout << aff_e_d_dec(ssx2)/aff_e_d_dec(ssx1) << std::endl;
+  // std::cout << ssx2/ssx1 << std::endl;
+
+
 
   // std::cout <<  exp(ln(exp(ln(sqr(ssx1/m_rx))*1/m_eps2) + exp(ln(sqr(ssx1/m_ry))*1/m_eps2))*m_eps2/m_eps1) 
   //   + exp(ln(sqr(ssx1/m_rz))*1/m_eps1) - 1 << std::endl;

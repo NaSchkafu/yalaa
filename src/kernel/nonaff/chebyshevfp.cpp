@@ -44,7 +44,7 @@ namespace yalaa
 	return aerror_t(1.0, false);
       }
       return chebyshev(ac, d, &iv_traits::my_sin, false, [&d](const iv_t&, const iv_t&)->T { 
-	  return ChebyshevFP<T, ET, AC, AFFOP, IV>::lag_rem(d, iv_traits::my_cos(d)); }, rnd);
+	  return ChebyshevFP<T, ET, AC, AFFOP, IV>::lag_rem(d, iv_traits::my_neg(iv_traits::my_sin(d))); }, rnd);
     }
 
 
@@ -64,7 +64,7 @@ namespace yalaa
 	return aerror_t(1.0, false);
       }
       return chebyshev(ac, d, &iv_traits::my_cos, false, 
-		       [&d](const iv_t&, const iv_t&)->T { return self_t::lag_rem(d, iv_traits::my_neg(iv_traits::my_sin(d))); } , rnd);
+		       [&d](const iv_t&, const iv_t&)->T { return self_t::lag_rem(d, iv_traits::my_neg(iv_traits::my_cos(d))); } , rnd);
     }
 
     template<typename T, template<typename> class ET,
@@ -85,8 +85,8 @@ namespace yalaa
 	return aerror_t(0.0, aerror_t::P_D_VIOL | aerror_t::UNBOUND);
       }
       return chebyshev(ac, d, &iv_traits::my_tan, false, 
-		       [&d](const iv_t&, const iv_t&)->T  { return self_t::lag_rem(d, iv_traits::my_add(iv_traits::my_one(),iv_traits::my_sqr(iv_traits::my_tan(d)))); }
-		       ,rnd);
+		       [&d](const iv_t&, const iv_t&)->T  { return self_t::lag_rem(d, iv_traits::my_div(iv_traits::my_mul(iv_t(2),iv_traits::my_sin(d)), 
+								   iv_traits::my_pow(iv_traits::my_cos(d), 3))); }, rnd);
     }
 
 
@@ -173,8 +173,9 @@ namespace yalaa
       // 	return aerror_t(0.0, flags);
       // }
       return chebyshev(ac, d, &iv_traits::my_atan, false, [&d](const iv_t&, const iv_t&)->T  
-		       { return self_t::lag_rem(d, iv_traits::my_div(iv_traits::my_one(), 
-								     iv_traits::my_add(iv_traits::my_one(), iv_traits::my_sqr(d)))); }, rnd);
+		       { return self_t::lag_rem(d, iv_traits::my_neg(iv_traits::my_div(iv_traits::my_mul(iv_t(2), d),
+										       iv_traits::my_sqr(iv_traits::my_add(iv_traits::my_one(), iv_traits::my_sqr(d))))))
+			   ; }, rnd);
     }
 
 
@@ -186,7 +187,7 @@ namespace yalaa
     typename ChebyshevFP<T, ET, AC, AFFOP, IV>::aerror_t ChebyshevFP<T, ET, AC, AFFOP, IV>::sinh(ac_t *ac, const iv_t &d)
     {
       yalaa::fp::RndControl rnd;
-      return chebyshev(ac, d, &iv_traits::my_sinh, false, [&d](const iv_t&, const iv_t&)->T  { return self_t::lag_rem(d, iv_traits::my_cosh(d)); }, rnd);
+      return chebyshev(ac, d, &iv_traits::my_sinh, false, [&d](const iv_t&, const iv_t&)->T  { return self_t::lag_rem(d, iv_traits::my_sinh(d)); }, rnd);
     }
 
     template<typename T, template<typename> class ET,
@@ -197,7 +198,9 @@ namespace yalaa
     {
       yalaa::fp::RndControl rnd;
       return chebyshev(ac, d, &iv_traits::my_tanh, false, [&d](const iv_t&, const iv_t&)->T  
-		       { return self_t::lag_rem(d, iv_traits::my_div(iv_traits::my_one(), iv_traits::my_sqr(iv_traits::my_cosh(d)))); }, rnd);
+		       { return self_t::lag_rem(d, iv_traits::my_mul(iv_t(2), 
+					     iv_traits::my_mul(iv_traits::my_tanh(d), iv_traits::my_div(iv_traits::my_one(), 
+													iv_traits::my_sqr(iv_traits::my_cosh(d)))))); }, rnd);
     }
 
 
@@ -210,8 +213,10 @@ namespace yalaa
     {
       yalaa::fp::RndControl rnd;
       return chebyshev(ac, d, &iv_traits::my_asinh, false, [&d](const iv_t&, const iv_t&)->T  
-		       { return self_t::lag_rem(d, iv_traits::my_div(iv_traits::my_one(), iv_traits::my_add(iv_traits::my_one(),iv_traits::my_sqr(d)))); }, rnd);
-    }  
+		       { return self_t::lag_rem(d, iv_traits::my_div(iv_traits::my_neg(d), 
+								     iv_traits::my_powr(iv_traits::my_add(iv_traits::my_one(),iv_traits::my_sqr(d)), 3, 2)));
+						}, rnd);
+    }
       
     template<typename T, template<typename> class ET,
 	     template<typename, template<typename> class> class AC,
@@ -225,8 +230,9 @@ namespace yalaa
       else if(iv_traits::my_inf(d) <= -1.0 || iv_traits::my_sup(d) >= 1.0)
 	return aerror_t(0.0, aerror_t::P_D_VIOL | aerror_t::UNBOUND);
       return chebyshev(ac, d, &iv_traits::my_atanh, false, [&d](const iv_t&, const iv_t&)->T  
-		       { return self_t::lag_rem(d, iv_traits::my_div(iv_traits::my_one(), iv_traits::my_add(iv_traits::my_one(),iv_traits::my_sqr(d)))); }, rnd);
-    }  
+		       { return self_t::lag_rem(d, iv_traits::my_div(iv_traits::my_mul(iv_t(2), d), 
+								     iv_traits::my_sqr(iv_traits::my_sub(iv_traits::my_sqr(d), iv_traits::my_one()))));  }, rnd );
+    }
       
 
 
@@ -304,8 +310,8 @@ namespace yalaa
 	iv_t c12(iv_traits::my_inf(c1)*2, iv_traits::my_sup(c1)*2);
 	c12 = iv_traits::my_div(c12, ibsia);
 
-	// std::cout << "Lineare Funktion: " << mid(c0 - iapib*c1/ibsia) << "+" << mid(c12)<<"*x" << std::endl;
-	//std::cout << "Bound " << c0 + c1*iv_t(-1,1) << std::endl;
+	 // std::cout << "Lineare Funktion: " << mid(c0 - iapib*c1/ibsia) << "+" << mid(c12)<<"*x" << std::endl;
+	 // std::cout << "Bound " << c0 + c1*iv_t(-1,1) << std::endl;
 	// c0 -= c1*iapib/ibsia;
 
 	err = aff_op_t::scale_add(ac, 0.0, 0.0,
@@ -349,13 +355,27 @@ namespace yalaa
       typename ChebyshevFP<T, ET, AC, AFFOP, IV>::aerror_t 
       ChebyshevFP<T, ET, AC, AFFOP, IV>::cheb_powr(ac_t *ac, const iv_t &d, int p, unsigned q) 
       {
+	int q1 = static_cast<int>(q);
 	yalaa::fp::RndControl rnd;
 	return chebyshev(ac, d, [p, q](const iv_t &a)->iv_t { return iv_traits::my_powr(a, p, q); }, 
-			 false, [&d, p, q](const iv_t&, const iv_t&)->T  
-			 { return self_t::lag_rem(d, iv_traits::my_mul(iv_traits::my_div(iv_t(p),iv_t((double)q)),
-								       iv_traits::my_powr(d, p - q, q))); }, rnd);
+			 false, [&d, p, q1](const iv_t&, const iv_t&)->T  
+			 { return self_t::lag_rem(d, iv_traits::my_mul(iv_traits::my_div(iv_t(p*(p-q1)), iv_t(q1*q1)),
+									iv_traits::my_powr(d, (p - q1) - q1, q1))); }, rnd);
       }
 
+      template<typename T, template<typename> class ET,
+               template<typename, template<typename> class> class AC,
+               class AFFOP,
+               class IV>
+      typename ChebyshevFP<T, ET, AC, AFFOP, IV>::aerror_t 
+      ChebyshevFP<T, ET, AC, AFFOP, IV>::cheb_inv(ac_t *ac, const iv_t &d) 
+      {
+	yalaa::fp::RndControl rnd;
+	return chebyshev(ac, d, [](const iv_t &a)->iv_t { return iv_traits::my_div(iv_traits::my_one(), a); },
+			 false, [&d](const iv_t&, const iv_t&)->T { 
+			   return self_t::lag_rem(d, iv_traits::my_div(iv_traits::my_one(), iv_traits::my_pow(d,3))); },
+			 rnd);
+      }
     }
   }
 }

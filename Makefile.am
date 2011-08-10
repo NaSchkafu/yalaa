@@ -14,7 +14,7 @@ endif
 
 
 
-AM_CPPFLAGS = -frounding-math -mfpmath=sse -msse2 $(EXTRA_INC) -Isrc $(IV_CPPFLAGS) $(BOOST_CPPFLAGS)
+AM_CPPFLAGS = $(EXTRA_INC) -Isrc $(IV_CPPFLAGS) $(BOOST_CPPFLAGS)
 
 lib_LTLIBRARIES = libyalaa.la
 libyalaa_la_SOURCES = $(SRC_FILES)

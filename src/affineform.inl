@@ -128,16 +128,30 @@ namespace yalaa
     // Problem: AffineForm hat (abseits von base_traits) keine Ahnung von base_t,
     // d.h. kann insbesondere auch keine passende Rundungsop durchführen. Der derzeitige
     // Workaround stellt damit sicher, dass beide Fehler voll eingehen.
-    if(ep_t::pre_op(this)) {
-      typename ar_t::aerror_t error1(ar_t::inv(&m_a, to_iv(*this)));
-      ap_t::add_errors(&m_a, error1);
-      ep_t::post_op(this, other, error1);
-      if(ep_t::pre_op(this, other)) {
-        typename ar_t::aerror_t error2(ar_t::mul(&m_a, other.m_a, rad(*this), rad(other)));
-        ap_t::add_errors(&m_a, error2);
-        ep_t::post_op(this, other, error2);
+    self_t oinv(other);
+    if(ep_t::pre_op(this, oinv)) {
+      typename ar_t::aerror_t error1(ar_t::cheb_inv(&oinv.m_a, to_iv(oinv)));
+      ap_t::add_errors(&oinv.m_a, error1);
+      ep_t::post_op(this, oinv, error1);
+      if(ep_t::pre_op(this, oinv)) {
+	typename ar_t::aerror_t error2(ar_t::mul(&m_a, oinv.m_a, rad(*this), rad(oinv)));
+	ap_t::add_errors(&m_a, error2);
+	ep_t::post_op(this, other, error2);
       }
     }
+
+
+    // if(ep_t::pre_op(other)) {
+    //   ac_t inv(other.m_a);
+    //   typename ar_t::aerror_t error1(ar_t::inv(&inv, to_iv(inv)));
+    //   ap_t::add_errors(&m_a, error1);
+    //   ep_t::post_op(this, other, error1);
+    //   if(ep_t::pre_op(this, other)) {
+    //     typename ar_t::aerror_t error2(ar_t::mul(&m_a, other.m_a, rad(*this), rad(other)));
+    //     ap_t::add_errors(&m_a, error2);
+    //     ep_t::post_op(this, other, error2);
+    //   }
+    // }
     return *this;
   }
 
@@ -388,6 +402,8 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
       AF::ap_t::add_errors(&af.m_a, error2);
       AF::ep_t::post_op(&af, error2);
     }
+
+
     return af;
   }
 
