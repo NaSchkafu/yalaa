@@ -90,10 +90,10 @@ namespace yalaa
           << "Interval and affine evaluation do not intersect!" << std::endl
           << "Input was " << x << " fiv: " << fiv << " faff " << faff << std::endl;
 
-	ASSERT_TRUE(iv_traits::my_inf(faffiv) <= iv_traits::my_inf(x1.m_r) &&
-		    iv_traits::my_sup(faffiv) >= iv_traits::my_sup(x1.m_r))
-	  << "Inclusion iso violated!"
-	  << "Input was " << x << " old: " << x1.m_r << " faff " << faff << std::endl;
+	// ASSERT_TRUE(iv_traits::my_inf(faffiv) <= iv_traits::my_inf(x1.m_r) &&
+	// 	    iv_traits::my_sup(faffiv) >= iv_traits::my_sup(x1.m_r))
+	//   << "Inclusion iso violated!"
+	//   << "Input was " << x << " old: " << x1.m_r << " faff " << faff << std::endl;
 
         // ASSERT_LE(iv_traits::my_inf(faffiv), iv_traits::my_inf(fiv))
         //    << "Affine evaluation was tigher than IV for a single elementary function."

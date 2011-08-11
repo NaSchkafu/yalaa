@@ -42,13 +42,14 @@ namespace yalaa
       template<typename T>
       T min_range(T lbx, T ubx, T lbf, T ubf, T alpha, T &inde)
       {
-	T lbd = -(-lbf + alpha*lbx);
-        T ubfa = (-alpha)*ubx;
-        T ubd = ubf - ubfa;
-        T err = ubd - lbd;
-        inde = (ubd + lbd)/2;
+	T lbfa = alpha*lbx;
+	T lbd = -lbf + lbfa;
+	T ubfa = (-alpha)*ubx;
+	T ubd = ubf + ubfa;
+        T err = ubd + lbd;
+        inde = (ubd - lbd)/2;
 	err /= 2;
-        return err;
+        return fabs(err);
       }
       // ****************************************************************
 
@@ -388,10 +389,29 @@ namespace yalaa
       MinRangeFP<T, ET, AC, AFFOP, IV>::minr_powr(ac_t *ac, const iv_t& d, int p, unsigned q) 
       {
 	yalaa::fp::RndControl rnd;
-	base_t alpha(p/q*yalaa::details::base_traits<base_t>::my_powr(
-		       (p > q) && (p >= 0) ? iv_traits::my_inf(d) : 
-		       iv_traits::my_sup(d), p - q, q));
-	iv_t r(iv_traits::my_powr(d, p, q));
+	if(q > static_cast<unsigned>(std::numeric_limits<int>::max()))
+	  return aerror_t(0.0, aerror_t::I_ERROR);
+	int q1 = static_cast<int>(q);
+
+	// std::cout << p << " " << q1 << std::endl;
+	// std::cout << p - q1 << std::endl;
+	// base_t alpha(yalaa::details::base_traits<base_t>::my_powr(iv_traits::my_inf(d), p - q1, q1));
+
+	iv_t r(iv_traits::my_powr(d, p, q1));
+	T ax(p*(p-q1) < 0 ? iv_traits::my_inf(d) : iv_traits::my_sup(d));
+	if(p - q1 < 0 && fabs(ax) == yalaa::details::base_traits<base_t>::my_zero()) {
+	  unsigned flags = 0;
+	  ac->clear(); 
+	  if(iv_traits::my_inf(r) > iv_traits::my_sup(r))
+	    flags |= aerror_t::I_ERROR;
+	  else {
+	    ac->set_central(iv_traits::my_mid(r));
+	    flags |= yalaa::fp::get_flags(iv_traits::my_inf(r)) | 
+	      yalaa::fp::get_flags(iv_traits::my_sup(r));
+	  }
+	  return aerror_t(iv_traits::my_w(r), flags);
+	}
+	base_t alpha(static_cast<double>(p)/q1*yalaa::details::base_traits<base_t>::my_powr(ax, p - q1, q1));
 	T c, err(min_range(iv_traits::my_inf(d), iv_traits::my_sup(d), 
 			   iv_traits::my_inf(r), iv_traits::my_sup(r), alpha, c));
 	T err2 = aff_op_t::scale_add(ac, alpha, alpha, c, rnd);

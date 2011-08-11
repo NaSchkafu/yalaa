@@ -237,16 +237,64 @@ void ltest(int (*f)(int, int))
   
 }
 
+double w(const cxsc::interval i) 
+{
+  return _double(Sup(i) - Inf(i));
+}
+
+#include <iomanip>
+
 int main(int argc, char *argv[])
 {
   // sqr(1-sqrt(sqr(x0)+sqr(x1)))+pow(sin(x2),3)-0.125
    // yalaa::details::double_iv_t d(-0.4, -0.12);
    // test(d);
    // return 0;
-  using namespace yalaa;
-  yalaa::details::double_iv_t ssx1(0.10, 0.2);
 
-  std::cout << pown(aff_e_d_dec(ssx1), -10) << std::endl;
+
+  using namespace yalaa;
+  using namespace std;
+  yalaa::details::double_iv_t ssx1(0.75, 1);
+  yalaa::details::double_iv_t ssx2(0.75, 1);
+  yalaa::details::double_iv_t ssx3(0.5, 1);
+
+  //std::cout << powr(aff_e_d_dec(ssx1), 2, 5) << std::endl;
+
+  int m_eps2_q = 5, m_eps1_q = 1;
+  unsigned m_eps1_p = 1, m_eps2_p = 2;
+  double m_rx = 0.75, m_ry = 0.75, m_rz = 1.0;
+
+  typedef aff_e_d_dec aaf;
+
+  aaf x(powr(sqr(aaf(ssx1)/m_rx), m_eps2_p, m_eps2_q));
+  aaf y(powr(sqr(aaf(ssx2)/m_ry), m_eps2_p, m_eps2_q));
+  aaf xy(powr(x + y,m_eps2_p*m_eps1_q,m_eps2_p*m_eps1_p));
+  aaf z(powr(sqr(aaf(ssx3)/m_rz), m_eps1_p, m_eps1_q));
+  aaf final(xy+z-1);
+
+  //std::cout << ArithTraits<interval>::force_convert(args[0]) << " " 
+  // 	    << ArithTraits<interval>::force_convert(args[1]) << " "
+  // 	    << ArithTraits<interval>::force_convert(args[2]) << std::endl;
+  
+  // std::cout << w(ArithTraits<interval>::force_convert(args[0])) << " " 
+  // 	    << w(ArithTraits<interval>::force_convert(args[1])) << " "
+  // 	    << w(ArithTraits<interval>::force_convert(args[2])) << std::endl;
+  
+  std::cout << setprecision(6) << "x: " << setw(8) << w(to_iv(x))
+	    << " y : " << setw(8) << w(to_iv(y))
+	    << " z : " << setw(8) << w(to_iv(z))
+	    << " xy: " << setw(8) << w(to_iv(xy))
+	    << " e : " << setw(8) << w(to_iv(final)) << std::endl;
+
+  std::cout << "x: " << x << std::endl
+	    << "y: " << y << std::endl
+    	    << "z: " << z << std::endl
+    	    << "xy: " << xy << std::endl
+	    << "e: " << final << std::endl;
+  
+
+  return 0;
+
 
   //yalaa::details::double_iv_t ssx2(1.0, 1.0);
   // aff_e_d_dec x0(ssx1);

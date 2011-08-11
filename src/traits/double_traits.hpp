@@ -137,7 +137,8 @@ namespace yalaa
       static base_t my_powr(base_t d, int p, unsigned q) 
 	{
 	  // TODO: bessere Impl?
-	  return base_traits<double_iv_t>::my_mid(base_traits<double_iv_t>::my_powr(double_iv_t(d), p, q));
+	  int sgn = d < 0 && (q & 0x1) ? -1 : 1;
+	  return sgn*base_traits<double_iv_t>::my_mid(base_traits<double_iv_t>::my_powr(double_iv_t(sgn*d), p, q));
 	}
     };
   }
