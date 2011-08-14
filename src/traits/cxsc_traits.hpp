@@ -248,7 +248,13 @@ namespace yalaa
 
       static base_t my_powr(const base_t&i, int p, unsigned q) 
 	{
-	  return sqrt(power(i, p),q);
+	  base_t po(power(i, p));
+	  if((q & 0x1) && my_inf(po) < 0) {
+	    if(my_sup(po) <= 0)
+	      return -sqrt(abs(po), q);
+	    return -sqrt(base_t(0.0, -my_inf(po)),q) | sqrt(base_t(0.0, my_sup(po)),3);
+	  }
+	  return sqrt(po,q);
 	}
       
 

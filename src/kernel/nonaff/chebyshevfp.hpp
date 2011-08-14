@@ -21,6 +21,7 @@
 #define __CHEBYSHEVFP_HPP__
 
 #include <functional>
+#include <boost/config.hpp>
 
 namespace yalaa 
 {
@@ -120,7 +121,7 @@ namespace yalaa
 	// static const T S_PINF;
 	// static const T S_PSUP;
 
-	static const T S_USE_IV = 10e-70;
+	BOOST_STATIC_CONSTEXPR T S_USE_IV = 10e-70;
       };
     }
   }

@@ -265,12 +265,25 @@ int main(int argc, char *argv[])
   double m_rx = 0.75, m_ry = 0.75, m_rz = 1.0;
 
   typedef aff_e_d_dec aaf;
+  using namespace cxsc;
+  
+
 
   aaf x(powr(sqr(aaf(ssx1)/m_rx), m_eps2_p, m_eps2_q));
   aaf y(powr(sqr(aaf(ssx2)/m_ry), m_eps2_p, m_eps2_q));
   aaf xy(powr(x + y,m_eps2_p*m_eps1_q,m_eps2_p*m_eps1_p));
   aaf z(powr(sqr(aaf(ssx3)/m_rz), m_eps1_p, m_eps1_q));
   aaf final(xy+z-1);
+
+  double eps1 = ((double)m_eps1_p)/m_eps1_q;
+  double eps2 = ((double)m_eps2_p)/m_eps2_q;
+  yalaa::details::double_iv_t w1(pow(pow(sqr(ssx1/m_rx), interval(1/eps2)) + 
+				     pow(sqr(ssx2/m_ry), interval(1/eps2)),
+				     interval(eps2/eps1)) + pow(sqr(ssx3/m_rz), interval(1/eps1)) - 1);
+
+  std::cout << " x: " << pow(sqr(ssx1/m_rx), interval(1/eps2)) << std::endl;
+  std::cout << " x: " << pow(sqr(ssx2/m_rx), interval(1/eps2)) << std::endl;
+  std::cout << " x: " << pow(sqr(ssx3/m_rz), interval(1/eps1)) << std::endl;
 
   //std::cout << ArithTraits<interval>::force_convert(args[0]) << " " 
   // 	    << ArithTraits<interval>::force_convert(args[1]) << " "
@@ -290,7 +303,9 @@ int main(int argc, char *argv[])
 	    << "y: " << y << std::endl
     	    << "z: " << z << std::endl
     	    << "xy: " << xy << std::endl
-	    << "e: " << final << std::endl;
+	    << "e: " << final << std::endl
+	    << "iv: " << w1 << std::endl;
+  
   
 
   return 0;

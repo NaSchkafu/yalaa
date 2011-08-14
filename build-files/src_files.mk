@@ -1,1 +1,1 @@
-SRC_FILES=src/helper/fphelper.cpp src/yalaa.cpp 
+SRC_FILES=src/tests/test_main.cpp src/tests/ftmeta.cpp src/helper/fphelper.cpp src/kernel/aff/exacterroraffinefp.cpp src/kernel/exacterror.cpp src/kernel/nonaff/minrangefp.cpp src/kernel/nonaff/chebyshevfp.cpp src/kernel/nonaff/mulfp.cpp src/yalaa_fp_impl.cpp src/comb/affinecombopimpl.cpp src/comb/affinecombimpl.cpp src/comb/affinecombbaseimpl.cpp 
