@@ -66,7 +66,7 @@ namespace yalaa
     typename ExactErrorFP<T, ET, AC, IV>::aerror_t
     ExactErrorFP<T, ET, AC, IV>::inv(ac_t *ac, const iv_t &d) 
     {
-      return details::ChebyshevFP<T, ET, AC, details::ExactErrorAffineFP<T, ET, AC>, IV>::cheb_inv(ac, d);
+      return details::MinRangeFP<T, ET, AC, details::ExactErrorAffineFP<T, ET, AC>, IV>::minr_inv(ac, d);
     }
 
     

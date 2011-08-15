@@ -115,6 +115,7 @@ namespace yalaa
 	else
 	  ac_t::add_ac_ac_noc(ac1, ac2);
 
+
         rnd.downward();
 	ac_t::mul_ac_s(&down1, scale1, scale1);
 	ac_t::mul_ac_s(&down2, scale2, scale2);

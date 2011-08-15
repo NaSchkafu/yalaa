@@ -172,10 +172,10 @@ namespace yalaa
       // 	ac->set_central(0.0);
       // 	return aerror_t(0.0, flags);
       // }
-      return chebyshev(ac, d, &iv_traits::my_atan, false, [&d](const iv_t&, const iv_t&)->T  
-		       { return self_t::lag_rem(d, iv_traits::my_neg(iv_traits::my_div(iv_traits::my_mul(iv_t(2), d),
-										       iv_traits::my_sqr(iv_traits::my_add(iv_traits::my_one(), iv_traits::my_sqr(d))))))
-			   ; }, rnd);
+      iv_t d2atan(atan_d2(d, rnd));
+      //std::cout << "D2ATAN "  << d2atan << std::endl;
+      return chebyshev(ac, d, &iv_traits::my_atan, false, [&d, d2atan](const iv_t&, const iv_t&)->T  
+		       { return self_t::lag_rem(d, d2atan); }, rnd);
     }
 
 
@@ -373,9 +373,77 @@ namespace yalaa
 	yalaa::fp::RndControl rnd;
 	return chebyshev(ac, d, [](const iv_t &a)->iv_t { return iv_traits::my_div(iv_traits::my_one(), a); },
 			 false, [&d](const iv_t&, const iv_t&)->T { 
-			   return self_t::lag_rem(d, iv_traits::my_div(iv_traits::my_one(), iv_traits::my_pow(d,3))); },
+			   return self_t::lag_rem(d, iv_traits::my_div(iv_t(2.0, 2.0), iv_traits::my_pow(d,3))); },
 			 rnd);
       }
+
+
+    template<typename T, template<typename> class ET,
+	     template<typename, template<typename> class> class AC,
+	     class AFFOP,
+	     class IV>
+    T ChebyshevFP<T, ET, AC, AFFOP, IV>::atan_d2_eval(T d)
+    {
+      return (-2*d)/((d*d+1.0)*(d*d+1.0));
+    }
+      
+
+    template<typename T, template<typename> class ET,
+	     template<typename, template<typename> class> class AC,
+	     class AFFOP,
+	     class IV>
+    typename ChebyshevFP<T, ET, AC, AFFOP, IV>::iv_t ChebyshevFP<T, ET, AC, AFFOP, IV>::atan_d2(const iv_t &d, yalaa::fp::RndControl &rnd)
+    {
+      //std::cout << "ATAN Input " << d << std::endl;
+      // TODO: Konstanten verschieben
+      static T S_SQRT3_INV_INF(iv_traits::my_inf(iv_traits::my_div(iv_traits::my_one(), iv_traits::my_sqrt(iv_t(3.0, 3.0)))));
+      static T S_SQRT3_INV_SUP(iv_traits::my_sup(iv_traits::my_div(iv_traits::my_one(), iv_traits::my_sqrt(iv_t(3.0, 3.0)))));
+      static T S_G_MINMAX_INF(iv_traits::my_inf(iv_traits::my_div(iv_traits::my_mul(iv_t(3.0, 3.0), iv_traits::my_sqrt(iv_t(3.0, 3.0))), iv_t(8.0, 8.0))));
+      static T S_G_MINMAX_SUP(iv_traits::my_sup(iv_traits::my_div(iv_traits::my_mul(iv_t(3.0, 3.0), iv_traits::my_sqrt(iv_t(3.0, 3.0))), iv_t(8.0, 8.0))));
+      
+      // T a(iv_traits::my_inf(d));
+      // T b(iv_traits::my_sup(d));
+      bool a = iv_traits::my_inf(d) > -S_SQRT3_INV_INF;
+      bool b = iv_traits::my_sup(d) <  S_SQRT3_INV_SUP;
+      T inf(iv_traits::my_inf(d));
+      T sup(iv_traits::my_sup(d));
+    
+      if(a && b) {// 1
+	//std::cout << "Fall 1" << std::endl;
+	rnd.upward();
+	T rsup(atan_d2_eval(inf));
+	rnd.downward();
+	return iv_t(atan_d2_eval(sup), rsup);
+      }
+      else if(-S_SQRT3_INV_INF > sup ||
+	      S_SQRT3_INV_SUP < inf) { // 2
+	//std::cout << "Fall 2" << std::endl;
+	rnd.upward();
+	T rsup(atan_d2_eval(sup));
+	rnd.downward();
+	return iv_t(atan_d2_eval(inf), rsup);
+      }
+      else if(inf < -S_SQRT3_INV_INF &&
+	      sup >  S_SQRT3_INV_SUP) {//3 
+	//std::cout << "Fall 3" << std::endl;
+	return iv_t(-S_G_MINMAX_INF, S_G_MINMAX_SUP);
+      }
+      else if(a) { //4 
+	//std::cout << "Fall 4" << std::endl;
+	rnd.upward();
+	return iv_t(-S_G_MINMAX_INF, std::max(atan_d2_eval(inf), atan_d2_eval(sup)));
+      }
+      else if(b) { // 5
+	//std::cout << "Fall 5" << std::endl;
+	rnd.downward();
+	return iv_t(std::min(atan_d2_eval(inf), atan_d2_eval(sup)), S_G_MINMAX_SUP);
+      }
+      assert(!"Invalid case.");
+      return iv_t(1, -1); // Dummy
+    }
+      
+
+
     }
   }
 }

@@ -252,7 +252,9 @@ namespace yalaa
 	  if((q & 0x1) && my_inf(po) < 0) {
 	    if(my_sup(po) <= 0)
 	      return -sqrt(abs(po), q);
-	    return -sqrt(base_t(0.0, -my_inf(po)),q) | sqrt(base_t(0.0, my_sup(po)),3);
+	    base_t r(sqrt(abs(po), q));
+	    Inf(r) = -Sup(r);
+	    return r;
 	  }
 	  return sqrt(po,q);
 	}

@@ -130,7 +130,7 @@ namespace yalaa
     // Workaround stellt damit sicher, dass beide Fehler voll eingehen.
     self_t oinv(other);
     if(ep_t::pre_op(this, oinv)) {
-      typename ar_t::aerror_t error1(ar_t::cheb_inv(&oinv.m_a, to_iv(oinv)));
+      typename ar_t::aerror_t error1(ar_t::inv(&oinv.m_a, to_iv(oinv)));
       ap_t::add_errors(&oinv.m_a, error1);
       ep_t::post_op(this, oinv, error1);
       if(ep_t::pre_op(this, oinv)) {

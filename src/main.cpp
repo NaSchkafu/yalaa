@@ -257,6 +257,13 @@ int main(int argc, char *argv[])
   yalaa::details::double_iv_t ssx1(0.75, 1);
   yalaa::details::double_iv_t ssx2(0.75, 1);
   yalaa::details::double_iv_t ssx3(0.5, 1);
+  yalaa::details::double_iv_t ssx4(0.167526 , 0.693939);
+  yalaa::details::double_iv_t ssx5(0.186068,  0.672560);
+
+   typedef aff_e_d_dec aaf;
+  std::cout << atan(ssx3/ssx5) << std::endl;
+  std::cout << atan(aaf(ssx3)/aaf(ssx5)) << std::endl; 
+//   [-0.22845 , 5.37437]
 
   //std::cout << powr(aff_e_d_dec(ssx1), 2, 5) << std::endl;
 
@@ -264,9 +271,37 @@ int main(int argc, char *argv[])
   unsigned m_eps1_p = 1, m_eps2_p = 2;
   double m_rx = 0.75, m_ry = 0.75, m_rz = 1.0;
 
-  typedef aff_e_d_dec aaf;
-  using namespace cxsc;
-  
+
+   using namespace cxsc;
+
+   
+
+   //std::cout << atan(aaf(ssx5)) << std::endl;
+
+   // aaf q(aaf(ssx3)/aaf(ssx4));
+   // std::cout << ssx3/ssx4 << std::endl;
+   // std::cout << q << std::endl;
+   // std::cout << "****************************************************************" << std::endl; 
+   // std::cout << atan(ssx3/ssx4) << std::endl;
+   // std::cout << atan(aaf(ssx3)/aaf(ssx4)) << std::endl;
+
+   // std::cout << 2*to_iv(q)/sqr(sqr(to_iv(q))+1) << std::endl;
+
+   // aaf t(1/aaf(ssx4));
+   // // aaf u(t*ssx3);
+   // aaf o(ssx3);
+   // aaf q(t*o);
+   // aaf u(o*t);
+   
+
+   // std::cout << "aaf(ssx3): " << o << std::endl;
+   // // std::cout << " 1/ssx4 " << t << std::endl;
+   // std::cout << "t*o " << q << std::endl;
+   // std::cout << "o*t " << u << std::endl;
+   // std::cout << 2*t << std::endl;
+   // std::cout << sqr(sqr(t)+1) << std::endl;
+   // std::cout << 2*t/sqr(sqr(t) + 1) << std::endl; 
+   return 0;
 
 
   aaf x(powr(sqr(aaf(ssx1)/m_rx), m_eps2_p, m_eps2_q));

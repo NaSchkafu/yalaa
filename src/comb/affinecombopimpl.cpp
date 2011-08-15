@@ -37,8 +37,10 @@ namespace yalaa
       while(it != ac1->end() && it2 != ac2.end()) {
 	if(*it < *it2)
 	  ++it;
-	else if(*it2 < *it)
+	else if(*it2 < *it) {
 	  it = ac1->insert(*it2, it);
+	  ++it2;
+	}
 	else if(*it == *it2) {
 	  it->set_dev(it->dev( ) + ((ADD || it->special()) ? it2->dev() : -it2->dev()));
 	  ++it; ++it2; ++ops;

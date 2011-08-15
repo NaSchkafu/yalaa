@@ -113,6 +113,24 @@ namespace yalaa
 	 */
 	static aerror_t acos_asin(ac_t *ac, iv_t d, bool is_acos);
 
+	/** 
+	 * Bounds d^2/dx^2 atan exploiting
+	 * 
+	 * @param d domain
+	 * 
+	 * @return 
+	 */
+	static iv_t atan_d2(const iv_t &d, yalaa::fp::RndControl &rnd);
+
+	/** 
+	 * Evaluates d^2/dx^2 atan
+	 * 
+	 * @param d point
+	 * 
+	 * @return 
+	 */
+	static T atan_d2_eval(T d);
+
 	// static iv_t sin(const iv_t&);
 	// static iv_t dx_asin(const iv_t&i);
 	// static iv_t dx_acos(const iv_t&i);
