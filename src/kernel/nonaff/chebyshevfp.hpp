@@ -131,6 +131,8 @@ namespace yalaa
 	 */
 	static T atan_d2_eval(T d);
 
+	static T atan_e_error(const iv_t &d, const iv_t &c0, const iv_t &c12, yalaa::fp::RndControl &rnd);
+
 	// static iv_t sin(const iv_t&);
 	// static iv_t dx_asin(const iv_t&i);
 	// static iv_t dx_acos(const iv_t&i);

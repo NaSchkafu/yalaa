@@ -174,8 +174,11 @@ namespace yalaa
       // }
       iv_t d2atan(atan_d2(d, rnd));
       //std::cout << "D2ATAN "  << d2atan << std::endl;
-      return chebyshev(ac, d, &iv_traits::my_atan, false, [&d, d2atan](const iv_t&, const iv_t&)->T  
-		       { return self_t::lag_rem(d, d2atan); }, rnd);
+      return chebyshev(ac, d, &iv_traits::my_atan, false, [&d, &rnd](const iv_t& c0, const iv_t &c12)->T  
+		       { 
+			 if(iv_traits::my_inf(c12) <= 1.0)
+			   return self_t::atan_e_error(d, c0, c12, rnd);
+			 return self_t::lag_rem(d, self_t::atan_d2(d, rnd)); }, rnd);
     }
 
 
@@ -310,14 +313,16 @@ namespace yalaa
 	iv_t c12(iv_traits::my_inf(c1)*2, iv_traits::my_sup(c1)*2);
 	c12 = iv_traits::my_div(c12, ibsia);
 
-	 // std::cout << "Lineare Funktion: " << mid(c0 - iapib*c1/ibsia) << "+" << mid(c12)<<"*x" << std::endl;
+	std::cout << "Lineare Funktion: " << mid(c0 - iapib*c1/ibsia) << "+" << mid(c12)<<"*x" << " über " << d << std::endl;
 	 // std::cout << "Bound " << c0 + c1*iv_t(-1,1) << std::endl;
 	// c0 -= c1*iapib/ibsia;
 
 	err = aff_op_t::scale_add(ac, 0.0, 0.0,
 				  iv_traits::my_inf(c12), iv_traits::my_sup(c12),
 				  iv_traits::my_inf(c0), iv_traits::my_sup(c0), rnd);
-	err += apprerr(c0, c12);
+
+	iv_t c0t(iv_traits::my_sub(c0, iv_traits::my_div(iv_traits::my_mul(iapib,c1), ibsia)));
+	err += apprerr(c0t, c12);
 
 
 	//std::cout << "c0 " << c0 << " c12 " << c12 << std::endl;
@@ -331,9 +336,12 @@ namespace yalaa
 	     class IV>
     T ChebyshevFP<T, ET, AC, AFFOP, IV>::eval_poly_lb(T lbc0, T lbc1, T lbx)
     {
+      std::cout << lbc0 + lbc1*lbx << std::endl;
+      
       // Gesucht wird der LB der Polyauswertung
       // Annahme: rnd.upward()
-      return -(lbc0 - (-lbc1)*lbx);
+      T tmp((-lbc1)*lbx);
+      return -(-tmp - lbc0);
     }
 
 
@@ -386,6 +394,35 @@ namespace yalaa
     {
       return (-2*d)/((d*d+1.0)*(d*d+1.0));
     }
+      
+      template<typename T, template<typename> class ET,
+	       template<typename, template<typename> class> class AC,
+	       class AFFOP,
+	     class IV>
+      T ChebyshevFP<T, ET, AC, AFFOP, IV>::atan_e_error(const iv_t &d, const iv_t& c0, 
+							const iv_t& c12, yalaa::fp::RndControl &rnd)
+      {
+	rnd.upward();
+	iv_t merr_p(iv_traits::my_sqrt(iv_traits::my_sub(iv_traits::my_div(iv_traits::my_one(), c12), 
+							 iv_traits::my_one())));
+	iv_t fe(iv_traits::my_atan(merr_p));
+	iv_t fd(iv_traits::my_atan(d));
+	T lbc0(iv_traits::my_inf(c0));
+	T lbc1(iv_traits::my_inf(c12));
+
+	T err(0.0);
+	if(iv_traits::my_inf(d) <= iv_traits::my_inf(merr_p) &&
+	   iv_traits::my_sup(d) >= iv_traits::my_sup(merr_p))
+	  err = fabs(iv_traits::my_sup(fe) - self_t::eval_poly_lb(lbc0, lbc1, iv_traits::my_inf(merr_p)));
+	
+	if(iv_traits::my_inf(d) <= -iv_traits::my_inf(merr_p) &&
+	   iv_traits::my_sup(d) >= -iv_traits::my_sup(merr_p))
+	  err = std::max(err, fabs(iv_traits::my_sup(iv_traits::my_neg(fe)) - self_t::eval_poly_lb(lbc0, lbc1, -iv_traits::my_sup(merr_p))));
+	
+	err = std::max(err, fabs(iv_traits::my_sup(fd) - self_t::eval_poly_lb(lbc0, lbc1, iv_traits::my_sup(d))));
+	err = std::max(err, fabs(iv_traits::my_inf(fd) - self_t::eval_poly_lb(lbc0, lbc1, iv_traits::my_inf(d))));
+	return err;
+      }
       
 
     template<typename T, template<typename> class ET,
