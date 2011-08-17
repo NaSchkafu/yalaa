@@ -313,7 +313,7 @@ namespace yalaa
 	iv_t c12(iv_traits::my_inf(c1)*2, iv_traits::my_sup(c1)*2);
 	c12 = iv_traits::my_div(c12, ibsia);
 
-	std::cout << "Lineare Funktion: " << mid(c0 - iapib*c1/ibsia) << "+" << mid(c12)<<"*x" << " über " << d << std::endl;
+	//std::cout << "Lineare Funktion: " << mid(c0 - iapib*c1/ibsia) << "+" << mid(c12)<<"*x" << " über " << d << std::endl;
 	 // std::cout << "Bound " << c0 + c1*iv_t(-1,1) << std::endl;
 	// c0 -= c1*iapib/ibsia;
 
@@ -336,12 +336,9 @@ namespace yalaa
 	     class IV>
     T ChebyshevFP<T, ET, AC, AFFOP, IV>::eval_poly_lb(T lbc0, T lbc1, T lbx)
     {
-      std::cout << lbc0 + lbc1*lbx << std::endl;
-      
-      // Gesucht wird der LB der Polyauswertung
-      // Annahme: rnd.upward()
+      //std::cout << "A " << lbc0 + lbc1*lbx << std::endl;
       T tmp((-lbc1)*lbx);
-      return -(-tmp - lbc0);
+      return (lbc0 - tmp);
     }
 
 
@@ -412,7 +409,7 @@ namespace yalaa
 
 	T err(0.0);
 	if(iv_traits::my_inf(d) <= iv_traits::my_inf(merr_p) &&
-	   iv_traits::my_sup(d) >= iv_traits::my_sup(merr_p))
+	   iv_traits::my_sup(d) >= iv_traits::my_sup(merr_p)) 
 	  err = fabs(iv_traits::my_sup(fe) - self_t::eval_poly_lb(lbc0, lbc1, iv_traits::my_inf(merr_p)));
 	
 	if(iv_traits::my_inf(d) <= -iv_traits::my_inf(merr_p) &&
@@ -421,7 +418,10 @@ namespace yalaa
 	
 	err = std::max(err, fabs(iv_traits::my_sup(fd) - self_t::eval_poly_lb(lbc0, lbc1, iv_traits::my_sup(d))));
 	err = std::max(err, fabs(iv_traits::my_inf(fd) - self_t::eval_poly_lb(lbc0, lbc1, iv_traits::my_inf(d))));
-	return err;
+	// std::cout << iv_traits::my_inf(fd) << " " << self_t::eval_poly_lb(lbc0, lbc1, iv_traits::my_inf(d)) << std::endl;http://www.wolframalpha.com/
+	// std::cout << "Max err " << err << std::endl;
+	
+	return 2*err;
       }
       
 
