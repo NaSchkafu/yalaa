@@ -142,6 +142,12 @@ namespace yalaa
 	  int sgn = po < 0 && (q & 0x1) ? -1 : 1;
           return sgn*pow(fabs(d), 1.0/q);
 	}
+
+      static base_t my_rootn(base_t d, int q)
+	{
+	  return my_powr(d, q < 0.0 ? -1.0 : 1.0, static_cast<unsigned>(q));
+	}
+
     };
   }
 }

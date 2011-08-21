@@ -187,6 +187,7 @@ namespace yalaa
 
       // Waehlt konkrete Funktion aus der rationalen Potenzfunktion aus
       static aerror_t powr(ac_t *ac, iv_t d, int p, unsigned q);
+      static aerror_t rootn(ac_t *ac, iv_t d, int q);
 
       static aerror_t inv(ac_t *ac, const iv_t &d);
 

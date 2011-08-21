@@ -77,6 +77,7 @@ namespace yalaa
     * @return flags for ArithmeticError<double> class
     */
     unsigned get_flags(double val);
+
   }
 }
 

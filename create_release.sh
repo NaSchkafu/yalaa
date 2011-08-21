@@ -1,4 +1,4 @@
 #!/bin/sh
-./configure --with-boost=/home/kiel/libs/boost --with-cxsc=/home/kiel/libs/cxsc --prefix=/home/kiel/libs/yalaa/ --disable-debug
+./configure --with-boost=$HOME/libs/boost --with-cxsc=$HOME/libs/cxsc --prefix=$HOME/libs/yalaa/ --disable-debug
 
 

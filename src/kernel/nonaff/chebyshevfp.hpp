@@ -69,6 +69,7 @@ namespace yalaa
 	static aerror_t atanh(ac_t *ac, const iv_t &d);
 
 	static aerror_t cheb_powr(ac_t* ac, const iv_t& d, int p, unsigned q);
+	static aerror_t cheb_rootn(ac_t *ac, const iv_t& d, int q);
 
 	static aerror_t cheb_inv(ac_t *ac, const iv_t& d);
 

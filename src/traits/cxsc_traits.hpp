@@ -259,6 +259,10 @@ namespace yalaa
 	  return sqrt(po,q);
 	}
       
+      static base_t my_rootn(const base_t &i, int q)
+	{
+	  return my_powr(i, q < 0.0 ? -1.0 : 1.0, static_cast<unsigned>(q));
+	}
 
 
       static bool is_empty(const base_t& i)

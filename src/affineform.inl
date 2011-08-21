@@ -658,12 +658,30 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
   YALAA_FRIEND_DEF
   powr(AF af, int p, unsigned q)
   {
-    if(AF::ep_t::pre_op(&af)) {
-      const typename AF::iv_t&domain = to_iv(af);
-      typename AF::ar_t::aerror_t error(AF::ar_t::powr(&af.m_a, domain, p, q));
-      AF::ap_t::add_errors(&af.m_a, error);
-      AF::ep_t::post_op(&af, error);
+    if(p < 0 && AF::ep_t::pre_op(&af)) {
+      typename AF::ar_t::aerror_t error1(AF::ar_t::inv(&af.m_a, to_iv(af)));
+      AF::ap_t::add_errors(&af.m_a, error1);
+      AF::ep_t::post_op(&af, error1);
     }
+
+    if(AF::ep_t::pre_op(&af)) {
+      typename AF::ar_t::aerror_t error2(AF::ar_t::pown(&af.m_a, abs(p), rad(af)));
+      AF::ap_t::add_errors(&af.m_a, error2);
+      AF::ep_t::post_op(&af, error2);
+    }
+
+    if(AF::ep_t::pre_op(&af)) {
+      typename AF::ar_t::aerror_t error3(AF::ar_t::rootn(&af.m_a, to_iv(af), q));
+      AF::ap_t::add_errors(&af.m_a, error3);
+      AF::ep_t::post_op(&af, error3);
+    }
+
+    // if(AF::ep_t::pre_op(&af)) {
+    //   const typename AF::iv_t&domain = to_iv(af);
+    //   typename AF::ar_t::aerror_t error(AF::ar_t::powr(&af.m_a, domain, p, q));
+    //   AF::ap_t::add_errors(&af.m_a, error);
+    //   AF::ep_t::post_op(&af, error);
+    // }
     return af;
   }
 

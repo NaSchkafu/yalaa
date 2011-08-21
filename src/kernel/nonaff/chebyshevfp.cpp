@@ -17,6 +17,7 @@
   along with yalaa.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "helper/ia_aa.hpp"
 
 namespace yalaa
 {
@@ -283,16 +284,7 @@ namespace yalaa
 	// 1 Wechsel + 3 IV Mult + 2 IV Auswertungen von f
 	rnd.upward();
 	if(iv_traits::my_w(d) < S_USE_IV) {
-	  iv_t range(f(d));
-	  ac->clear();
-	  if(iv_traits::my_inf(range) > iv_traits::my_sup(range))
-	    flags |= aerror_t::I_ERROR;
-	  else {
-	    ac->set_central(iv_traits::my_mid(range));
-	    flags |= yalaa::fp::get_flags(iv_traits::my_inf(range)) | 
-	      yalaa::fp::get_flags(iv_traits::my_sup(range));
-	  }
-	  return aerror_t(iv_traits::my_w(range), flags);
+	  return ia_to_ac<T, ET, AC, AFFOP, IV, aerror_t>(ac, d, rnd);
 	}
 
 	iv_t ibsia(fast_sub_dd_up<T, iv_t>(b,a));
@@ -382,6 +374,23 @@ namespace yalaa
 			 rnd);
       }
 
+      template<typename T, template<typename> class ET,
+               template<typename, template<typename> class> class AC,
+               class AFFOP,
+               class IV>
+      typename ChebyshevFP<T, ET, AC, AFFOP, IV>::aerror_t 
+      ChebyshevFP<T, ET, AC, AFFOP, IV>::cheb_rootn(ac_t *ac, const iv_t &d, int q) 
+      {
+	yalaa::fp::RndControl rnd;
+	if(iv_traits::my_inf(d) <= 0.0 && iv_traits::my_sup(d) >= 0.0) // Kein LagRem
+	  return yalaa::fp::ia_to_ac<T, ET, AC, AFFOP, IV, aerror_t>(ac, iv_traits::my_rootn(d, q), rnd);
+	return chebyshev(ac, d, [q](const iv_t &a)->iv_t { return iv_traits::my_rootn(a, q); },
+			 false, [&d, q](const iv_t&, const iv_t&)->T { 
+			   return self_t::lag_rem(d, iv_traits::my_neg(iv_traits::my_mul(iv_traits::my_powr(d, 1 - 2*q, q), iv_traits::my_div(iv_t(q-1, q-1), iv_t(q*q, q*q))))); 
+			 },rnd);
+      }
+
+      
 
     template<typename T, template<typename> class ET,
 	     template<typename, template<typename> class> class AC,

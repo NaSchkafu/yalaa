@@ -99,6 +99,8 @@ namespace yalaa
       static aerror_t minr_powr(ac_t *ac, const iv_t &d, int p, unsigned q);
       static aerror_t minr_inv(ac_t* ac, const iv_t &d); 
 
+      static aerror_t minr_rootn(ac_t *ac, const iv_t &d, unsigned q);
+
     private:
       static aerror_t expx(ac_t *ac, const iv_t &d, iv_t (*f)(const iv_t&));
       static aerror_t logx(ac_t *ac, const iv_t &d, iv_t (*f)(const iv_t&));

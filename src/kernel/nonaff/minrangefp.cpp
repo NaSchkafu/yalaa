@@ -418,6 +418,26 @@ namespace yalaa
 	err += err2;
 	return aerror_t(err, yalaa::fp::get_flags(err));
       }      
+
+      // MinRange für n-te Wurzel
+      template<typename T, template<typename> class ET,
+	       template<typename, template<typename> class> class AC,
+	       class AFFOP,
+	       class IV>
+      typename MinRangeFP<T, ET, AC, AFFOP, IV>::aerror_t
+      MinRangeFP<T, ET, AC, AFFOP, IV>::minr_rootn(ac_t *ac, const iv_t& d, unsigned q)
+      {
+	yalaa::fp::RndControl rnd;
+	iv_t r(iv_traits::my_rootn(d, q));
+	base_t alpha(yalaa::details::base_traits<base_t>::my_rootn(iv_traits::my_sup(d), 1 - q)/static_cast<base_t>(q));
+	T c, err(min_range(iv_traits::my_inf(d), iv_traits::my_sup(d), 
+			   iv_traits::my_inf(r), iv_traits::my_sup(r), alpha, c));
+	T err2(aff_op_t::scale_add(ac, alpha, alpha, c, rnd));
+	rnd.upward();
+	err += err2;
+	return aerror_t(err, yalaa::fp::get_flags(err));
+      }		 
+
     }
   }
 }
