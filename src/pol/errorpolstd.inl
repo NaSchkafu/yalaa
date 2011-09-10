@@ -17,6 +17,32 @@
   along with yalaa.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+namespace details
+{
+  template<T> 
+  void get_central_r(T &central)
+  { }
+
+  void get_central_r(double &central)
+  {
+    central = std::numeric_limits<double>::infinity();
+  }
+
+  template <typename T>
+  void get_central_e(T &central)
+  {}
+
+  void get_central_e(double &central)
+  {
+    central = std::numeric_limits<double>::quiet_NaN();
+  }
+}
+
+  
+
+  
+
+  
 
 template<typename T, typename IV>
 typename ErrorPolStd<T, IV>::special_t base_special(const T& s) 
@@ -41,7 +67,6 @@ typename ErrorPolStd<double, IV>::special_t base_special(double s)
     return ErrorPolStd<double, IV>::R;
   return ErrorPolStd<double, IV>::NONE;
 }
-
 
 template<typename T, typename IV>
 bool ErrorPolStd<T,IV>::special(special_t val)

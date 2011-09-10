@@ -84,15 +84,50 @@ namespace yalaa
   template class kernel::details::MultiplicationFP<double, details::ErrorTermImpl, details::AffineCombImpl,aff_kernel_t , details::double_iv_t>;
   template class AffineForm<double, details::ErrorTermImpl, details::AffineCombImpl, 
 			    kernel::ExactErrorFP, pol::AF0, pol::ErrorPolStd, details::double_iv_t>;
-  template aff_e_d exp(aff_e_d);
+  // Standard 
+  template aff_e_d pow(aff_e_d, const aff_e_d&);
+  template aff_e_d pown(aff_e_d, int);
   template aff_e_d sqrt(aff_e_d);
+
+  template aff_e_d exp(aff_e_d);
+  template aff_e_d exp2(aff_e_d);
+  template aff_e_d exp10(aff_e_d);
+
   template aff_e_d log(aff_e_d);
+  template aff_e_d log2(aff_e_d);
+  template aff_e_d log10(aff_e_d);
+
+  template aff_e_d expm1(aff_e_d);
+  template aff_e_d exp2m1(aff_e_d);
+  template aff_e_d exp10m1(aff_e_d);
+
+  template aff_e_d logp1(aff_e_d);
+  template aff_e_d log2p1(aff_e_d);
+  template aff_e_d log10p1(aff_e_d);
+
   template aff_e_d sin(aff_e_d);
   template aff_e_d cos(aff_e_d);
+  template aff_e_d tan(aff_e_d);
+
   template aff_e_d asin(aff_e_d);
   template aff_e_d acos(aff_e_d);
-  template aff_e_d sqr(aff_e_d);
-  template aff_e_d pown(aff_e_d, int);
+  template aff_e_d atan(aff_e_d);
+
+  template aff_e_d sinh(aff_e_d);
+  template aff_e_d cosh(aff_e_d);
+  template aff_e_d tanh(aff_e_d);
+
+  template aff_e_d asinh(aff_e_d);
+  template aff_e_d acosh(aff_e_d);
+  template aff_e_d atanh(aff_e_d);
+
+  // template aff_e_d_std abs(aff_e_d_std);
+  // template aff_e_d_std rSqrt(aff_e_d_std);
+  // template aff_e_d_std hypot(aff_e_d_std);
+  // template aff_e_d_std compundm1(aff_e_d_std);
+
+  template aff_e_d powr(aff_e_d, int, unsigned);
+
   template details::double_iv_t to_iv(const aff_e_d&);
   template double rad(const aff_e_d&);
 
@@ -152,78 +187,104 @@ namespace yalaa
   template class AffineForm<double, details::ErrorTermImpl, details::AffineCombImpl, 
 			    kernel::ExactErrorFP, pol::AF1, pol::ErrorPolDec, details::double_iv_t>;
   template aff_af1_e_d_dec sqr(aff_af1_e_d_dec);
+  template aff_af1_e_d_dec pow(aff_af1_e_d_dec, const aff_af1_e_d_dec&);
   template aff_af1_e_d_dec pown(aff_af1_e_d_dec, int);
   template aff_af1_e_d_dec sqrt(aff_af1_e_d_dec);
+
   template aff_af1_e_d_dec exp(aff_af1_e_d_dec);
   template aff_af1_e_d_dec exp2(aff_af1_e_d_dec);
   template aff_af1_e_d_dec exp10(aff_af1_e_d_dec);
+
   template aff_af1_e_d_dec log(aff_af1_e_d_dec);
   template aff_af1_e_d_dec log2(aff_af1_e_d_dec);
   template aff_af1_e_d_dec log10(aff_af1_e_d_dec);
+
   template aff_af1_e_d_dec expm1(aff_af1_e_d_dec);
   template aff_af1_e_d_dec exp2m1(aff_af1_e_d_dec);
   template aff_af1_e_d_dec exp10m1(aff_af1_e_d_dec);
+
   template aff_af1_e_d_dec logp1(aff_af1_e_d_dec);
   template aff_af1_e_d_dec log2p1(aff_af1_e_d_dec);
   template aff_af1_e_d_dec log10p1(aff_af1_e_d_dec);
+
   template aff_af1_e_d_dec sin(aff_af1_e_d_dec);
   template aff_af1_e_d_dec cos(aff_af1_e_d_dec);
   template aff_af1_e_d_dec tan(aff_af1_e_d_dec);
+
   template aff_af1_e_d_dec asin(aff_af1_e_d_dec);
   template aff_af1_e_d_dec acos(aff_af1_e_d_dec);
   template aff_af1_e_d_dec atan(aff_af1_e_d_dec);
+
   template aff_af1_e_d_dec sinh(aff_af1_e_d_dec);
   template aff_af1_e_d_dec cosh(aff_af1_e_d_dec);
   template aff_af1_e_d_dec tanh(aff_af1_e_d_dec);
+
   template aff_af1_e_d_dec asinh(aff_af1_e_d_dec);
   template aff_af1_e_d_dec acosh(aff_af1_e_d_dec);
   template aff_af1_e_d_dec atanh(aff_af1_e_d_dec);
+
   // template aff_af1_e_d_dec abs(aff_af1_e_d_dec);
   // template aff_af1_e_d_dec rSqrt(aff_af1_e_d_dec);
   // template aff_af1_e_d_dec hypot(aff_af1_e_d_dec);
   // template aff_af1_e_d_dec compundm1(aff_af1_e_d_dec);
+
+  template aff_af1_e_d_dec powr(aff_af1_e_d_dec, int, unsigned);
+
   template details::double_iv_t to_iv(const aff_af1_e_d_dec&);
   template double rad(const aff_af1_e_d_dec&);
 
 
-  // ****************************************************************
-  // AF2 DEC
-  // ****************************************************************
   template class AffineForm<double, details::ErrorTermImpl, details::AffineCombImpl, 
 			    kernel::ExactErrorFP, pol::AF2, pol::ErrorPolDec, details::double_iv_t>;
   template aff_af2_e_d_dec sqr(aff_af2_e_d_dec);
+  template aff_af2_e_d_dec pow(aff_af2_e_d_dec, const aff_af2_e_d_dec&);
   template aff_af2_e_d_dec pown(aff_af2_e_d_dec, int);
   template aff_af2_e_d_dec sqrt(aff_af2_e_d_dec);
+
   template aff_af2_e_d_dec exp(aff_af2_e_d_dec);
   template aff_af2_e_d_dec exp2(aff_af2_e_d_dec);
   template aff_af2_e_d_dec exp10(aff_af2_e_d_dec);
+
   template aff_af2_e_d_dec log(aff_af2_e_d_dec);
   template aff_af2_e_d_dec log2(aff_af2_e_d_dec);
   template aff_af2_e_d_dec log10(aff_af2_e_d_dec);
+
   template aff_af2_e_d_dec expm1(aff_af2_e_d_dec);
   template aff_af2_e_d_dec exp2m1(aff_af2_e_d_dec);
   template aff_af2_e_d_dec exp10m1(aff_af2_e_d_dec);
+
   template aff_af2_e_d_dec logp1(aff_af2_e_d_dec);
   template aff_af2_e_d_dec log2p1(aff_af2_e_d_dec);
   template aff_af2_e_d_dec log10p1(aff_af2_e_d_dec);
+
   template aff_af2_e_d_dec sin(aff_af2_e_d_dec);
   template aff_af2_e_d_dec cos(aff_af2_e_d_dec);
   template aff_af2_e_d_dec tan(aff_af2_e_d_dec);
+
   template aff_af2_e_d_dec asin(aff_af2_e_d_dec);
   template aff_af2_e_d_dec acos(aff_af2_e_d_dec);
   template aff_af2_e_d_dec atan(aff_af2_e_d_dec);
+
   template aff_af2_e_d_dec sinh(aff_af2_e_d_dec);
   template aff_af2_e_d_dec cosh(aff_af2_e_d_dec);
   template aff_af2_e_d_dec tanh(aff_af2_e_d_dec);
+
   template aff_af2_e_d_dec asinh(aff_af2_e_d_dec);
   template aff_af2_e_d_dec acosh(aff_af2_e_d_dec);
   template aff_af2_e_d_dec atanh(aff_af2_e_d_dec);
+
   // template aff_af2_e_d_dec abs(aff_af2_e_d_dec);
   // template aff_af2_e_d_dec rSqrt(aff_af2_e_d_dec);
   // template aff_af2_e_d_dec hypot(aff_af2_e_d_dec);
   // template aff_af2_e_d_dec compundm1(aff_af2_e_d_dec);
+
+  template aff_af2_e_d_dec powr(aff_af2_e_d_dec, int, unsigned);
+
   template details::double_iv_t to_iv(const aff_af2_e_d_dec&);
   template double rad(const aff_af2_e_d_dec&);
+
+
+
 #endif
 
 #if YALAA_HAVE_L_DOUBLE_IV
