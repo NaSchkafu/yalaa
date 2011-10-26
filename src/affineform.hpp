@@ -16,6 +16,17 @@
   along with yalaa.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * @file   affineform.hpp
+ * @author Stefan Kiel <kiel@inf.uni-due.de>
+ * @date   Wed Oct 26 16:53:13 2011
+ * 
+ * @brief  Contains definition of the AffineForm class template and associated functions
+ * 
+ * 
+ */
+
+
 #ifndef __AFFINEFORM_HPP__
 #define __AFFINEFORM_HPP__
 
@@ -53,6 +64,14 @@ namespace yalaa
     BOOST_MPL_HAS_XXX_TRAIT_DEF(trait_is_aff_t)
   }
 
+  /// Class template for all affine forms
+  /**
+   * This templates combines all policy classes and helper classes of \c YalAA to provide 
+   * the final type for affine arithmetic.
+   * It supports the usual arithmetic operations through operator overloading. Elementary
+   * functions are providied as \c friend's.
+   * 
+   */
   YALAA_AFF_TEMPLATE
   class AffineForm : boost::arithmetic<AffineForm<T, ET, AC, AR, AP, EP, IV>,
                      boost::arithmetic<AffineForm<T, ET, AC, AR, AP, EP, IV>, IV,
@@ -250,8 +269,29 @@ namespace yalaa
     // ****************************************************************
     // Misc Operators
     // ****************************************************************
+    /** 
+     * Self negation
+     * 
+     * 
+     * @return reference to altered *this
+     */
     self_t& operator-();
+
+    /** 
+     * Unary addition
+     * (has no effect)
+     * 
+     * @return reference to *this
+     */
     self_t& operator+();
+
+    /** 
+     * Compares two affine forms
+     * 
+     * @param other other form
+     * 
+     * @return true if both forms are equal
+     */
     bool operator==(const self_t &other) const;
 
     // ****************************************************************
@@ -262,20 +302,29 @@ namespace yalaa
     /** 
      * Squares an affine form
      * 
-     * @param AF form to square
+     * @param AF affine form
      * 
-     * @return square 
+     * @return square of AF
      */
     YALAA_FRIEND_DECL sqr(AF);
 
     /** 
      * Square root of an affine form
      * 
-     * @param AF form
+     * @param AF affine form
      * 
      * @return square root
      */
     YALAA_FRIEND_DECL sqrt(AF);
+
+    /** 
+     * Integer power function for affine forms
+     * 
+     * @param AF affine form
+     * @param int integer
+     * 
+     * @return 
+     */
     YALAA_FRIEND_DECL pown(AF, int);
     YALAA_FRIEND_DECL exp(AF);
     YALAA_FRIEND_DECL exp2(AF);

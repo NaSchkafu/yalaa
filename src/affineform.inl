@@ -296,6 +296,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
   }
 
   // elementary
+  /** 
+   * Base e exponential function 
+   * 
+   * @param af form
+   * 
+   * @return exp(af)
+   */
   YALAA_FRIEND_DEF
   exp(AF af)
   {
@@ -307,6 +314,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Base 2 exponential function 
+   * 
+   * @param af affine form
+   * 
+   * @return 2^af
+   */
   YALAA_FRIEND_DEF
   exp2(AF af)
   {
@@ -318,6 +332,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+/** 
+ * Base 10 exponential function 
+ * 
+ * @param af affine form
+ * 
+ * @return 10^af
+ */
   YALAA_FRIEND_DEF
   exp10(AF af)
   {
@@ -329,6 +350,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Base e exponential function minus 1
+   * 
+   * @param af affine form
+   * 
+   * @return e^af - 1
+   */
   YALAA_FRIEND_DEF
   expm1(AF af)
   {
@@ -340,6 +368,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Base 2 exponential function minus 1
+   * 
+   * @param af affine form
+   * 
+   * @return 2^af - 1
+   */
   YALAA_FRIEND_DEF
   exp2m1(AF af)
   {
@@ -351,6 +386,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Base 10 exponential function minus 1
+   * 
+   * @param af affine form
+   * 
+   * @return 10^af - 1
+   */
   YALAA_FRIEND_DEF
   exp10m1(AF af)
   {
@@ -363,6 +405,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
   }
 
 
+  /** 
+   * Square root
+   * 
+   * @param af affine form
+   * 
+   * @return sqrt(af)
+   */
   YALAA_FRIEND_DEF
   sqrt(AF af)
   {
@@ -377,6 +426,14 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Square
+   * Note: This function is in general tighter than af*af
+   * 
+   * @param af affine form
+   * 
+   * @return af^2 
+   */
   YALAA_FRIEND_DEF
   sqr(AF af)
   {
@@ -388,6 +445,14 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Integer power function
+   * 
+   * @param af base (affine form)
+   * @param exp exponent
+   * 
+   * @return af^exp
+   */
   YALAA_FRIEND_DEF
   pown(AF af, int exp)
   {
@@ -407,6 +472,14 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Power function
+   * 
+   * @param af base (affine form)
+   * @param exp exponent (affine form)
+   * 
+   * @return exp(ln(af)*exp)
+   */
   YALAA_FRIEND_DEF
   pow(AF af, const AF &exp)
   {
