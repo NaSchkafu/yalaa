@@ -36,6 +36,11 @@ namespace yalaa
 {
   namespace pol
   {
+    /// Implementation of the \c ErrorPolicy concept using the common affine error model
+    /**
+     * This class provides the common affine arithmetic error handling approach as described 
+     * in (de Figueiredo and Stolfi, 1997). 
+     */
     template<typename T, typename IV>
     class ErrorPolStd
     {

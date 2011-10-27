@@ -28,6 +28,12 @@ namespace yalaa
 {
   namespace details 
   {
+    /// Default implementation of the AffineCombination concept.
+    /**
+     * This class implements the AffineCombination concept.
+     * It stores affine combinations of ErrorTerm objects and provides the basic affine operations
+     * on these. 
+     */
     template<typename T, template<typename> class ET>
     struct AffineCombImpl : public AffineCombBaseImpl<T, ET>, 
       AffineCombOpImpl<T, ET, AffineCombBaseImpl>

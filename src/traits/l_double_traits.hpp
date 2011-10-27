@@ -24,7 +24,7 @@ namespace yalaa
 {
   namespace details 
   {
-    // long double specialization
+    /// Template specialization for using \c long \c double types
     template<>
     struct base_traits<long double>
     {

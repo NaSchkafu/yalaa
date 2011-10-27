@@ -40,8 +40,9 @@ namespace yalaa
     // T Basis
     // ET<T> ErrorTerm
     // AC<T, ET<T> > AffComb
-    /// Implements the handling of approximation/rounding errors as in the extended model AF1 (Messine, 2002)
+    /// Affine policy for the extended model AF1
     /**
+     * Reassembles the extended affine model as described in (Messine, 2002).
      * Rounding/approximation errors and uncertainty are added 
      * to the same term, which is treated independently and does not model an affine dependency
      * between forms. New noise symbols are only introduced in the computation process
@@ -78,7 +79,7 @@ namespace yalaa
 
       /// Called for introducing uncertainty into an existing form
       /** 
-       * In AF1 this acts as new_form, i.e. introducing a new independet error symbol with the
+       * In AF1 this acts as new_form, i.e. introducing a new independent error symbol with the
        * specified uncertainty
        * 
        * @param ac affine combination

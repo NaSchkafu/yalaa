@@ -29,6 +29,10 @@ namespace yalaa
 {
   namespace details 
   {
+    /// Template specialization used for accessing C-XSC types
+    /**
+     * This template is used for accessing the C-XSC interval library.
+     */
     template<>
     struct base_traits<cxsc::interval>
     {

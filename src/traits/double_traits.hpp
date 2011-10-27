@@ -26,8 +26,7 @@ namespace yalaa
 {
   namespace details 
   {
-    // double specialization
-    template<>
+    /// Template specialization for using \c double types
     struct base_traits<double>
     {
       typedef double base_t;

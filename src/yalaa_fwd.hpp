@@ -63,7 +63,7 @@
  * or libyalaa.lib on Windows.
  * 
  * You can use one of the predfined types described in the table above or you can defined your own
- * type based on our templates. All of them are located in the namespace \c yalaa.
+ * type based on our templates. All of them are located in the namespace \c yalaa.ExactErrorFP 
  * If you use custom types, please note that \c YalAA uses an explicit
  * template instantiation approach. To avoid linker errors you have to use explicit template 
  * instatiations like it is done for the predefined types in \c yalaa_fp_impl.cpp.
@@ -126,6 +126,7 @@
  * to write me an <a href="mailto:kiel@inf.uni-due.de">email</a>.
  */
 
+
 #ifndef __YALAA_FWD_HPP__
 #define __YALAA_FWD_HPP__
 // This file and its associated source file take care of
@@ -145,6 +146,7 @@
 #include "affineform_fwd.hpp"
 
 
+/// Main namespace containing all \c YalAA specific functions and types
 namespace yalaa 
 {
   namespace details

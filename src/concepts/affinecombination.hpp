@@ -1,62 +1,137 @@
 /*
   Copyright 2011 Stefan Kiel <kiel@inf.uni-due.de>
-  
+
   This file is part of yalaa.
-  
+
   yalaa is free software: you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as published by
   the Free Software Foundation, version 3 of the License.
-  
+
   yalaa is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU Lesser General Public License for more details.
-  
+
   You should have received a copy of the GNU Lesser General Public License
   along with yalaa.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-#ifndef __AFFINECOMBBASEIMPL_HPP__
-#define __AFFINECOMBBASEIMPL_HPP__
-
-#include <algorithm>
-#include <vector>
-#include "yalaa_assert.hpp"
-
-
 namespace yalaa 
 {
-  namespace details 
+  namespace concepts 
   {
-    /// Standard implementation for storing an affine combination of \c ErrorTerms
+  
+    /// Concept defining an affine combination
     /**
-     * The class provides an implementation for the AffineCombination concept
-     * The first template parameter T is the type for the partial deviations
-     * The seconnd template parameter ET is the type for error terms which is automatically
-     * specialized as ET<T>.
-     *  
-     * The class uses internally an sorted vector for storing the affine combination.
+     * This concept defines an affine combination.
+     * 
+     * Affine combinations are the most basic building blocks of YalAA.
+     * An affine combination consists of a central value \f$x_0\f$ and ErrorTerms \f$x_i\epsilon_i\f$.
+     * Furthermore, this structures defines the basic affine operations addition, scaling and 
+     * translation.
+     * All operations of YalAA are finally mapped into the operations declared here.
+     * No rounding control is done at this level.
+     * 
+     * @param T Type for partial deviations
+     * @param ET Implementation of the ErrorTerm concept to use
      */
     template<typename T, template<typename> class ET>
-    class AffineCombBaseImpl
+    struct AffineCombination
     {
-    public:
+      /// Type for partial deviations
       typedef T base_t;
-      typedef ET<T> error_t;
+      /// Type for error terms
+      typedef ET<base_t> error_t;
+      /// Const reference or base_t depending whether base_t is a fundamental type. 
       typedef typename boost::mpl::if_<boost::is_fundamental<base_t>, base_t, typename boost::add_const<typename boost::add_reference<base_t>::type>::type>::type base_ref_t;
-      typedef AffineCombBaseImpl<T, ET> self_t;
-
+      /// Type of *this
+      typedef AffineCombination<T, ET> self_t;
+      /// Type for size of the combination
       typedef typename std::vector<ET<T> >::size_type size_t;
-      // TODO: Bessere Adapter mit Boost.Iterator statt vector-It nach außen geben
       /// const iterator type for affine combination
       typedef typename std::vector<ET<T> >::const_iterator aff_comb_const_iter;
       /// iterator type for affine combination
       typedef typename std::vector<ET<T> >::iterator aff_comb_iter;
 
+      /**
+       * Adds two affine combinations.
+       * The result is stored inside the first combination
+       * Ignores the central value
+       * 
+       * @param ac1 First combination
+       * @param ac2 Second combination
+       *
+       * @return Number of performed additions
+       */
+      static unsigned add_ac_ac_noc(ac_t* ac1, const ac_t &ac2);
+
+      /**
+       * Adds two affine combinations.
+       * The result is stored inside the first combination
+       * 
+       * @param ac1 First combination
+       * @param ac2 Second combination
+       *
+       * @return Number of performed additions
+       */
+      static unsigned add_ac_ac(ac_t* ac1, const ac_t &ac2);
+
+      /**
+       * Substracts two affine combinations
+       * The result is stored inside the first combination
+       *
+       * @param ac1 First combination
+       * @param ac2 Second combination
+       *
+       * @return Number of performed substractions
+       */
+      static unsigned sub_ac_ac(ac_t* ac1, const ac_t &ac2);
+
+      /**
+       * Substracts two affine combinations
+       * The result is stored inside the first combination
+       * Ignores the central value
+       * 
+       * @param ac1 First combination
+       * @param ac2 Second combination
+       *
+       * @return Number of performed substractions
+       */
+      static unsigned sub_ac_ac_noc(ac_t* ac1, const ac_t &ac2);
+
+      /**
+       * Scales an affine combination
+       *
+       * @param ac1 Affine combination to scale
+       * @param sc Scaling factor central
+       * @param sn Scaling factor noise
+       *
+       * @return Number of operations
+       */
+      static unsigned mul_ac_s(ac_t *ac, typename ac_t::base_ref_t sc, typename ac_t::base_ref_t sn);
+
+      /**
+       * Adds an scalar to an affine combination
+       *
+       * @param ac1 Affine combination for addition
+       * @param s Scalar to add
+       *
+       * @return Number of operations
+       */
+      static unsigned add_ac_s(ac_t *ac, typename ac_t::base_ref_t s);
+
+      /**
+       * Negates an affine combination
+       *
+       * @param ac Affine combination to negate
+       *
+       * @return number of operations
+       */
+      static unsigned neg_ac(ac_t *ac);
+
       
       /** 
-       * Ctor
+       * Ctor<br>
        * Creates a new affine combination with the specified central value
        * 
        * @param central central value
@@ -116,13 +191,6 @@ namespace yalaa
        * @param it Iterator pointing on term to remove
        */
       void remove(const aff_comb_iter &it);
-
-      /** 
-       * Removes an error term from the combination
-       * 
-       * @param it Iterator pointing on term to remove
-       */
-//      void remove(const aff_comb_const_iter &it);
 
       /** 
        * Inserts a new term into the combination
@@ -190,13 +258,7 @@ namespace yalaa
        * @return element
        */
       aff_comb_iter find(const ET<T> &term);
-
-    private:
-      std::vector<ET<T> > m_errors;
-      T m_central;
-//      short m_special;
     };
   }
 }
 
-#endif /*__AFFINECOMBBASEIMPL_HPP__*/

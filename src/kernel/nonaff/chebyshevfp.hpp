@@ -16,6 +16,16 @@
   along with yalaa.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * @file   chebyshevfp.hpp
+ * @author Stefan Kiel <kiel@inf.uni-due.de>
+ * @date   Thu Oct 27 16:04:24 2011
+ * 
+ * @brief  Declarations of non-affine non strictly convex/concave elementary functions in FP math using Chebyshev interpolation
+ * 
+ * 
+ */
+
 
 #ifndef __CHEBYSHEVFP_HPP__
 #define __CHEBYSHEVFP_HPP__
@@ -29,8 +39,10 @@ namespace yalaa
   {
     namespace details 
     {
-      /// Floating-point Chebyshev approximations for non-affine operations
+      /// FP Chebyshev approximations for non-affine operations
       /**
+       * It is used as part of the \c ArithmeticKernel implementations supplied with \c YalAA
+       * 
        * This structure adds support for non-affine operations which are
        * differentiable, but not strictly convex or concave in their domain
        * so that neither the MinRange nor the optimal affine Chebyshev approximations

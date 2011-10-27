@@ -35,6 +35,12 @@ namespace yalaa
 
   namespace pol
   {
+    /// An \c ErrorPolicy providing a decoration like error handling
+    /**
+     * This class implements the \c ErrorPolicy concept and provides a
+     * decoration like approach, roughly following the decorations proposed
+     * for the upcoming P1788 interval arithmetic standard.
+     */
     template<typename T, typename IV>
     struct ErrorPolDec
     {

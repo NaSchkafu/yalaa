@@ -24,7 +24,7 @@ namespace yalaa
 {
   namespace details 
   {
-    // float specialization
+    /// Template specialization for using \c float types
     template<>
     struct base_traits<float>
     {

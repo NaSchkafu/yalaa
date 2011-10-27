@@ -164,11 +164,7 @@ namespace yalaa
     //   static aerror_t sqr(ac_t *ac, double dlow, double dhigh);
     // };
 
-    /// Arithmetic kernel that uses the exact error approach by Stolfi et al.
-    /**
-     * 
-     * 
-     */
+    /// Implementation of the \c ArithmeticKernel concept
     template<typename T, template<typename> class ET, 
 	     template<typename, template<typename> class> class AC, class IV>
     struct ExactErrorFP : public details::ExactErrorAffineFP<T, ET, AC>,

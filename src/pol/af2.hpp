@@ -37,11 +37,9 @@ namespace yalaa
 {
   namespace pol
   {
-    // T Basis
-    // ET<T> ErrorTerm
-    // AC<T, ET<T> > AffComb
-    /// Implements the handling of approximation/rounding errors as in the extended model AF2 (Messine, 2002)
+    /// Affine policy for the extended model AF2
     /**
+     * Reassembles the extended affine model AF2 as described in (Messine, 2002).
      * Rounding/approximation errors and uncertainty are added 
      * to three terms modeling positive, negative and general errors, which are treated independently 
      * and do not model an affine dependency between forms. New noise symbols are only introduced in

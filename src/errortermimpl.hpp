@@ -28,13 +28,12 @@ namespace yalaa
 {
   namespace details
   {
-    /// default implementation of an error term
+    /// Default implementation of the \c ErrorTerm concept
     /**
-     * This class provides an implementation for the ErrorTerm concept
+     * This class provides an implementation for the \c ErrorTerm concept
      * An unsigned 64 - Bit integer is used for the symbolic noise variable
      * Partial deviation is stored as the provided template type.
      */
-    // TODO: Handling Multithread via memory Barriere
     template <typename T>
     class ErrorTermImpl
     {
@@ -45,63 +44,21 @@ namespace yalaa
       typedef void trait_is_err_t;
 
       ErrorTermImpl();
-
       ErrorTermImpl(const self_t &other);
-
       ErrorTermImpl(base_ref_t dev);
 
-      /**
-       * Checks whether two error terms have the same symbolic noise variable
-       *
-       * @param other Other error term to check
-       *
-       * @return true if both terms have the same symbolic noise variable
-       */
       inline bool operator==(const self_t &other) const;
 
-      /**
-       * Defines an ordering on the symbolic noise variable
-       *
-       * @param other Other error term
-       *
-       * @return true if this error term is less than the other in the ordering
-       */
       inline bool operator<(const self_t &other) const;
 
-      /** 
-       * Gets the current deviation of the error term
-       * 
-       * @return Current deviation of this error term
-       */
       inline base_ref_t dev() const;
 
-      /** 
-       * Sets deviation of this error term
-       * 
-       * @param new_dev new deviation
-       */
       inline void set_dev(base_ref_t new_dev);
 
-      /** 
-       * Prints this error term to a stream
-       * 
-       * @param os output stream
-       */
       inline void print(std::ostream &os) const;
 
-      /** 
-       * Determines whether this ErrorTerm is a "special term"
-       * 
-       * @return 0 if not a special term, the type otherwise
-       */
       inline unsigned special() const;
       
-      /** 
-       * Marks this error term as a special term
-       * Note: type has to be greater than 0
-       * 
-       * @param type type of the term
-       */
       inline void set_special(unsigned type);
 
     private:

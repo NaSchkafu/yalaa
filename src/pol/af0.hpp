@@ -39,8 +39,9 @@ namespace yalaa
     // T Basis
     // ET<T> ErrorTerm
     // AC<T, ET<T> > AffComb
-    /// Implements the handling of approximation/rounding errors as in standard affine arithmetic
+    /// Affine policy for standard affine arithmetic
     /**
+     * This policy class reassembles the original affine model as proposed by Stolfi et al.
      * Rounding and approximation errors are added in form of new independet terms to the affine
      * form. Introduction of uncertainty also yields a new noise symbol as introduction of a new
      * affine form does. 

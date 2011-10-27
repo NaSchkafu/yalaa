@@ -32,6 +32,13 @@
 
 namespace yalaa
 {
+  /** 
+   * Calculates an interval enclosing an affine form
+   * 
+   * @param af affine form
+   * 
+   * @return interval enclosure of af
+   */
   YALAA_AFF_TEMPLATE
   typename AffineForm<T, ET, AC, AR, AP, EP, IV>::iv_t
   to_iv(const AffineForm<T, ET, AC, AR, AP, EP, IV> &af)
@@ -47,6 +54,14 @@ namespace yalaa
     return iv;
   }
 
+  /** 
+   * Calculates the radius of af
+   * (sum of the partial deviations' absolute values)
+   * 
+   * @param af affine form
+   * 
+   * @return radius of af
+   */
   YALAA_AFF_TEMPLATE
   typename AffineForm<T, ET, AC, AR, AP, EP, IV>::base_t
   rad(const AffineForm<T, ET, AC, AR, AP, EP, IV> &af)
@@ -427,7 +442,7 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
   }
 
   /** 
-   * Square
+   * Square <br />
    * Note: This function is in general tighter than af*af
    * 
    * @param af affine form
@@ -512,6 +527,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Natural logarithm
+   * 
+   * @param af affine form
+   * 
+   * @return ln(af)
+   */
   YALAA_FRIEND_DEF
   log(AF af)
   {
@@ -524,6 +546,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Base 2 logarithm
+   * 
+   * @param af affine form
+   * 
+   * @return ld(af)
+   */
   YALAA_FRIEND_DEF
   log2(AF af)
   {
@@ -536,6 +565,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Base 10 logarithm
+   * 
+   * @param af affine form
+   * 
+   * @return log(af)
+   */
   YALAA_FRIEND_DEF
   log10(AF af)
   {
@@ -548,6 +584,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Natural logarithm + 1
+   * 
+   * @param af affine form
+   * 
+   * @return log(af+1)
+   */
   YALAA_FRIEND_DEF
   logp1(AF af)
   {
@@ -560,6 +603,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Base 2 logarithm + 1
+   * 
+   * @param af affine form
+   * 
+   * @return ld(af+1)
+   */
   YALAA_FRIEND_DEF
   log2p1(AF af)
   {
@@ -572,6 +622,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Base 10 logarithm + 1
+   * 
+   * @param af affine form 
+   * 
+   * @return log(af+1)
+   */
   YALAA_FRIEND_DEF
   log10p1(AF af)
   {
@@ -584,6 +641,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Sine function
+   * 
+   * @param af affine form
+   * 
+   * @return sin(af)
+   */
   YALAA_FRIEND_DEF
   sin(AF af)
   {
@@ -596,6 +660,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Cosine function
+   * 
+   * @param af affine form
+   * 
+   * @return cos(af)
+   */
   YALAA_FRIEND_DEF
   cos(AF af)
   {
@@ -608,6 +679,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Tangent function
+   * 
+   * @param af affine form
+   * 
+   * @return tan(af)
+   */
   YALAA_FRIEND_DEF
   tan(AF af)
   {
@@ -620,6 +698,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Inverse sine function
+   * 
+   * @param af affine form
+   * 
+   * @return asin(af)
+   */
   YALAA_FRIEND_DEF
   asin(AF af)
   {
@@ -632,6 +717,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Inverse cosine function
+   * 
+   * @param af affine form
+   * 
+   * @return acos(af)
+   */
   YALAA_FRIEND_DEF
   acos(AF af)
   {
@@ -644,6 +736,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Inverse tangent function
+   * 
+   * @param af affine form
+   * 
+   * @return atan(af)
+   */
   YALAA_FRIEND_DEF
   atan(AF af)
   {
@@ -656,6 +755,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Hyperbolic sine function
+   * 
+   * @param af affine form
+   * 
+   * @return sinh(af)
+   */
   YALAA_FRIEND_DEF
   sinh(AF af)
   {
@@ -668,6 +774,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Hyperbolic cosine function
+   * 
+   * @param af affine form
+   * 
+   * @return cosh(af)
+   */
   YALAA_FRIEND_DEF
   cosh(AF af)
   {
@@ -680,6 +793,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Hyperbolic tangent function
+   * 
+   * @param af affine form
+   * 
+   * @return tanh(af)
+   */
   YALAA_FRIEND_DEF
   tanh(AF af)
   {
@@ -692,6 +812,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Area hyperbolic sine function
+   * 
+   * @param af affine form
+   * 
+   * @return asinh(af)
+   */
   YALAA_FRIEND_DEF
   asinh(AF af)
   {
@@ -704,6 +831,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Area hyperbolic cosine function
+   * 
+   * @param af affine form
+   * 
+   * @return acosh(af)
+   */
   YALAA_FRIEND_DEF
   acosh(AF af)
   {
@@ -716,6 +850,13 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Area hyperbolic tangent function
+   * 
+   * @param af affine form
+   * 
+   * @return atanh(af)
+   */
   YALAA_FRIEND_DEF
   atanh(AF af)
   {
@@ -728,6 +869,16 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
+  /** 
+   * Rational power function
+   * 
+   * 
+   * @param af affine form
+   * @param p numerator of exponent
+   * @param q denominator of exponent
+   * 
+   * @return x^(p/q)
+   */
   YALAA_FRIEND_DEF
   powr(AF af, int p, unsigned q)
   {

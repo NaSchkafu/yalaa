@@ -100,20 +100,23 @@ namespace yalaa
   public:
     /**
      * Ctor
-     *
-     * @param value scalar value
+     * Creates an affine form without noise symbols
+     * 
+     * @param value central value of new affine form
      */
     explicit AffineForm(base_ref_t value);
 
     /**
      * Ctor
-     *
-     * @param iv interval value
+     * Creates an affine form enclosing iv
+     * 
+     * @param iv interval to enclose
      */
     explicit AffineForm(const iv_t &iv);
 
     /**
      * Ctor
+     * Creates a special form
      *
      * @param svalue special value
      */
@@ -299,32 +302,8 @@ namespace yalaa
     // (friends)
     // ****************************************************************
 
-    /** 
-     * Squares an affine form
-     * 
-     * @param AF affine form
-     * 
-     * @return square of AF
-     */
     YALAA_FRIEND_DECL sqr(AF);
-
-    /** 
-     * Square root of an affine form
-     * 
-     * @param AF affine form
-     * 
-     * @return square root
-     */
     YALAA_FRIEND_DECL sqrt(AF);
-
-    /** 
-     * Integer power function for affine forms
-     * 
-     * @param AF affine form
-     * @param int integer
-     * 
-     * @return 
-     */
     YALAA_FRIEND_DECL pown(AF, int);
     YALAA_FRIEND_DECL exp(AF);
     YALAA_FRIEND_DECL exp2(AF);
@@ -368,24 +347,10 @@ namespace yalaa
 #endif
   };
   
-  /** 
-   * Gets an interval enclosure for an affine form
-   * 
-   * @param af affine form
-   * 
-   * @return interval enclosure
-   */
   YALAA_AFF_TEMPLATE
   typename AffineForm<T, ET, AC, AR, AP, EP, IV>::iv_t
   to_iv(const AffineForm<T, ET, AC, AR, AP, EP, IV> & af);
 
-  /** 
-   * Gets the radius for an affine form
-   * 
-   * @param af affine form
-   * 
-   * @return radius
-   */
   YALAA_AFF_TEMPLATE
   typename AffineForm<T, ET, AC, AR, AP, EP, IV>::base_t
   rad(const AffineForm<T, ET, AC, AR, AP, EP, IV> & af);

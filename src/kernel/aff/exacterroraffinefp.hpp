@@ -16,8 +16,16 @@
   along with yalaa.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * @file   exacterroraffinefp.hpp
+ * @author Stefan Kiel <kiel@inf.uni-due.de>
+ * @date   Thu Oct 27 16:03:09 2011
+ * 
+ * @brief  Declarations of affine operations for FP math with exact error calculations
+ * 
+ * 
+ */
 
-// Implementierung der affinen Operationen von ExactError<float, double, long double>
 #ifndef __EXACTERRORAFFINED_HPP__
 #define __EXACTERRORAFFINED_HPP__
 
@@ -35,6 +43,12 @@ namespace yalaa
   {
     namespace details
     {
+      /// FP implementation of affine functions with exact error calculation
+      /**
+       * This class provides support for affine functions using floating-point math.
+       * The rounding error is exactly calculated as described in the book 
+       * (de Figuerido and Stolfi, 1997).
+       */
       template<typename T, template<typename> class ET, 
 	       template<typename, template<typename> class> class AC>
       struct ExactErrorAffineFP

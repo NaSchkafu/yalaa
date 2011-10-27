@@ -17,6 +17,16 @@
   along with yalaa.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * @file   minrangefp.hpp
+ * @author Stefan Kiel <kiel@inf.uni-due.de>
+ * @date   Thu Oct 27 16:21:11 2011
+ * 
+ * @brief  Declarations for non-affine operation with FP math for strictly convex/concave functions
+ * 
+ * 
+ */
+
 
 #ifndef __MINRANGEFP_HPP__
 #define __MINRANGEFP_HPP__
@@ -26,7 +36,7 @@ namespace yalaa
   {
     namespace details
     {
-      // Non affine approximations for strict convex/concave functions
+      /// FP approximations for non affine strictly convex/concave functions with IA support
       /**
        * The "Min-Range" implementions described in de Figueiredo and Stolfi, 1997 are used
        * This specialized version implements square root and square for floating point numbers, 
@@ -50,13 +60,12 @@ namespace yalaa
       };
 
 
-    // Non affine approximations for strict convex/concave functions
+    /// FP approximations for non affine strictly convex/concave functions
     /**
-     * The "Min-Range" implementions described in de Figueiredo and Stolfi, 1997 are used
-     * This template calculates exp, ln, log, ??? and is implemented for floating point numbers
-     * An external (library) is required, as the built-in functions of libm do not (always?)
-     * respect rouding mode changes. The behaviour in case of rounding modes other than
-     * round-to-nearest is "implemention defined" according to C99.
+     * The "Min-Range" implementions described in de Figueiredo and Stolfi, 1997 are used.
+     * For ensuring a verified result the functions are evaluated with interval arithmetic instead
+     * of standard floating-point math, as the most libm implementations do respect rounding modes
+     * for non IEEE754 functions.
      **/
     // ET ErrorTerm
     // AC AffineComb
@@ -105,14 +114,6 @@ namespace yalaa
       static aerror_t expx(ac_t *ac, const iv_t &d, iv_t (*f)(const iv_t&));
       static aerror_t logx(ac_t *ac, const iv_t &d, iv_t (*f)(const iv_t&));
       static aerror_t logxp1(ac_t *ac, const iv_t &d, iv_t (*f)(const iv_t&));
-      
-
-      
-      //static aerror_t asin(ac_t *ac, IV d);
-      // static aerror_t log(ac_t *ac, const IV &d);
-
-      // private:
-      //   static T S_LN10_SUP;
     };
     }
   }
