@@ -1,9 +1,11 @@
-AC_INIT([yalaa],[0.1],[kiel@inf.uni-due.de])
+AC_INIT([yalaa],[0.9],[kiel@inf.uni-due.de])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 AC_CONFIG_HEADERS([config.h])
 AX_PREFIX_CONFIG_H([src/yalaa-config.h])
-AC_CONFIG_FILES([
-	Makefile])
+AC_CONFIG_FILES([Makefile
+	src/Makefile
+	examples/Makefile
+	doc/Makefile])
 AC_CONFIG_MACRO_DIR([m4])
 
 dnl Compiler
@@ -16,7 +18,7 @@ AX_CXX_HEADER_STDCXX_98
 AC_TYPE_LONG_DOUBLE_WIDER
 
 dnl BOOST
-BOOST_REQUIRE([1.40])
+BOOST_REQUIRE([1.47])
 BOOST_TYPETRAITS
 BOOST_UTILITY
 BOOST_OPERATORS
@@ -69,6 +71,16 @@ AM_CONDITIONAL([GTEST], [test x"$enable_tests" = xyes])
 dnl Libtool
 LT_INIT
  
+dnl DOXYGEN
+DX_HTML_FEATURE(ON)
+DX_CHM_FEATURE(OFF)
+DX_CHI_FEATURE(OFF)
+DX_MAN_FEATURE(OFF)
+DX_RTF_FEATURE(OFF)
+DX_XML_FEATURE(OFF)
+DX_PDF_FEATURE(OFF)
+DX_PS_FEATURE(OFF)
+DX_INIT_DOXYGEN([$PACKAGE_NAME],[Doxyfile])
 
 dnl Ausgeben
 AC_OUTPUT

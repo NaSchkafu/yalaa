@@ -44,6 +44,8 @@ namespace yalaa
      * to three terms modeling positive, negative and general errors, which are treated independently 
      * and do not model an affine dependency between forms. New noise symbols are only introduced in
      * the computation process by creating a new affine form.  
+     * 
+     * \bug Currently the AF2 policy is not supported by AffineCombImpl. 
      */
     template<typename T, template<typename> class ET, 
 	     template<typename, template<typename> class> class AC>

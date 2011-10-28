@@ -15,6 +15,15 @@
   You should have received a copy of the GNU Lesser General Public License
   along with yalaa.  If not, see <http://www.gnu.org/licenses/>.
 */
+/**
+ * @file   affinecombination.hpp
+ * @author Stefan Kiel <kiel@inf.uni-due.de>
+ * @date   Fri Oct 28 10:37:34 2011
+ * 
+ * @brief  Provides a structure describing the AffineCombination concept
+ * 
+ * 
+ */
 
 namespace yalaa 
 {

@@ -1,14 +1,15 @@
-      /** 
-       * Ctor
-       * Creates an error term with the deviation dev and a new noise symbol
-       * 
-       * @param dev partial deviation
-       */      /** 
-       * Ctor
-       * Creates an error term with the deviation dev and a new noise symbol
-       * 
-       * @param dev partial deviation
-       */namespace yalaa
+/**
+ * @file   errorterm.hpp
+ * @author Stefan Kiel <kiel@inf.uni-due.de>
+ * @date   Fri Oct 28 10:38:37 2011
+ * 
+ * @brief  Provides a structure describing the ErrorTerm concept
+ * 
+ * 
+ */
+
+
+namespace yalaa
 {
   /// Namespace for concepts used in \c YalAA
   namespace concepts
@@ -21,7 +22,7 @@
      * and a noise symbol in the original model.
      */
     template <typename T>
-    class ErrorTerm
+    struct ErrorTerm
     {
     public:
       /// Type of *this

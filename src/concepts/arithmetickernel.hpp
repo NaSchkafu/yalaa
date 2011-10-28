@@ -21,7 +21,7 @@
  * @author Stefan Kiel <kiel@inf.uni-due.de>
  * @date   Thu Oct 27 16:03:52 2011
  *
- * @brief  Structure describing the ArithmeticKernel concept
+ * @brief  Provides a structure describing the ArithmeticKernel concept
  *
  *
  */

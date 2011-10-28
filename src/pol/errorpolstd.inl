@@ -17,26 +17,26 @@
   along with yalaa.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-namespace details
-{
-  template<T> 
-  void get_central_r(T &central)
-  { }
+// namespace details
+// {
+//   template<T> 
+//   void get_central_r(T &central)
+//   { }
 
-  void get_central_r(double &central)
-  {
-    central = std::numeric_limits<double>::infinity();
-  }
+//   void get_central_r(double &central)
+//   {
+//     central = std::numeric_limits<double>::infinity();
+//   }
 
-  template <typename T>
-  void get_central_e(T &central)
-  {}
+//   template <typename T>
+//   void get_central_e(T &central)
+//   {}
 
-  void get_central_e(double &central)
-  {
-    central = std::numeric_limits<double>::quiet_NaN();
-  }
-}
+//   void get_central_e(double &central)
+//   {
+//     central = std::numeric_limits<double>::quiet_NaN();
+//   }
+// }
 
   
 

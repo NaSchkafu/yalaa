@@ -31,6 +31,9 @@ namespace yalaa
      * This template defines properties of arithmetic types used in
      * yalaa::AffineForm as base type. Before using a custom type
      * you have to specialize this template.
+     * 
+     * \todo Currently base_traits is used for intervals and the type of partial deviations.
+     * Traits for intervals should be defined by a separate class.
      */
     template<typename T>
     struct base_traits 
