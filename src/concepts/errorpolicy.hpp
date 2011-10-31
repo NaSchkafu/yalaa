@@ -70,12 +70,12 @@ namespace yalaa
       /**
        * Called by AffineForm prior to an operation
        * The special_t member of af1 should be adjusted if necessary. <br>
-       * The operation call is not performed if true is returned.
+       * The operation call is not performed if false is returned.
        * 
        * @param af1 first argument of the operation to call
        * @param af2 second argument of the operation to call
        *
-       * @return true if a special form is generated
+       * @return false if a special form is generated
        */
       YALAA_SPEC_TEMPLATE_DEF
        static bool pre_op(YALAA_SPEC_TEMPLATE_T *af1, const YALAA_SPEC_TEMPLATE_T &af2);
@@ -83,12 +83,12 @@ namespace yalaa
       /**
        * Called by AffineForm prior to an operation
        * The special_t member of af should be adjusted if necessary. <br>
-       * The operation call is not performed if true is returned.
+       * The operation call is not performed if false is returned.
        * 
        * @param af first argument of the operation to call
        * @param iv second argument of the operation to call
        *
-       * @return true if a special form is generated
+       * @return false if a special form is generated
        */
       YALAA_SPEC_TEMPLATE_DEF
        static bool pre_op(YALAA_SPEC_TEMPLATE_T *af, const iv_t &iv);
@@ -96,12 +96,12 @@ namespace yalaa
       /**
        * Called by AffineForm prior to an operation
        * The special_t member of af should be adjusted if necessary. <br>
-       * The operation call is not performed if true is returned.
+       * The operation call is not performed if false is returned.
        * 
        * @param af first argument of the operation to call
        * @param s second argument of the operation to call
        *
-       * @return true if a special form is generated
+       * @return false if a special form is generated
        */
       YALAA_SPEC_TEMPLATE_DEF
        static bool pre_op(YALAA_SPEC_TEMPLATE_T *af, base_ref_t s);
@@ -109,11 +109,11 @@ namespace yalaa
       /**
        * Called by AffineForm prior to an operation
        * The special_t member of af should be adjusted if necessary. <br>
-       * The operation call is not performed if true is returned.
+       * The operation call is not performed if false is returned.
        * 
        * @param af argument of the operation to call
        *
-       * @return true if a special form is generated
+       * @return false if a special form is generated
        */
       YALAA_SPEC_TEMPLATE_DEF
        static bool pre_op(YALAA_SPEC_TEMPLATE_T *af);
@@ -170,7 +170,7 @@ namespace yalaa
        * @param af new form to construct
        * @param s partial deviation of the new form
        * 
-       * @return true if the new form is a special form
+       * @return false if the new form is a special form
        */
       YALAA_SPEC_TEMPLATE_DEF
       static bool new_form(YALAA_SPEC_TEMPLATE_T *af, base_ref_t s);
@@ -182,19 +182,20 @@ namespace yalaa
        * @param af new form to construct
        * @param iv interval to enclose by af
        * 
-       * @return true if the new form is a special form
+       * @return false if the new form is a special form
        */
       YALAA_SPEC_TEMPLATE_DEF
        static bool new_form(YALAA_SPEC_TEMPLATE_T *af, const iv_t& iv);
 
       /**
-       * Determines whether the affine form has a special value
+       * Determines whether the affine form has a valid numerical value
        *
-       * @param val value to check
+       * @param af affine form to check
        *
-       * @return true if val indicates a special value
+       * @return true if the form has a valid numerical value
        */
-       static bool special(special_t val);
+      YALAA_SPEC_TEMPLATE_DEF
+      static bool valid(const YALAA_SPEC_TEMPLATE_T &af);
       // ****************************************************************
     };
 

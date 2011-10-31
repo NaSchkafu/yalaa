@@ -4,8 +4,7 @@ AC_CONFIG_HEADERS([config.h])
 AX_PREFIX_CONFIG_H([src/yalaa-config.h])
 AC_CONFIG_FILES([Makefile
 	src/Makefile
-	examples/Makefile
-	doc/Makefile])
+	examples/Makefile])
 AC_CONFIG_MACRO_DIR([m4])
 
 dnl Compiler

@@ -215,6 +215,10 @@ namespace yalaa
   typedef AffineForm<double, details::ErrorTermImpl, details::AffineCombImpl, kernel::ExactErrorFP, 
 		     yalaa::pol::AF0, yalaa::pol::ErrorPolStd, details::double_iv_t> aff_e_d;
 
+  /// Extended affine form AF1 with the ExactError kernel for double
+  typedef AffineForm<double, details::ErrorTermImpl, details::AffineCombImpl, kernel::ExactErrorFP, 
+		     yalaa::pol::AF1, yalaa::pol::ErrorPolStd, details::double_iv_t> aff_af1_e_d;
+
   /// Standard affine form with the ExactError kernel for double with decorations
   typedef AffineForm<double, details::ErrorTermImpl, details::AffineCombImpl, kernel::ExactErrorFP, 
 		     yalaa::pol::AF0, yalaa::pol::ErrorPolDec, details::double_iv_t> aff_e_d_dec;
@@ -224,8 +228,8 @@ namespace yalaa
 		     yalaa::pol::AF1, yalaa::pol::ErrorPolDec, details::double_iv_t> aff_af1_e_d_dec;
 
   /// Extended affine form AF2 with the ExactError kernel for double with decorations
-  typedef AffineForm<double, details::ErrorTermImpl, details::AffineCombImpl, kernel::ExactErrorFP, 
-		     yalaa::pol::AF2, yalaa::pol::ErrorPolDec, details::double_iv_t> aff_af2_e_d_dec;
+  // typedef AffineForm<double, details::ErrorTermImpl, details::AffineCombImpl, kernel::ExactErrorFP, 
+  // 		     yalaa::pol::AF2, yalaa::pol::ErrorPolDec, details::double_iv_t> aff_af2_e_d_dec;
 #endif
 
 #ifdef YALAA_HAVE_L_DOUBLE_IV

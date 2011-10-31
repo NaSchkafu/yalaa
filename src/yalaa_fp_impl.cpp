@@ -1,17 +1,17 @@
 /*
   Copyright 2011 Stefan Kiel <kiel@inf.uni-due.de>
-  
+
   This file is part of yalaa.
-  
+
   yalaa is free software: you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as published by
   the Free Software Foundation, version 3 of the License.
-  
+
   yalaa is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU Lesser General Public License for more details.
-  
+
   You should have received a copy of the GNU Lesser General Public License
   along with yalaa.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -25,7 +25,7 @@
 // Rounding control
 #include "helper/fphelper.hpp"
 // internal IA operations
-#include "helper/fastia.hpp" 
+#include "helper/fastia.hpp"
 
 // Affine Comb. // Ops
 #include "comb/affinecombimpl.cpp"
@@ -37,13 +37,49 @@
 #include "kernel/nonaff/minrangefp.cpp"
 #include "kernel/nonaff/chebyshevfp.cpp"
 
-namespace yalaa 
+#define INSTANTIATE_YALAA(TNAME, BASE, ERRORTERM, AFFINECOMB, ARKERNEL, AFFPOL, ERRPOL, IV) \
+  template class AffineForm<BASE, ERRORTERM, AFFINECOMB, ARKERNEL, AFFPOL, ERRPOL, IV>; \
+  template TNAME pow(TNAME, const TNAME&);                              \
+  template TNAME pown(TNAME, int);                                      \
+  template TNAME sqrt(TNAME);                                           \
+  template TNAME exp(TNAME);                                            \
+  template TNAME exp2(TNAME);                                           \
+  template TNAME exp10(TNAME);                                          \
+  template TNAME log(TNAME);                                            \
+  template TNAME log2(TNAME);                                           \
+  template TNAME log10(TNAME);                                          \
+  template TNAME expm1(TNAME);                                          \
+  template TNAME exp2m1(TNAME);                                         \
+  template TNAME exp10m1(TNAME);                                        \
+  template TNAME logp1(TNAME);                                          \
+  template TNAME log2p1(TNAME);                                         \
+  template TNAME log10p1(TNAME);                                        \
+  template TNAME sin(TNAME);                                            \
+  template TNAME cos(TNAME);                                            \
+  template TNAME tan(TNAME);                                            \
+  template TNAME asin(TNAME);                                           \
+  template TNAME acos(TNAME);                                           \
+  template TNAME atan(TNAME);                                           \
+  template TNAME sinh(TNAME);                                           \
+  template TNAME cosh(TNAME);                                           \
+  template TNAME tanh(TNAME);                                           \
+  template TNAME asinh(TNAME);                                          \
+  template TNAME acosh(TNAME);                                          \
+  template TNAME atanh(TNAME);                                          \
+  template TNAME powr(TNAME, int, unsigned);                            \
+  template double rad(const TNAME&);                                    \
+  template IV to_iv(const TNAME&);					\
+  template typename ERRPOL<BASE, IV>::special_t get_special(const TNAME &); \
+  template bool is_valid(const TNAME &);
+
+
+namespace yalaa
 {
 #ifdef YALAA_HAVE_FLOAT_IV
   // aff_e_f
   template class details::AffineCombImpl<float, details::ErrorTermImpl>;
-  template class AffineForm<float, details::ErrorTermImpl, details::AffineCombImpl, 
-			    kernel::ExactErrorFP, pol::AF0, pol::ErrorPolImpl, details::float_iv_t>;
+  template class AffineForm<float, details::ErrorTermImpl, details::AffineCombImpl,
+                            kernel::ExactErrorFP, pol::AF0, pol::ErrorPolImpl, details::float_iv_t>;
   template aff_e_f exp(aff_e_f);
   template aff_e_f sqrt(aff_e_f);
   template aff_e_f ln(aff_e_f);
@@ -56,8 +92,8 @@ namespace yalaa
   template float rad(const aff_e_f&);
 
   // aff_e_f_dec
-  template class AffineForm<float, details::ErrorTermImpl, details::AffineCombImpl, 
-			    kernel::ExactErrorFP, pol::AF0, pol::ErrorPolImpl, details::float_iv_t>;
+  template class AffineForm<float, details::ErrorTermImpl, details::AffineCombImpl,
+                            kernel::ExactErrorFP, pol::AF0, pol::ErrorPolImpl, details::float_iv_t>;
   template aff_e_f_dec exp(aff_e_f_dec);
   template aff_e_f_dec sqrt(aff_e_f_dec);
   template aff_e_f_dec ln(aff_e_f_dec);
@@ -71,227 +107,28 @@ namespace yalaa
 #endif
 
 #ifdef YALAA_HAVE_DOUBLE_IV
-  // aff_e_d
-  typedef kernel::details::ExactErrorAffineFP<double, details::ErrorTermImpl, details::AffineCombImpl> aff_kernel_t;
-  template class details::AffineCombBaseImpl<double, details::ErrorTermImpl>;
-  template class details::AffineCombOpImpl<double, details::ErrorTermImpl, details::AffineCombBaseImpl>;
   template class details::AffineCombImpl<double, details::ErrorTermImpl>;
-  template class kernel::ExactErrorFP<double, details::ErrorTermImpl, details::AffineCombImpl, details::double_iv_t>;
-  template class kernel::details::ExactErrorAffineFP<double, details::ErrorTermImpl, details::AffineCombImpl>;
-  template class kernel::details::ChebyshevFP<double, details::ErrorTermImpl, details::AffineCombImpl, aff_kernel_t, details::double_iv_t>;
-  template class kernel::details::MinRangeFP<double, details::ErrorTermImpl, details::AffineCombImpl, aff_kernel_t, details::double_iv_t>;
-  template class kernel::details::MinRangeBuiltInFP<double, details::ErrorTermImpl, details::AffineCombImpl, aff_kernel_t>;
-  template class kernel::details::MultiplicationFP<double, details::ErrorTermImpl, details::AffineCombImpl,aff_kernel_t , details::double_iv_t>;
-  template class AffineForm<double, details::ErrorTermImpl, details::AffineCombImpl, 
-			    kernel::ExactErrorFP, pol::AF0, pol::ErrorPolStd, details::double_iv_t>;
-  // Standard 
-  template aff_e_d pow(aff_e_d, const aff_e_d&);
-  template aff_e_d pown(aff_e_d, int);
-  template aff_e_d sqrt(aff_e_d);
-
-  template aff_e_d exp(aff_e_d);
-  template aff_e_d exp2(aff_e_d);
-  template aff_e_d exp10(aff_e_d);
-
-  template aff_e_d log(aff_e_d);
-  template aff_e_d log2(aff_e_d);
-  template aff_e_d log10(aff_e_d);
-
-  template aff_e_d expm1(aff_e_d);
-  template aff_e_d exp2m1(aff_e_d);
-  template aff_e_d exp10m1(aff_e_d);
-
-  template aff_e_d logp1(aff_e_d);
-  template aff_e_d log2p1(aff_e_d);
-  template aff_e_d log10p1(aff_e_d);
-
-  template aff_e_d sin(aff_e_d);
-  template aff_e_d cos(aff_e_d);
-  template aff_e_d tan(aff_e_d);
-
-  template aff_e_d asin(aff_e_d);
-  template aff_e_d acos(aff_e_d);
-  template aff_e_d atan(aff_e_d);
-
-  template aff_e_d sinh(aff_e_d);
-  template aff_e_d cosh(aff_e_d);
-  template aff_e_d tanh(aff_e_d);
-
-  template aff_e_d asinh(aff_e_d);
-  template aff_e_d acosh(aff_e_d);
-  template aff_e_d atanh(aff_e_d);
-
-  // template aff_e_d_std abs(aff_e_d_std);
-  // template aff_e_d_std rSqrt(aff_e_d_std);
-  // template aff_e_d_std hypot(aff_e_d_std);
-  // template aff_e_d_std compundm1(aff_e_d_std);
-
-  template aff_e_d powr(aff_e_d, int, unsigned);
-
-  template details::double_iv_t to_iv(const aff_e_d&);
-  template double rad(const aff_e_d&);
-
-  // aff_e_d_dec
-  template class AffineForm<double, details::ErrorTermImpl, details::AffineCombImpl, 
-			    kernel::ExactErrorFP, pol::AF0, pol::ErrorPolDec, details::double_iv_t>;
-  template aff_e_d_dec sqr(aff_e_d_dec);
-  template aff_e_d_dec pow(aff_e_d_dec, const aff_e_d_dec&);
-  template aff_e_d_dec pown(aff_e_d_dec, int);
-  template aff_e_d_dec sqrt(aff_e_d_dec);
-
-  template aff_e_d_dec exp(aff_e_d_dec);
-  template aff_e_d_dec exp2(aff_e_d_dec);
-  template aff_e_d_dec exp10(aff_e_d_dec);
-
-  template aff_e_d_dec log(aff_e_d_dec);
-  template aff_e_d_dec log2(aff_e_d_dec);
-  template aff_e_d_dec log10(aff_e_d_dec);
-
-  template aff_e_d_dec expm1(aff_e_d_dec);
-  template aff_e_d_dec exp2m1(aff_e_d_dec);
-  template aff_e_d_dec exp10m1(aff_e_d_dec);
-
-  template aff_e_d_dec logp1(aff_e_d_dec);
-  template aff_e_d_dec log2p1(aff_e_d_dec);
-  template aff_e_d_dec log10p1(aff_e_d_dec);
-
-  template aff_e_d_dec sin(aff_e_d_dec);
-  template aff_e_d_dec cos(aff_e_d_dec);
-  template aff_e_d_dec tan(aff_e_d_dec);
-
-  template aff_e_d_dec asin(aff_e_d_dec);
-  template aff_e_d_dec acos(aff_e_d_dec);
-  template aff_e_d_dec atan(aff_e_d_dec);
-
-  template aff_e_d_dec sinh(aff_e_d_dec);
-  template aff_e_d_dec cosh(aff_e_d_dec);
-  template aff_e_d_dec tanh(aff_e_d_dec);
-
-  template aff_e_d_dec asinh(aff_e_d_dec);
-  template aff_e_d_dec acosh(aff_e_d_dec);
-  template aff_e_d_dec atanh(aff_e_d_dec);
-
-  // template aff_e_d_dec abs(aff_e_d_dec);
-  // template aff_e_d_dec rSqrt(aff_e_d_dec);
-  // template aff_e_d_dec hypot(aff_e_d_dec);
-  // template aff_e_d_dec compundm1(aff_e_d_dec);
-
-  template aff_e_d_dec powr(aff_e_d_dec, int, unsigned);
-
-  template details::double_iv_t to_iv(const aff_e_d_dec&);
-  template double rad(const aff_e_d_dec&);
-
-  // ****************************************************************
-  // AF1 DEC
-  // ****************************************************************
-  template class AffineForm<double, details::ErrorTermImpl, details::AffineCombImpl, 
-			    kernel::ExactErrorFP, pol::AF1, pol::ErrorPolDec, details::double_iv_t>;
-  template aff_af1_e_d_dec sqr(aff_af1_e_d_dec);
-  template aff_af1_e_d_dec pow(aff_af1_e_d_dec, const aff_af1_e_d_dec&);
-  template aff_af1_e_d_dec pown(aff_af1_e_d_dec, int);
-  template aff_af1_e_d_dec sqrt(aff_af1_e_d_dec);
-
-  template aff_af1_e_d_dec exp(aff_af1_e_d_dec);
-  template aff_af1_e_d_dec exp2(aff_af1_e_d_dec);
-  template aff_af1_e_d_dec exp10(aff_af1_e_d_dec);
-
-  template aff_af1_e_d_dec log(aff_af1_e_d_dec);
-  template aff_af1_e_d_dec log2(aff_af1_e_d_dec);
-  template aff_af1_e_d_dec log10(aff_af1_e_d_dec);
-
-  template aff_af1_e_d_dec expm1(aff_af1_e_d_dec);
-  template aff_af1_e_d_dec exp2m1(aff_af1_e_d_dec);
-  template aff_af1_e_d_dec exp10m1(aff_af1_e_d_dec);
-
-  template aff_af1_e_d_dec logp1(aff_af1_e_d_dec);
-  template aff_af1_e_d_dec log2p1(aff_af1_e_d_dec);
-  template aff_af1_e_d_dec log10p1(aff_af1_e_d_dec);
-
-  template aff_af1_e_d_dec sin(aff_af1_e_d_dec);
-  template aff_af1_e_d_dec cos(aff_af1_e_d_dec);
-  template aff_af1_e_d_dec tan(aff_af1_e_d_dec);
-
-  template aff_af1_e_d_dec asin(aff_af1_e_d_dec);
-  template aff_af1_e_d_dec acos(aff_af1_e_d_dec);
-  template aff_af1_e_d_dec atan(aff_af1_e_d_dec);
-
-  template aff_af1_e_d_dec sinh(aff_af1_e_d_dec);
-  template aff_af1_e_d_dec cosh(aff_af1_e_d_dec);
-  template aff_af1_e_d_dec tanh(aff_af1_e_d_dec);
-
-  template aff_af1_e_d_dec asinh(aff_af1_e_d_dec);
-  template aff_af1_e_d_dec acosh(aff_af1_e_d_dec);
-  template aff_af1_e_d_dec atanh(aff_af1_e_d_dec);
-
-  // template aff_af1_e_d_dec abs(aff_af1_e_d_dec);
-  // template aff_af1_e_d_dec rSqrt(aff_af1_e_d_dec);
-  // template aff_af1_e_d_dec hypot(aff_af1_e_d_dec);
-  // template aff_af1_e_d_dec compundm1(aff_af1_e_d_dec);
-
-  template aff_af1_e_d_dec powr(aff_af1_e_d_dec, int, unsigned);
-
-  template details::double_iv_t to_iv(const aff_af1_e_d_dec&);
-  template double rad(const aff_af1_e_d_dec&);
-
-
-  template class AffineForm<double, details::ErrorTermImpl, details::AffineCombImpl, 
-			    kernel::ExactErrorFP, pol::AF2, pol::ErrorPolDec, details::double_iv_t>;
-  template aff_af2_e_d_dec sqr(aff_af2_e_d_dec);
-  template aff_af2_e_d_dec pow(aff_af2_e_d_dec, const aff_af2_e_d_dec&);
-  template aff_af2_e_d_dec pown(aff_af2_e_d_dec, int);
-  template aff_af2_e_d_dec sqrt(aff_af2_e_d_dec);
-
-  template aff_af2_e_d_dec exp(aff_af2_e_d_dec);
-  template aff_af2_e_d_dec exp2(aff_af2_e_d_dec);
-  template aff_af2_e_d_dec exp10(aff_af2_e_d_dec);
-
-  template aff_af2_e_d_dec log(aff_af2_e_d_dec);
-  template aff_af2_e_d_dec log2(aff_af2_e_d_dec);
-  template aff_af2_e_d_dec log10(aff_af2_e_d_dec);
-
-  template aff_af2_e_d_dec expm1(aff_af2_e_d_dec);
-  template aff_af2_e_d_dec exp2m1(aff_af2_e_d_dec);
-  template aff_af2_e_d_dec exp10m1(aff_af2_e_d_dec);
-
-  template aff_af2_e_d_dec logp1(aff_af2_e_d_dec);
-  template aff_af2_e_d_dec log2p1(aff_af2_e_d_dec);
-  template aff_af2_e_d_dec log10p1(aff_af2_e_d_dec);
-
-  template aff_af2_e_d_dec sin(aff_af2_e_d_dec);
-  template aff_af2_e_d_dec cos(aff_af2_e_d_dec);
-  template aff_af2_e_d_dec tan(aff_af2_e_d_dec);
-
-  template aff_af2_e_d_dec asin(aff_af2_e_d_dec);
-  template aff_af2_e_d_dec acos(aff_af2_e_d_dec);
-  template aff_af2_e_d_dec atan(aff_af2_e_d_dec);
-
-  template aff_af2_e_d_dec sinh(aff_af2_e_d_dec);
-  template aff_af2_e_d_dec cosh(aff_af2_e_d_dec);
-  template aff_af2_e_d_dec tanh(aff_af2_e_d_dec);
-
-  template aff_af2_e_d_dec asinh(aff_af2_e_d_dec);
-  template aff_af2_e_d_dec acosh(aff_af2_e_d_dec);
-  template aff_af2_e_d_dec atanh(aff_af2_e_d_dec);
-
-  // template aff_af2_e_d_dec abs(aff_af2_e_d_dec);
-  // template aff_af2_e_d_dec rSqrt(aff_af2_e_d_dec);
-  // template aff_af2_e_d_dec hypot(aff_af2_e_d_dec);
-  // template aff_af2_e_d_dec compundm1(aff_af2_e_d_dec);
-
-  template aff_af2_e_d_dec powr(aff_af2_e_d_dec, int, unsigned);
-
-  template details::double_iv_t to_iv(const aff_af2_e_d_dec&);
-  template double rad(const aff_af2_e_d_dec&);
-
-
-
+  template class kernel::ExactErrorFP<double, details::ErrorTermImpl, details::AffineCombImpl, 
+				      details::double_iv_t>;
+  INSTANTIATE_YALAA(aff_e_d, double, details::ErrorTermImpl, details::AffineCombImpl,
+                    kernel::ExactErrorFP, pol::AF0, pol::ErrorPolStd, details::double_iv_t)
+  INSTANTIATE_YALAA(aff_af1_e_d, double, details::ErrorTermImpl, details::AffineCombImpl,
+                    kernel::ExactErrorFP, pol::AF1, pol::ErrorPolStd, details::double_iv_t)
+  // INSTANTIATE_YALAA(aff_af2_e_d, double, details::ErrorTermImpl, details::AffineCombImpl,
+  //                   kernel::ExactErrorFP, pol::AF2, pol::ErrorPolStd, details::double_iv_t)
+  INSTANTIATE_YALAA(aff_e_d_dec, double, details::ErrorTermImpl, details::AffineCombImpl,
+                    kernel::ExactErrorFP, pol::AF0, pol::ErrorPolDec, details::double_iv_t)
+  INSTANTIATE_YALAA(aff_af1_e_d_dec, double, details::ErrorTermImpl, details::AffineCombImpl,
+                    kernel::ExactErrorFP, pol::AF1, pol::ErrorPolDec, details::double_iv_t)
+  // INSTANTIATE_YALAA(aff_af2_e_dec, double, details::ErrorTermImpl, details::AffineCombImpl,
+  //                   kernel::ExactErrorFP, pol::AF2, pol::ErrorPolDec, details::double_iv_t)
 #endif
 
 #if YALAA_HAVE_L_DOUBLE_IV
   // aff_e_ld
   template class details::AffineCombImpl<long double, details::ErrorTermImpl>;
-  template class AffineForm<long double, details::ErrorTermImpl, details::AffineCombImpl, 
-			    kernel::ExactErrorFP, pol::AF0, pol::ErrorPolImpl, details::l_double_iv_t>;
+  template class AffineForm<long double, details::ErrorTermImpl, details::AffineCombImpl,
+                            kernel::ExactErrorFP, pol::AF0, pol::ErrorPolImpl, details::l_double_iv_t>;
   template aff_e_ld exp(aff_e_ld);
   template aff_e_ld sqrt(aff_e_ld);
   template aff_e_ld ln(aff_e_ld);
@@ -303,8 +140,8 @@ namespace yalaa
   template details::l_double_iv_t to_iv(const aff_e_ld&);
   template long double rad(const aff_e_ld&);
 
-  template class AffineForm<long double, details::ErrorTermImpl, details::AffineCombImpl, 
-			    kernel::ExactErrorFP, pol::AF0, pol::ErrorPolDec, details::l_double_iv_t>;
+  template class AffineForm<long double, details::ErrorTermImpl, details::AffineCombImpl,
+                            kernel::ExactErrorFP, pol::AF0, pol::ErrorPolDec, details::l_double_iv_t>;
   template aff_e_ld_dec exp(aff_e_ld_dec);
   template aff_e_ld_dec sqrt(aff_e_ld_dec);
   template aff_e_ld_dec ln(aff_e_ld_dec);
@@ -319,3 +156,5 @@ namespace yalaa
 
 #endif
 }
+
+#undef INSTANTIATE_YALAA

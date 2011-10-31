@@ -347,6 +347,7 @@ namespace yalaa
 #endif
   };
   
+
   YALAA_AFF_TEMPLATE
   typename AffineForm<T, ET, AC, AR, AP, EP, IV>::iv_t
   to_iv(const AffineForm<T, ET, AC, AR, AP, EP, IV> & af);

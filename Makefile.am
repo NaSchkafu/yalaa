@@ -12,9 +12,10 @@ IV_FLAGS = $(FILIB_LDFLAGS)
 IV_LIBS = $(FILIB_LIBS)
 endif
 
+AM_CPPFLAGS = $(EXTRA_INC) $(IV_CPPFLAGS) $(BOOST_CPPFLAGS)
+export IV_LIBS
+export IV_FLAGS
+export AM_CPPFLAGS
 
-
-AM_CPPFLAGS = $(EXTRA_INC) -Isrc $(IV_CPPFLAGS) $(BOOST_CPPFLAGS)
-
-SUBDIRS = src examples doc
+SUBDIRS = src examples
 EXTRA_DIST = Doxyfile

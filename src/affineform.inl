@@ -33,6 +33,38 @@
 namespace yalaa
 {
   /** 
+   * Gets the special value of this affine form <br />
+   * The type and the meaning are determined by the used ErrorPolicy
+   * 
+   * @param af affine form
+   * 
+   * @return special valu
+   */
+  template<typename AF>
+  typename boost::enable_if<details::has_trait_is_aff_t<AF>,typename AF::ep_t::special_t>::type
+  get_special(const AF& af)
+  {
+    //return af.m_special;
+  }
+
+  /** 
+   * Checks if the given affine form is valid. <br />
+   * That is, if the affine form has a valid numerical central value.
+   * 
+   * 
+   * @param af 
+   * 
+   * @return 
+   */
+  template<typename AF>
+  typename boost::enable_if<details::has_trait_is_aff_t<AF>, bool>::type
+  is_valid(const AF& af)
+  {
+    return AF::ep_t::valid(af);
+  }
+
+
+  /** 
    * Calculates an interval enclosing an affine form
    * 
    * @param af affine form

@@ -21,6 +21,7 @@
 #define __DOUBLE_TRAITS_HPP__
 
 #include "helper/fphelper.hpp"
+#include <limits>
 
 namespace yalaa 
 {
@@ -82,6 +83,11 @@ namespace yalaa
 #else
 	  return isnan(d);
 #endif
+	}
+
+      static base_t special()
+	{
+	  return std::numeric_limits<base_t>::quiet_NaN();
 	}
 
       static base_t my_add_up(base_t d1, base_t d2) 

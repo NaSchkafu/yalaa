@@ -17,32 +17,53 @@
   along with yalaa.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// namespace details
-// {
-//   template<T> 
-//   void get_central_r(T &central)
-//   { }
+namespace details 
+{
+  template <typename T>
+  inline void adjust_central_R(T &central)
+  {
+    central = yalaa::details::base_traits<T>::special();
+  }
+    
+  template <typename T>
+  inline void adjust_central_EMPTY(T &central)
+  {
+    central = yalaa::details::base_traits<T>::special();
+  }
 
-//   void get_central_r(double &central)
-//   {
-//     central = std::numeric_limits<double>::infinity();
-//   }
+  inline void adjust_central_R(double &central)
+  {
+    if(-central != std::numeric_limits<double>::infinity())
+      central = std::numeric_limits<double>::infinity();
+  }
 
-//   template <typename T>
-//   void get_central_e(T &central)
-//   {}
-
-//   void get_central_e(double &central)
-//   {
-//     central = std::numeric_limits<double>::quiet_NaN();
-//   }
-// }
+  inline void adjust_central_EMPTY(double &central)
+  {
+    central = std::numeric_limits<double>::quiet_NaN();
+  }
 
   
+}
 
-  
-
-  
+template<typename T, typename IV>
+YALAA_SPEC_TEMPLATE_DEF
+bool ErrorPolStd<T, IV>::adjust_central(YALAA_SPEC_TEMPLATE_T *af)
+{
+  T central(af->ac().central());
+  switch(af->m_special)
+  {
+  case R:
+    details::adjust_central_R(central);
+    break;
+  case EMPTY:
+    details::adjust_central_EMPTY(central);
+    break;
+  default:
+    break;
+  }
+  af->ac().set_central(central);
+  return !af->m_special;
+}
 
 template<typename T, typename IV>
 typename ErrorPolStd<T, IV>::special_t base_special(const T& s) 
@@ -69,30 +90,34 @@ typename ErrorPolStd<double, IV>::special_t base_special(double s)
 }
 
 template<typename T, typename IV>
-bool ErrorPolStd<T,IV>::special(special_t val)
+YALAA_SPEC_TEMPLATE_DEF
+bool ErrorPolStd<T,IV>::valid(const YALAA_SPEC_TEMPLATE_T& af)
 {
-  return val;
+  return !af.m_special;
 }
 
 template<typename T, typename IV>
 YALAA_SPEC_TEMPLATE_DEF
 bool ErrorPolStd<T, IV>::pre_op(YALAA_SPEC_TEMPLATE_T *af1, const YALAA_SPEC_TEMPLATE_T &af2)
 {
-  return !(af1->m_special = std::max(af1->m_special, af2.m_special));
+  af1->m_special = std::max(af1->m_special, af2.m_special);
+  return adjust_central(af1);
 }
 
 template<typename T, typename IV>
 YALAA_SPEC_TEMPLATE_DEF
 bool ErrorPolStd<T, IV>::pre_op(YALAA_SPEC_TEMPLATE_T *af, const iv_t &iv)
 {
-  return !(af->m_special = std::max(af->m_special, iv_special<T, IV>(iv)));
+  af->m_special = std::max(af->m_special, iv_special<T, IV>(iv));
+  return adjust_central(af);
 }
 
 template<typename T, typename IV>
 YALAA_SPEC_TEMPLATE_DEF
 bool ErrorPolStd<T, IV>::pre_op(YALAA_SPEC_TEMPLATE_T *af, base_ref_t s)
 {
-  return !(af->m_special = std::max(af->m_special, base_special<T, IV>(s)));
+  af->m_special = std::max(af->m_special, base_special<T, IV>(s));
+  return adjust_central(af);
 }
 
 template<typename T, typename IV>
@@ -119,6 +144,7 @@ void ErrorPolStd<T, IV>::post_op(YALAA_SPEC_TEMPLATE_T *af1, const YALAA_SPEC_TE
                                  const aerror_t &err)
 {
   af1->m_special = to_special(err);
+  adjust_central(af1);
 }
 
 template<typename T, typename IV>
@@ -127,6 +153,7 @@ void ErrorPolStd<T, IV>::post_op(YALAA_SPEC_TEMPLATE_T *af, const iv_t &,
                                  const aerror_t &err)
 {
   af->m_special = to_special(err);
+  adjust_central(af);
 }
 
 template<typename T, typename IV>
@@ -134,6 +161,7 @@ YALAA_SPEC_TEMPLATE_DEF
 void ErrorPolStd<T, IV>::post_op(YALAA_SPEC_TEMPLATE_T *af, base_ref_t , const aerror_t &err)
 {
   af->m_special = to_special(err);
+  adjust_central(af);
 }
 
 template<typename T, typename IV>
@@ -141,19 +169,22 @@ YALAA_SPEC_TEMPLATE_DEF
 void ErrorPolStd<T, IV>::post_op(YALAA_SPEC_TEMPLATE_T *af, const aerror_t &err)
 {
   af->m_special = to_special(err);
+  adjust_central(af);
 }
 
 template<typename T, typename IV>
 YALAA_SPEC_TEMPLATE_DEF
 bool ErrorPolStd<T, IV>::new_form(YALAA_SPEC_TEMPLATE_T *af, base_ref_t s)
 {
-  return !(af->m_special = base_special<T, IV>(s));
+  af->m_special = base_special<T, IV>(s);
+  return adjust_central(af);
 }
 
 template<typename T, typename IV>
 YALAA_SPEC_TEMPLATE_DEF
 bool ErrorPolStd<T, IV>::new_form(YALAA_SPEC_TEMPLATE_T *af, const iv_t& iv)
 {
-  return !(af->m_special = iv_special<T, IV>(iv));
+  af->m_special = iv_special<T, IV>(iv);
+  return adjust_central(af);
 }
 

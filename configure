@@ -3156,7 +3156,7 @@ ac_config_headers="$ac_config_headers config.h"
 
 ac_config_commands="$ac_config_commands src/yalaa-config.h"
 
-ac_config_files="$ac_config_files Makefile src/Makefile examples/Makefile doc/Makefile"
+ac_config_files="$ac_config_files Makefile src/Makefile examples/Makefile"
 
 
 
@@ -18871,7 +18871,6 @@ do
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
     "examples/Makefile") CONFIG_FILES="$CONFIG_FILES examples/Makefile" ;;
-    "doc/Makefile") CONFIG_FILES="$CONFIG_FILES doc/Makefile" ;;
     "depfiles") CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
     "libtool") CONFIG_COMMANDS="$CONFIG_COMMANDS libtool" ;;
 

@@ -295,8 +295,8 @@ ACLOCAL_AMFLAGS = -I m4
 @CXSC_TRUE@IV_FLAGS = $(CXSC_LIBS)
 @FILIB_TRUE@IV_FLAGS = $(FILIB_LDFLAGS)
 @FILIB_TRUE@IV_LIBS = $(FILIB_LIBS)
-AM_CPPFLAGS = $(EXTRA_INC) -Isrc $(IV_CPPFLAGS) $(BOOST_CPPFLAGS)
-SUBDIRS = src examples doc
+AM_CPPFLAGS = $(EXTRA_INC) $(IV_CPPFLAGS) $(BOOST_CPPFLAGS)
+SUBDIRS = src examples
 EXTRA_DIST = Doxyfile
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
@@ -838,6 +838,9 @@ uninstall-am:
 @DX_COND_doc_TRUE@@DX_DOCDIR@/@PACKAGE@.tag: $(DX_CONFIG) $(pkginclude_HEADERS)
 @DX_COND_doc_TRUE@	rm -rf @DX_DOCDIR@
 @DX_COND_doc_TRUE@	$(DX_ENV) $(DX_DOXYGEN) $(srcdir)/$(DX_CONFIG)
+export IV_LIBS
+export IV_FLAGS
+export AM_CPPFLAGS
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

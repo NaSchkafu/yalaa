@@ -18,8 +18,12 @@ T eval_func(const T& x0, const T& x1)
 
 int main(int argc, char *argv[])
 {
-  yalaa::aff_e_d x0(iv_t(-1.0, 1.0));
-  yalaa::aff_e_d x1(iv_t(-1.0, 1.0));
-  std::cout << "SHCB  over [-1,1]^2: "<< eval_func(x0, x1) << std::endl;
-  return 0;
+  // Decoration Type
+  yalaa::aff_e_d_dec x0(iv_t(-1.0, 1.0));
+  
+
+  // yalaa::aff_e_d x0(iv_t(-1.0, 1.0));
+  // yalaa::aff_e_d x1(iv_t(-1.0, 1.0));
+  // std::cout << "SHCB  over [-1,1]^2: "<< eval_func(x0, x1) << std::endl;
+  // return 0;
 }

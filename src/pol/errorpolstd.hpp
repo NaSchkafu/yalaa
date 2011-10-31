@@ -100,11 +100,16 @@ namespace yalaa
        *
        * @return true if val indicates a special value
        */
-      inline static bool special(special_t val);
+      YALAA_SPEC_TEMPLATE_DEF
+      inline static bool valid(const YALAA_SPEC_TEMPLATE_T &af);
       // ****************************************************************
 
     private:
       inline static special_t to_special(const aerror_t& err);
+
+      YALAA_SPEC_TEMPLATE_DEF
+      inline static bool adjust_central(YALAA_SPEC_TEMPLATE_T *af);
+
     };
     #include "errorpolstd.inl"
   }

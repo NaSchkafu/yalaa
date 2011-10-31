@@ -22,6 +22,9 @@
 
 #include "affineform_fwd.hpp"
 
+#include <boost/type_traits/is_floating_point.hpp>
+#include <boost/utility/enable_if.hpp>
+
 #define YALAA_SPEC_TEMPLATE_DEF template<template<typename> class ET,   \
                                          template<typename, template<typename> class> class AC, \
                                          template<typename, template<typename> class, \
@@ -108,13 +111,14 @@ namespace yalaa
       inline static bool new_form(YALAA_SPEC_TEMPLATE_T *af, const iv_t& iv);
 
       /**
-       * Determines whether the affine form has a special value
+       * Determines whether the affine form has a valid numerical value
        *
-       * @param val value to check
+       * @param af affine form to check
        *
        * @return true if val indicates a special value
        */
-      inline static bool special(special_t val);
+      YALAA_SPEC_TEMPLATE_DEF
+      inline static bool valid(const YALAA_SPEC_TEMPLATE_T &af);
       // ****************************************************************
 
       // ****************************************************************
@@ -130,6 +134,9 @@ namespace yalaa
 
     #include "errorpoldec.inl"
   }
+  
+  
+
 }
 
 #undef YALAA_SPEC_TEMPLATE_DEF

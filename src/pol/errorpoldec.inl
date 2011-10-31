@@ -17,11 +17,50 @@
   along with yalaa.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+namespace details 
+{
+  template <typename AC, typename DECO>
+  void adjust_central(AC &ac, DECO d, const yalaa::details::ArithmeticError<typename AC::base_t> *aerr = 0)
+  {
+    typedef yalaa::details::ArithmeticError<typename AC::base_t> aerror_t;
+
+    static_assert(boost::is_floating_point<typename AC::base_t>::value,
+    		  "ErrorPolDec for an unknown type requested. "
+    		  "You have to specialize adjust_central in order to get proper central "
+    		  "values for non valid affine forms.");
+    if(d <= DECO::D1)
+      ac.set_central(std::numeric_limits<typename AC::base_t>::quiet_NaN());
+    else if(aerr && (aerr->error() & (aerror_t::OFLOW | aerror_t::UNBOUND)) && 
+	    -ac.central() != std::numeric_limits<typename AC::base_t>::infinity())
+      ac.set_central(std::numeric_limits<typename AC::base_t>::infinity());
+  }
+
+  template<typename AC>
+  bool check_central(const AC &ac)
+  {
+    static_assert(boost::is_floating_point<typename AC::base_t>::value,
+    		  "ErrorPolDec for an unknown type requested. "
+    		  "You have to specialize adjust_central in order to get proper central "   
+		  "values for non valid affine forms.");
+    bool invalid = false;
+#ifdef _MSC_VER
+    invalid = _isnan(ac.central());
+    invalid |= _isinf(ac.central());
+#else
+    invalid = isnan(ac.central());
+    invalid |= isinf(ac.central());
+#endif
+    return !invalid;
+  }
+}
+
 
 template<typename T, typename IV>
-bool ErrorPolDec<T,IV>::special(special_t val)
+YALAA_SPEC_TEMPLATE_DEF
+bool ErrorPolDec<T,IV>::valid(const YALAA_SPEC_TEMPLATE_T &af)
 {
-  return val;
+  return af.m_special == D5 || (af.m_special > D1 && af.m_special < D4 && 
+				!yalaa::details::base_traits<T>::is_special(af.ac().central());
 }
 
 
@@ -68,6 +107,7 @@ bool ErrorPolDec<T, IV>::pre_op(YALAA_SPEC_TEMPLATE_T *af1, const YALAA_SPEC_TEM
   af1->m_special = std::min(af1->m_special, af2.m_special);
   if(af1->m_special == D1)
     af1->m_special = D0;
+  details::adjust_central(af1->ac(), af1->m_special);
   return af1->m_special > 2;
 }
 
@@ -78,6 +118,7 @@ bool ErrorPolDec<T, IV>::pre_op(YALAA_SPEC_TEMPLATE_T *af, const iv_t &iv)
   af->m_special = std::min(af->m_special, iv_deco(iv));
   if(af->m_special == D1)
     af->m_special= D0;
+  details::adjust_central(af->ac(), af->m_special);
   return af->m_special > 2;
 }
 
@@ -88,6 +129,7 @@ bool ErrorPolDec<T, IV>::pre_op(YALAA_SPEC_TEMPLATE_T *af, base_ref_t s)
   af->m_special = std::min(af->m_special, scal_deco(s));
   if(af->m_special == D1)
     af->m_special = D0;
+  details::adjust_central(af->ac(), af->m_special);
   return af->m_special > 2;
 }
 
@@ -97,6 +139,7 @@ bool ErrorPolDec<T, IV>::pre_op(YALAA_SPEC_TEMPLATE_T *af)
 {
   if(af->m_special == D1)
     af->m_special = D0;
+  details::adjust_central(af->ac(), af->m_special);
   return af->m_special > 2;
 }
 
