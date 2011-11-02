@@ -41,8 +41,6 @@ namespace details
   {
     central = std::numeric_limits<double>::quiet_NaN();
   }
-
-  
 }
 
 template<typename T, typename IV>

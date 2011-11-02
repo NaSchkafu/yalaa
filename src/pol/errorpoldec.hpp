@@ -35,7 +35,7 @@
 
 namespace yalaa
 {
-
+  /// Namespace for AffinePolicy and ErrorPolicy implementations
   namespace pol
   {
     /// An \c ErrorPolicy providing a decoration like error handling
@@ -43,6 +43,7 @@ namespace yalaa
      * This class implements the \c ErrorPolicy concept and provides a
      * decoration like approach, roughly following the decorations proposed
      * for the upcoming P1788 interval arithmetic standard.
+     * 
      */
     template<typename T, typename IV>
     struct ErrorPolDec
@@ -51,15 +52,15 @@ namespace yalaa
       // ErrorPol Concept Impl
       // ****************************************************************
 
-      /// affine decorations
+      /// Decorations supported by \c YalAA
       /**
-       * D5: certainly defined, continuous and bounded
-       * D4: defined and cont
-       * D3: defined
-       * D2: possibly defined
-       * D1: certainly undefined
-       * D0: empty set
-       * DE: error occurred
+       * D5: certainly defined, continuous and bounded<br>
+       * D4: defined and cont<br>
+       * D3: defined<br>
+       * D2: possibly defined<br>
+       * D1: certainly undefined<br>
+       * D0: empty set<br>
+       * DE: error occurred<br>
        */
       enum deco_t { D5 = 6, D4 = 5, D3 = 4, D2 = 3, D1 = 2, D0 = 1, DE = 0 };
 
@@ -88,7 +89,6 @@ namespace yalaa
 
       YALAA_SPEC_TEMPLATE_DEF
       inline static bool pre_op(YALAA_SPEC_TEMPLATE_T *af);
-
 
       YALAA_SPEC_TEMPLATE_DEF
       inline static void post_op(YALAA_SPEC_TEMPLATE_T *af1, const YALAA_SPEC_TEMPLATE_T &af2,
@@ -130,13 +130,14 @@ namespace yalaa
       inline static special_t to_deco(const aerror_t &err);
       inline static special_t iv_deco(const iv_t &err);
       inline static special_t scal_deco(const base_t &err);
+
+      YALAA_SPEC_TEMPLATE_DEF
+      inline static void adjust_central(YALAA_SPEC_TEMPLATE_T *af, const aerror_t *aerr = 0);
+
     };
 
     #include "errorpoldec.inl"
   }
-  
-  
-
 }
 
 #undef YALAA_SPEC_TEMPLATE_DEF

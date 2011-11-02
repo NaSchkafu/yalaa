@@ -45,7 +45,7 @@
  * 
  * 
  * If you want to use another library, you have to provide a specialization of the base_traits 
- * template class. Please follow the steps described in ???? to do so. 
+ * template class. 
  * 
  * 
  * \subsection win Microsoft Windows
@@ -88,23 +88,25 @@
  * <td>\c aff_e_d</td> <td><tt>double</tt></td> <td>ExactErrorFP</td> <td>AF0</td> <td>Standard</td> 
  * </tr>
  * <tr>
- * <td> \c aff_af1_e_d </td> <td>\c double </td> <td>ExactError</td> <td>AF1</td> <td>Standard</td> 
+ * <td> \c aff_af1_e_d </td> <td>\c double </td> <td>ExactErrorFP</td> <td>AF1</td> <td>Standard</td> 
  * </tr>
  * <tr>
- * <td> \c aff_af2_e_d </td> <td>\c double </td> <td>ExactError</td> <td>AF2</td> <td>Standard</td> 
+ * <td> \c aff_af2_e_d </td> <td>\c double </td> <td>ExactErrorFP</td> <td>AF2</td> <td>Standard</td> 
  * </tr>
  * <tr>
- * <td> \c aff_e_d_dec </td> <td>\c double </td> <td>ExactError</td> <td>AF0</td> <td>Decorations</td> 
+ * <td> \c aff_e_d_dec </td> <td>\c double </td> <td>ExactErrorFP</td> <td>AF0</td> <td>Decorations</td> 
  * </tr>
  * <tr>
- * <td> \c aff_af1_e_d_dec </td> <td>\c double </td> <td>ExactError</td> <td>AF1</td> <td>Decorations</td> 
+ * <td> \c aff_af1_e_d_dec </td> <td>\c double </td> <td>ExactErrorFP</td> <td>AF1</td> <td>Decorations</td> 
  * </tr>
  * <tr>
- * <td> \c aff_af2_e_d_dec </td> <td>\c double </td> <td>ExactError</td> <td>AF2</td> <td>Decorations</td> 
+ * <td> \c aff_af2_e_d_dec </td> <td>\c double </td> <td>ExactErrorFP</td> <td>AF2</td> <td>Decorations</td> 
  * </tr>
  * </table>
  * 
- * The different error handling approaches and the policy types are explained in ????YALAA_PAPER????.
+ * The different error handling approaches and the policy types are explained in \c YalAA's
+ * implementation paper. Furthermore, the namespace yalaa::concepts contains templates for
+ * creating your own policies.
  * 
  * \section Ex Examples
  * To illustrate the usage of \c YalAA in more detail we have distributed some examples with the
@@ -116,13 +118,13 @@
  * </tr>
  * 
  * <tr>
- * <td>function.cpp</td> <td>Evaluates a function with \c YalAA<\td>
+ * <td>\link function.cpp \endlink</td> <td>Evaluates a function with \c YalAA</td>
  * </tr>
  * <tr>
- * <td>decorations.cpp</td> <td>Shows the usage of decorations in \c YalAA<\td>
+ * <td>\link decorations.cpp \endlink</td> <td>Shows the usage of decorations in \c YalAA</td>
  * </tr>
  * <tr>
- * <td>policies.cpp</td> <td>Shows how the different policies alter the computation in \c YalAA<\td> 
+ * <td>\link policies.cpp \endlink</td> <td>Shows how the different policies alter the computation in \c YalAA</td> 
  * </tr>
  * </table>
  * 
@@ -137,6 +139,25 @@
  * If you have any questions, suggenstions or bug reports regarding \c YalAA do not hesitate
  * to write me an <a href="mailto:kiel@inf.uni-due.de">email</a>.
  */
+
+/**
+ * \example function.cpp
+ * Example that illustrates how to evaluate a function with \c YalAA.
+ */
+
+
+/**
+ * \example decorations.cpp
+ * Example that illustrates how the decoration mechanism in \c YalAA 
+ * works in different situations.
+ */
+
+/**
+ * \example policies.cpp
+ * Example that illustrates how the different policies in \c YalAA alter
+ * the computation process.
+ */
+
 
 /**
  * \todo Documentation for the Windows Version is missing

@@ -33,6 +33,8 @@ namespace yalaa
      * This class provides an implementation for the \c ErrorTerm concept
      * An unsigned 64 - Bit integer is used for the symbolic noise variable
      * Partial deviation is stored as the provided template type.
+     *
+     * \todo Rework handling of special values for AF1, AF2...
      */
     template <typename T>
     class ErrorTermImpl
@@ -65,11 +67,13 @@ namespace yalaa
       inline static unsigned long long new_symbol();
 
     private:
-      long long m_eps;
+      unsigned long long m_eps;
 
       T m_dev;
 
       static unsigned long long CURRENT_EPS;
+
+      static unsigned long long MIN_SPECIAL;
     };
     
     #include "errortermimpl.inl"

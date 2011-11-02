@@ -78,18 +78,20 @@ void ErrorTermImpl<T>::print(std::ostream &os) const
 template<typename T>
 unsigned ErrorTermImpl<T>::special() const
 {
-  if(m_eps < 0)
-    return abs(m_eps);
-  return 0;
+  return m_eps >= MIN_SPECIAL;
 }
 
 template<typename T>
 void ErrorTermImpl<T>::set_special(unsigned type)
 {
-  m_eps = -type;
+  m_eps = std::numeric_limits<unsigned long long>::max() - type;
+  MIN_SPECIAL = std::min(m_eps, MIN_SPECIAL);
 }
 
 
 
 template<typename T>
 unsigned long long ErrorTermImpl<T>::CURRENT_EPS = 0;
+
+template <typename T>
+unsigned long long ErrorTermImpl<T>::MIN_SPECIAL = std::numeric_limits<unsigned long long>::max();

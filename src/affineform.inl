@@ -44,7 +44,7 @@ namespace yalaa
   typename boost::enable_if<details::has_trait_is_aff_t<AF>,typename AF::ep_t::special_t>::type
   get_special(const AF& af)
   {
-    //return af.m_special;
+    return af.special();
   }
 
   /** 
@@ -340,6 +340,12 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
       return true;
     }
     return false;
+  }
+
+  YALAA_AFF_TEMPLATE
+  typename YALAA_DECL::ep_t::special_t YALAA_DECL::special() const 
+  {
+    return m_special;
   }
 
   // elementary

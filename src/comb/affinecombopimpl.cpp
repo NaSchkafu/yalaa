@@ -42,7 +42,10 @@ namespace yalaa
 	  ++it2;
 	}
 	else if(*it == *it2) {
+	  // std::cout << "special: " << it->special() << std::endl;
+	  // std::cout << it->dev() << std::endl;
 	  it->set_dev(it->dev( ) + ((ADD || it->special()) ? it2->dev() : -it2->dev()));
+	  //std::cout << it->dev() << std::endl;
 	  ++it; ++it2; ++ops;
 	}
       }

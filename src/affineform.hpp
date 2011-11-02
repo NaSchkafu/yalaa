@@ -297,6 +297,14 @@ namespace yalaa
      */
     bool operator==(const self_t &other) const;
 
+    /** 
+     * Gets the special value of this form
+     * 
+     * 
+     * @return special value
+     */
+    inline typename ep_t::special_t special() const;
+
     // ****************************************************************
     // Elementary functions
     // (friends)

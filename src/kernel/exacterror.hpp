@@ -41,6 +41,7 @@
 
 namespace yalaa
 {
+  /// Namespace for ArithmeticKernel implementations and associated classes
   namespace kernel
   {
     /// FP implementation of the ArithmeticKernel concept
