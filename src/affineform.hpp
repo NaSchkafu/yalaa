@@ -95,7 +95,7 @@ namespace yalaa
     typedef EP<T, iv_t> ep_t;
     typedef typename boost::mpl::if_<boost::is_fundamental<base_t>, base_t, typename boost::add_const<typename boost::add_reference<base_t>::type>::type>::type base_ref_t;
     typedef void trait_is_aff_t;
-    typedef yalaa::details::base_traits<iv_t> iv_traits;
+    typedef yalaa::traits::interval_traits<iv_t> iv_traits;
 
   public:
     /**

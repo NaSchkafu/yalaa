@@ -180,6 +180,7 @@
 #include "config_sel.h"
 
 // iv selector
+#include "traits/interval_traits.hpp"
 #include "traits/base_traits.hpp"
 #include "yalaa_iv.hpp"
 

@@ -27,19 +27,18 @@ namespace details
     case 5:
     case 4:
     case 3:
-      if(yalaa::details::base_traits<T>::is_special(central))
-	central = yalaa::details::base_traits<T>::special();
+      if(yalaa::traits::base_traits<T>::is_special(central))
+	central = yalaa::traits::base_traits<T>::special();
       break;
     case 2:
     case 1:
     case 0:
-      central = yalaa::details::base_traits<T>::special();
+      central = yalaa::traits::base_traits<T>::special();
       break;
     default:
       break;
     }
-
-    central = yalaa::details::base_traits<T>::special();
+//    central = yalaa::traits::base_traits<T>::special();
   }
 
   inline void adjust_central_dec(double &central, int dec)
@@ -48,7 +47,7 @@ namespace details
     case 5:
     case 4:
     case 3:
-      if(yalaa::details::base_traits<double>::is_special(central))
+      if(yalaa::traits::base_traits<double>::is_special(central))
 	central = std::numeric_limits<double>::infinity();
       break;
     case 2:
@@ -71,7 +70,7 @@ void ErrorPolDec<T, IV>::adjust_central(YALAA_SPEC_TEMPLATE_T *af, const aerror_
   // if(aerr)
   //   std::cout << aerr->error() << std::endl;
   if(aerr && (aerr->error() & (aerror_t::OFLOW | aerror_t::UNBOUND)))
-    central = yalaa::details::base_traits<T>::special();
+    central = yalaa::traits::base_traits<T>::special();
   details::adjust_central_dec(central, af->m_special);
   af->ac().set_central(central);
 }
@@ -81,7 +80,7 @@ YALAA_SPEC_TEMPLATE_DEF
 bool ErrorPolDec<T,IV>::valid(const YALAA_SPEC_TEMPLATE_T &af)
 {
   return af.m_special == D5 || (af.m_special > D1 && af.m_special < D4 && 
-				!yalaa::details::base_traits<T>::is_special(af.ac().central()));
+				!yalaa::traits::base_traits<T>::is_special(af.ac().central()));
 }
 
 
@@ -106,9 +105,9 @@ typename ErrorPolDec<T,IV>::special_t ErrorPolDec<T,IV>::to_deco(const aerror_t 
 template<typename T, typename IV>
 typename ErrorPolDec<T,IV>::special_t ErrorPolDec<T,IV>::iv_deco(const iv_t& iv) 
 {
-  if(yalaa::details::base_traits<iv_t>::is_empty(iv))
+  if(yalaa::traits::interval_traits<iv_t>::is_empty(iv))
     return D0;
-  if(yalaa::details::base_traits<iv_t>::is_special(iv))
+  if(yalaa::traits::interval_traits<iv_t>::is_special(iv))
     return DE;
   return D5;
 }
@@ -116,7 +115,7 @@ typename ErrorPolDec<T,IV>::special_t ErrorPolDec<T,IV>::iv_deco(const iv_t& iv)
 template<typename T, typename IV>
 typename ErrorPolDec<T, IV>::special_t ErrorPolDec<T, IV>::scal_deco(const base_t& s)
 {
-  if(yalaa::details::base_traits<base_t>::is_special(s))
+  if(yalaa::traits::base_traits<base_t>::is_special(s))
     return DE;
   return D5;
 }

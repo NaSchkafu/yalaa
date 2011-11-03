@@ -13,7 +13,7 @@ namespace yalaa
     AERROR ia_to_ac(AC<T, ET> *ac, const IV &r, yalaa::fp::RndControl &rnd, unsigned flags = 0) 
     {
       typedef IV iv_t;
-      typedef yalaa::details::base_traits<iv_t> iv_traits;
+      typedef yalaa::traits::interval_traits<iv_t> iv_traits;
       typedef AERROR aerror_t;
       T err(0.0);
       if(iv_traits::my_inf(r) > iv_traits::my_sup(r))

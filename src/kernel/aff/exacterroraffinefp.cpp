@@ -197,7 +197,7 @@ namespace yalaa
       typename ExactErrorAffineFP<T, ET, AC>::aerror_t ExactErrorAffineFP<T, ET, AC>::add(ac_t *ac1, const ac_t &ac2)
       {
         if(ac1 == &ac2)
-          return scale(ac1, yalaa::details::base_traits<T>::my_two());
+          return scale(ac1, yalaa::traits::base_traits<T>::my_two());
 
         // TODO:
         // Unnötige Kopieroperation bei langen Affinen Formen

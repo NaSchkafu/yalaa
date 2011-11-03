@@ -24,7 +24,7 @@
 
 namespace yalaa
 {
-  namespace details
+  namespace traits
   {
     /// Traits template for adapting \c YalAA to new types
     /**
@@ -32,18 +32,11 @@ namespace yalaa
      * yalaa::AffineForm as base type. Before using a custom type
      * you have to specialize this template.
      *
-     * \todo Currently base_traits is used for intervals and the type of partial deviations.
-     * Traits for intervals should be defined by a separate class. 
-     * 
-     * 
-     * This documentation does only
-     * consider the use as base type. Please refer to cxsc_traits.hpp for the use as interval
-     * traits.
      */
     template<typename T>
     struct base_traits
     {
-      typedef void base_t;
+      typedef T base_t;
 
       /** 
        * Returns 0 

@@ -54,7 +54,7 @@ template<typename T, template<typename> class ET,
          template<typename, template<typename> class> class AC>
 void AF1<T, ET, AC>::add_uncert(AC<T, ET> *ac, base_ref_t uncert)
 {
-  if(uncert != yalaa::details::base_traits<base_t>::my_zero()) {
+  if(uncert != b_traits_t::my_zero()) {
     error_t s;
     s.set_special(yalaa::details::SpecialErrTerm::GEN_ERR);
     typename ac_t::aff_comb_iter it(ac->find(s));

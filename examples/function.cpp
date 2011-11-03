@@ -20,7 +20,7 @@
 #include <yalaa.hpp>
 
 typedef yalaa::details::double_iv_t iv_t;
-typedef yalaa::details::base_traits<iv_t> iv_traits;
+typedef yalaa::traits::base_traits<iv_t> iv_traits;
 
 // Six-Hump-Camel Back Function:
 // 1/3*x0^6 - 2.1*x0^4 + 4*x0^2 + x0*x1 + 4*x1^4 + 4*x1^2

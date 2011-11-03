@@ -16,44 +16,27 @@
   along with yalaa.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-#ifndef __L_DOUBLE_TRAITS_HPP__
-#define __L_DOUBLE_TRAITS_HPP__
+#ifndef __INTERVAL_TRAITS_HPP__
+#define __INTERVAL_TRAITS_HPP__
 
 namespace yalaa 
 {
-  namespace traits
+  /// Namespace containing the traits classes for accessing external libraries
+  namespace traits 
   {
-    /// Template specialization for using \c long \c double types
-    template<>
-    struct base_traits<long double>
+    /// Traits used for accessing the interval type
+    /**
+     * Interval types are accessed through the method in this template.
+     * For every interval type to be used in conjunction with \c YalAA
+     * a specialization this template is required.
+     * 
+     */
+    template <typename T>
+    struct interval_traits 
     {
-      static double my_zero() 
-	{
-	  return 0.0l;
-	}
-
-      static double my_one() 
-	{
-	  return 1.0l;
-	}
-
-      static double my_two()
-	{
-	  return 2.0l;
-	}
-
-      static double my_sqrt(long double sqr) 
-	{
-	  return sqrt(sqr);
-	}
-
-      static double my_neg(long double d) 
-	{
-	  return -d;
-	}
+      
     };
   }
 }
 
-#endif /*__L_DOUBLE_TRAITS_HPP__*/
+#endif /*__INTERVAL_TRAITS_HPP__*/

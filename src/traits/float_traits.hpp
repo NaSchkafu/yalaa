@@ -22,7 +22,7 @@
 
 namespace yalaa 
 {
-  namespace details 
+  namespace traits
   {
     /// Template specialization for using \c float types
     template<>

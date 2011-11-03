@@ -63,7 +63,7 @@ namespace yalaa
 	typedef yalaa::details::ArithmeticError<T> aerror_t;
 	typedef AFFOP aff_op_t;
 	typedef IV iv_t;
-	typedef yalaa::details::base_traits<iv_t> iv_traits;
+	typedef yalaa::traits::interval_traits<iv_t> iv_traits;
 	typedef ChebyshevFP<T, ET, AC, AFFOP, IV> self_t;
 
 	static aerror_t sin(ac_t *ac, const iv_t &d);

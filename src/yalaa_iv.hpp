@@ -27,12 +27,15 @@
 #undef YALAA_HAVE_L_DOUBLE_IV
 
 #ifdef YALAA_HAVE_CXSC
-    #include <interval.hpp>
-    #include <imath.hpp>
+#include <interval.hpp>
+#include <imath.hpp>
 #include "traits/cxsc_traits.hpp"
 #elif YALAA_HAVE_FILIB
-    #include <interval/interval.hpp>
+#include <interval/interval.hpp>
 #include "traits/filib_traits.hpp"
+#elif YALAA_HAVE_PROFIL_BIAS
+#include <Interavl.h>
+#include <Functions.h>
 #endif
 
 namespace yalaa 
@@ -47,6 +50,9 @@ namespace yalaa
     #define YALAA_HAVE_DOUBLE_IV 1
     // typedef filib::interval<float> float_iv_t;
 // #define HAVE_FLOAT_IV 1
+#elif YALAA_HAVE_PROFIL_BIAS
+    typedef INTERVAL double_iv_t;
+    #define YALAA_HAVE_DOUBLE_IV;
 #endif
 
 // #if defined(HAVE_LONG_DOUBLE_WIDER) && defined(HAVE_FILIB)

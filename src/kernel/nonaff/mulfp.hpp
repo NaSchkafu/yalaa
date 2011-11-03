@@ -47,7 +47,7 @@ namespace yalaa
         typedef yalaa::details::ArithmeticError<T> aerror_t;
         typedef AFFOP aff_op_t;
         typedef IV iv_t;
-        typedef yalaa::details::base_traits<iv_t> iv_traits;
+        typedef yalaa::traits::interval_traits<iv_t> iv_traits;
 
         static aerror_t mul(ac_t *ac1, const ac_t &ac2, T rad1, T rad2);
         static aerror_t sqr(ac_t *ac, T rad);

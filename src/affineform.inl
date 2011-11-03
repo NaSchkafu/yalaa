@@ -76,11 +76,11 @@ namespace yalaa
   to_iv(const AffineForm<T, ET, AC, AR, AP, EP, IV> &af)
   {
     typedef AffineForm<T, ET, AC, AR, AP, EP, IV> aff_f_t;
-    typedef yalaa::details::base_traits<typename aff_f_t::iv_t> iv_traits;
+    typedef yalaa::traits::interval_traits<typename aff_f_t::iv_t> iv_traits;
     const typename aff_f_t::ac_t & ac= af.ac();
     typename aff_f_t::iv_t iv(ac.central(), ac.central());
-    typename aff_f_t::iv_t eps(-yalaa::details::base_traits<typename aff_f_t::base_t>::my_one(),
-                               yalaa::details::base_traits<typename aff_f_t::base_t>::my_one());
+    typename aff_f_t::iv_t eps(-yalaa::traits::base_traits<typename aff_f_t::base_t>::my_one(),
+                               yalaa::traits::base_traits<typename aff_f_t::base_t>::my_one());
     for(typename aff_f_t::ac_t::aff_comb_const_iter it(ac.begin()); it != ac.end(); ++it)
       iv += iv_traits::my_mul(typename aff_f_t::iv_t(it->dev()),eps);
     return iv;
@@ -99,7 +99,7 @@ namespace yalaa
   rad(const AffineForm<T, ET, AC, AR, AP, EP, IV> &af)
   {
     typedef AffineForm<T, ET, AC, AR, AP, EP, IV> aff_f_t;
-    typedef yalaa::details::base_traits<typename aff_f_t::iv_t> trait_t;
+    typedef yalaa::traits::interval_traits<typename aff_f_t::iv_t> trait_t;
     typename aff_f_t::iv_t iv(to_iv(af));
     return trait_t::my_sup(trait_t::my_div(iv, trait_t::my_add(trait_t::my_one(),trait_t::my_one())));
   }
@@ -220,7 +220,7 @@ namespace yalaa
     // TODO: Wenn base_t nicht exakt negiert werden kann, ist diese Stelle problematisch
     // Dokumentieren oder in Kernel mit ordentlicher Fehlerpropagation verschieben
     if(ep_t::pre_op(this, s)) {
-      typename ar_t::aerror_t error(ar_t::add(&m_a, yalaa::details::base_traits<base_t>::my_neg(s)));
+      typename ar_t::aerror_t error(ar_t::add(&m_a, yalaa::traits::base_traits<base_t>::my_neg(s)));
       ap_t::add_errors(&m_a, error);
       ep_t::post_op(this, s, error);
     }
@@ -471,8 +471,8 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     if(AF::ep_t::pre_op(&af)) {
       const typename AF::iv_t& domain = to_iv(af);
       typename AF::ar_t::aerror_t error(AF::ar_t::sqrt(&af.m_a,
-						       yalaa::details::base_traits<typename AF::iv_t>::my_inf(domain),
-						       yalaa::details::base_traits<typename AF::iv_t>::my_sup(domain)));
+						       yalaa::traits::interval_traits<typename AF::iv_t>::my_inf(domain),
+						       yalaa::traits::interval_traits<typename AF::iv_t>::my_sup(domain)));
       AF::ap_t::add_errors(&af.m_a, error);
       AF::ep_t::post_op(&af, error);
     }
@@ -542,7 +542,7 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     if(AF::ep_t::pre_op(&af)) {
       const typename AF::iv_t & afd = to_iv(af);
       typename AF::ar_t::aerror_t error(0.0, AF::ar_t::aerror_t::I_ERROR);
-      if(AF::iv_traits::my_inf(afd) > yalaa::details::base_traits<typename AF::base_t>::my_zero())
+      if(AF::iv_traits::my_inf(afd) > yalaa::traits::base_traits<typename AF::base_t>::my_zero())
 	error = AF::ar_t::log(&af.m_a, afd);
        AF::ap_t::add_errors(&af.m_a, error);
        AF::ep_t::post_op(&af, error);

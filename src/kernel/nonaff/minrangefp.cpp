@@ -70,9 +70,9 @@ namespace yalaa
 
 	yalaa::fp::RndControl rnd;
 	rnd.downward();
-	T fa = yalaa::details::base_traits<T>::my_sqrt(lbx);
+	T fa = yalaa::traits::base_traits<T>::my_sqrt(lbx);
 	rnd.upward();
-	T fb = yalaa::details::base_traits<T>::my_sqrt(ubx);
+	T fb = yalaa::traits::base_traits<T>::my_sqrt(ubx);
 	T alpha = 1/2*fb;
 	
 	T c;
@@ -398,7 +398,7 @@ namespace yalaa
 
 	iv_t r(iv_traits::my_powr(d, p, q1));
 	T ax(p*(p-q1) < 0 ? iv_traits::my_inf(d) : iv_traits::my_sup(d));
-	if(p - q1 < 0 && fabs(ax) == yalaa::details::base_traits<base_t>::my_zero()) {
+	if(p - q1 < 0 && fabs(ax) == yalaa::traits::base_traits<base_t>::my_zero()) {
 	  unsigned flags = 0;
 	  ac->clear(); 
 	  if(iv_traits::my_inf(r) > iv_traits::my_sup(r))
@@ -410,7 +410,7 @@ namespace yalaa
 	  }
 	  return aerror_t(iv_traits::my_w(r), flags);
 	}
-	base_t alpha(static_cast<double>(p)/q1*yalaa::details::base_traits<base_t>::my_powr(ax, p - q1, q1));
+	base_t alpha(static_cast<double>(p)/q1*yalaa::traits::base_traits<base_t>::my_powr(ax, p - q1, q1));
 	T c, err(min_range(iv_traits::my_inf(d), iv_traits::my_sup(d), 
 			   iv_traits::my_inf(r), iv_traits::my_sup(r), alpha, c));
 	T err2 = aff_op_t::scale_add(ac, alpha, alpha, c, rnd);
@@ -429,7 +429,7 @@ namespace yalaa
       {
 	yalaa::fp::RndControl rnd;
 	iv_t r(iv_traits::my_rootn(d, q));
-	base_t alpha(yalaa::details::base_traits<base_t>::my_rootn(iv_traits::my_sup(d), 1 - q)/static_cast<base_t>(q));
+	base_t alpha(yalaa::traits::base_traits<base_t>::my_rootn(iv_traits::my_sup(d), 1 - q)/static_cast<base_t>(q));
 	T c, err(min_range(iv_traits::my_inf(d), iv_traits::my_sup(d), 
 			   iv_traits::my_inf(r), iv_traits::my_sup(r), alpha, c));
 	T err2(aff_op_t::scale_add(ac, alpha, alpha, c, rnd));

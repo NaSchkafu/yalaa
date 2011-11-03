@@ -22,13 +22,13 @@ namespace details
   template <typename T>
   inline void adjust_central_R(T &central)
   {
-    central = yalaa::details::base_traits<T>::special();
+    central = yalaa::traits::base_traits<T>::special();
   }
     
   template <typename T>
   inline void adjust_central_EMPTY(T &central)
   {
-    central = yalaa::details::base_traits<T>::special();
+    central = yalaa::traits::base_traits<T>::special();
   }
 
   inline void adjust_central_R(double &central)
@@ -66,23 +66,23 @@ bool ErrorPolStd<T, IV>::adjust_central(YALAA_SPEC_TEMPLATE_T *af)
 template<typename T, typename IV>
 typename ErrorPolStd<T, IV>::special_t base_special(const T& s) 
 {
-  return yalaa::details::base_traits<T>::is_special(s) ? ErrorPolStd<T, IV>::EMPTY : 
+  return yalaa::traits::base_traits<T>::is_special(s) ? ErrorPolStd<T, IV>::EMPTY : 
     ErrorPolStd<T, IV>::NONE;
 }
 
 template<typename T, typename IV>
 typename ErrorPolStd<T, IV>::special_t iv_special(const IV& s) 
 {
-  return yalaa::details::base_traits<IV>::is_special(s) ? ErrorPolStd<T, IV>::EMPTY : 
+  return yalaa::traits::interval_traits<IV>::is_special(s) ? ErrorPolStd<T, IV>::EMPTY : 
     ErrorPolStd<T, IV>::NONE;
 }
 
 template<typename IV>
 typename ErrorPolStd<double, IV>::special_t base_special(double s) 
 {
-  if(yalaa::details::base_traits<double>::is_nan(s))
+  if(yalaa::traits::base_traits<double>::is_nan(s))
     return ErrorPolStd<double, IV>::EMPTY;
-  else if(yalaa::details::base_traits<double>::is_infinity(s))
+  else if(yalaa::traits::base_traits<double>::is_infinity(s))
     return ErrorPolStd<double, IV>::R;
   return ErrorPolStd<double, IV>::NONE;
 }

@@ -56,7 +56,7 @@ namespace yalaa
       typedef typename boost::mpl::if_<boost::is_fundamental<base_t>, base_t, typename boost::add_const<typename boost::add_reference<base_t>::type>::type>::type base_ref_t;
       typedef ET<base_t> error_t;
       typedef AC<base_t, ET> ac_t;
-      typedef yalaa::details::base_traits<base_t> b_traits_t;
+      typedef yalaa::traits::base_traits<base_t> b_traits_t;
 
      /// Called for adding errors (approximation, rounding errors, ...)
       /** 

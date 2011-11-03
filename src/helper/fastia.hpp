@@ -87,13 +87,13 @@ namespace yalaa
     template<typename IV>
     IV fast_sub_ii_up(const IV& iv1, const IV& iv2)
     {
-      return fast_add_ii_up(iv1, yalaa::details::base_traits<IV>::my_neg(iv2));
+      return fast_add_ii_up(iv1, yalaa::traits::interval_traits<IV>::my_neg(iv2));
     }
 
     template<typename T, typename IV>
     IV fast_div_id_up(IV iv, T s)
     {
-      typedef yalaa::details::base_traits<IV> iv_traits;
+      typedef yalaa::traits::interval_traits<IV> iv_traits;
       if(s < 0) {
 	iv = iv_traits::my_neg(iv);
 	s = fabs(s);
@@ -105,7 +105,7 @@ namespace yalaa
     template<typename IV>
     IV fast_add_ii_up(const IV& iv1, const IV& iv2)
     {
-      typedef yalaa::details::base_traits<IV> iv_traits;
+      typedef yalaa::traits::interval_traits<IV> iv_traits;
       typename iv_traits::iv_base_t lb(-iv_traits::my_inf(iv1)-iv_traits::my_inf(iv2));
       return IV(-lb, iv_traits::my_sup(iv1)+iv_traits::my_sup(iv2));
     }
@@ -127,7 +127,7 @@ namespace yalaa
     template<typename T, typename IV>
     IV fast_add_id_up(const IV& iv, T s)
     {
-      typedef yalaa::details::base_traits<IV> iv_traits;
+      typedef yalaa::traits::interval_traits<IV> iv_traits;
       T a = -iv_traits::my_inf(iv)-s;
       T b = iv_traits::my_sup(iv)+s;
       return iv_t(-a, b);
@@ -136,7 +136,7 @@ namespace yalaa
     template<typename T, typename IV>
     IV fast_add_dd_up(T s1, T s2)
     {
-      typedef yalaa::details::base_traits<IV> iv_traits;
+      typedef yalaa::traits::interval_traits<IV> iv_traits;
       T a = -s1-s2;
       T b = s1+s2;
       return IV(-a, b);
@@ -145,7 +145,7 @@ namespace yalaa
     template<typename T, typename IV>
     IV fast_sub_id_up(const IV& iv, T s)
     {
-      typedef yalaa::details::base_traits<IV> iv_traits;
+      typedef yalaa::traits::interval_traits<IV> iv_traits;
       T a = s-iv_traits::my_inf(iv);
       T b = iv_traits::my_sup(iv)-s;
       return IV(-a, b);

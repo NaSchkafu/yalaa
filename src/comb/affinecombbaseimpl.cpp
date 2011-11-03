@@ -116,7 +116,7 @@ namespace yalaa
     void AffineCombBaseImpl<T, ET>::clear()
     {
       m_errors.clear();
-      m_central = yalaa::details::base_traits<T>::my_zero();
+      m_central = yalaa::traits::base_traits<T>::my_zero();
     }
 
     template<typename T, template<typename> class ET>
