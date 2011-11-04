@@ -23,13 +23,6 @@
 // fwds
 #include "yalaa_fwd.hpp"
 
-// traits
-#include "traits/float_traits.hpp"
-#include "traits/double_traits.hpp"
-#ifdef HAVE_LONG_DOUBLE_WIDER
-#include "traits/l_double_traits.hpp"
-#endif
-
 // errterm
 #include "errortermimpl.hpp"
 // comb

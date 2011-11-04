@@ -8,7 +8,9 @@ AC_CONFIG_FILES([Makefile
 AC_CONFIG_MACRO_DIR([m4])
 
 dnl Compiler
+USER_CXXFLAGS=$CXXFLAGS
 AC_PROG_CXX
+CXXFLAGS=$USER_CXXFLAGS
 
 dnl System Header
 AC_CHECK_HEADERS([fenv.h float.h])
@@ -24,9 +26,15 @@ BOOST_OPERATORS
 
 dnl Interval Libs
 dnl AC_ARG_WITH([interval], [AS_HELP_STRING([--with-interval=<cxsc|filib>], [Interval library to use])])dnl
-m4_define([ivlibs],[[filib], [profil_bias], [cxsc]])
-m4_foreach([var], [ivlibs],[AS_IF([test x"$with_[]var" != x -o x"$m4_translit(var, [a-z], [A-Z])[]_ROOT" != x],[use_iv_lib=var])
-])
+AC_ARG_WITH([custom_ivlib], [AS_HELP_STRING([--with-custom_ivlib=<yes>], [Use a custom interval library])])dnl
+m4_define([ivlibs],[[filib], [profil_bias], [custom_ivlib], [cxsc]])
+m4_foreach([var], [ivlibs],[
+AC_MSG_CHECKING([whether to use ] m4_translit(var, [a-z], [A-Z]))
+AS_IF([test x"$with_[]var" != x -o x"$m4_translit(var, [a-z], [A-Z])[]_ROOT" != x],
+[AS_IF([test x"$use_iv_lib" = x],[use_iv_lib=var
+AC_MSG_RESULT([yes])], [
+AC_MSG_ERROR([More than one interval library specified!])])],
+[AC_MSG_RESULT([no])])])
 AS_CASE([$use_iv_lib],[filib],[
 dnl filib++
 SEARCH_HEADER([filib],[interval/interval.hpp], [], [filib])
@@ -36,8 +44,12 @@ SEARCH_LIBRARY([filib],[filib::fp_traits<double>::setup();],[],[],[#include <int
 dnl PROFILE/BIAS
 SEARCH_HEADER([profil_bias],[Interval.h], [], [])
 SEARCH_LIBRARY([profil_bias],[Sin(INTERVAL(2.0));], [-lProfil -lBias -lm], [], [#include <Interval.h>
-#include <Functions.h>],[lr])]
-,[
+#include <Functions.h>],[lr])
+PROFIL_BIAS_LIBS="-lProfil -lBias $PROFIL_BIAS_LIBS"
+],[custom_ivlib], [
+dnl Custom LIB
+AC_DEFINE([HAVE_CUSTOM_IV_LIB], [1], [Use a custom IV library])
+],[
 dnl cxsc
 AS_IF([test x"$use_iv_lib" = x],[AC_MSG_NOTICE([No interval library specified. Assuming --with-cxsc=yes])
 	    with_cxsc=yes; use_iv_lib=cxsc
@@ -50,10 +62,13 @@ m4_foreach([var],[ivlibs],[
 
 
 dnl DEBUG
-AC_ARG_ENABLE([debug],AS_HELP_STRING([--disable-debug],[disables debugging built]), [AS_IF([test x"$withval" = x],[enable_debug=])],[enable_debug=debug])
-CFLAGS=
-CXXFLAGS=
-AS_IF([test x"$enable_debug" = "xdebug"],[CXXFLAGS="-g"],[CXXFLAGS=-O2])
+AC_MSG_CHECKING([whether to build with debug information])
+AC_ARG_ENABLE([debug],AS_HELP_STRING([--enable-debug],[enables debugging built]), [enable_debug="$enableval"], [enable_debug=no])
+AC_MSG_RESULT([$enable_debug])
+AS_IF([test x"$enable_debug" = "xyes"], [AC_DEFINE([DEBUG], [], [Debugging built])
+	    DEBUG_FLAGS="-g -O0"],[AC_DEFINE([NDEBUG], [], [No debugging built])
+	    DEBUG_FLAGS=-O2])
+AC_SUBST([DEBUG_FLAGS])
 
 dnl Compiler specific settings
 AS_CASE([$CXX],[clang++],[

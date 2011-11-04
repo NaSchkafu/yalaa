@@ -58,15 +58,6 @@ namespace yalaa
 	  return -d;
 	}
 
-      static bool is_special(base_t d)
-	{
-#ifdef _MSC_VER
-	  return _isnan || !_finite(d);
-#else
-	  return isnan(d) || isinf(d);
-#endif
-	}
-
       static bool is_infinity(base_t d)
 	{
 #ifdef _MSC_VER
@@ -84,6 +75,16 @@ namespace yalaa
 	  return isnan(d);
 #endif
 	}
+
+      static bool is_special(base_t d)
+	{
+#ifdef _MSC_VER
+	  return _isnan || !_finite(d);
+#else
+	  return isnan(d) || isinf(d);
+#endif
+	}
+
 
       static base_t special()
 	{

@@ -1,5 +1,5 @@
 override AM_CPPFLAGS += -I$(top_srcdir)/src
-LDADD = $(LIBS) $(IV_LIBS) $(top_builddir)/src/libyalaa.la
+LDADD = $(top_builddir)/src/libyalaa.la $(LIBS) $(IV_LIBS)
 
 bin_PROGRAMS = function decorations policies
 function_SOURCES = function.cpp

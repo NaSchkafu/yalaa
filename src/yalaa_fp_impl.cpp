@@ -107,9 +107,14 @@ namespace yalaa
 #endif
 
 #ifdef YALAA_HAVE_DOUBLE_IV
+  template class details::AffineCombBaseImpl<double, details::ErrorTermImpl>;
+  template class details::AffineCombOpImpl<double, details::ErrorTermImpl, 
+					   details::AffineCombBaseImpl>;
   template class details::AffineCombImpl<double, details::ErrorTermImpl>;
   template class kernel::ExactErrorFP<double, details::ErrorTermImpl, details::AffineCombImpl, 
 				      details::double_iv_t>;
+  template class yalaa::details::ErrorTermImpl<double>;
+  
   INSTANTIATE_YALAA(aff_e_d, double, details::ErrorTermImpl, details::AffineCombImpl,
                     kernel::ExactErrorFP, pol::AF0, pol::ErrorPolStd, details::double_iv_t)
   INSTANTIATE_YALAA(aff_af1_e_d, double, details::ErrorTermImpl, details::AffineCombImpl,

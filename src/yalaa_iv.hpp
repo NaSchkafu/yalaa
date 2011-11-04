@@ -34,8 +34,11 @@
 #include <interval/interval.hpp>
 #include "traits/filib_traits.hpp"
 #elif YALAA_HAVE_PROFIL_BIAS
-#include <Interavl.h>
+#include <Interval.h>
 #include <Functions.h>
+#include "traits/profil_traits.hpp"
+#elif YALAA_HAVE_CUSTOM_IV_LIB
+#include "traits/custom_iv_traits.hpp"
 #endif
 
 namespace yalaa 
@@ -52,7 +55,7 @@ namespace yalaa
 // #define HAVE_FLOAT_IV 1
 #elif YALAA_HAVE_PROFIL_BIAS
     typedef INTERVAL double_iv_t;
-    #define YALAA_HAVE_DOUBLE_IV;
+    #define YALAA_HAVE_DOUBLE_IV 1
 #endif
 
 // #if defined(HAVE_LONG_DOUBLE_WIDER) && defined(HAVE_FILIB)

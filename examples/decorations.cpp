@@ -23,7 +23,7 @@
 #include <yalaa.hpp>
 
 typedef yalaa::details::double_iv_t iv_t;
-typedef yalaa::details::base_traits<iv_t> iv_traits;
+typedef yalaa::traits::interval_traits<iv_t> iv_traits;
 
 int main(int argc, char *argv[])
 {

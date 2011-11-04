@@ -42,10 +42,11 @@
  * The following libraries are currently supported
  * \li <a href="http://www2.math.uni-wuppertal.de/~xsc/">C-XSC</a> >= 2.5.0
  * \li <a href="http://www2.math.uni-wuppertal.de/~xsc/software/filib.html">filib++</a> >= 3.0.2
+ * \li <a href="http://www.ti3.tu-harburg.de/Software/PROFILEnglisch.html">Profile/Bias</a> >= 2.0.8
  * 
  * 
- * If you want to use another library, you have to provide a specialization of the base_traits 
- * template class. 
+ * If you want to use another library, you have to provide a specialization of the interval_traits 
+ * template class. Please refer to \ref custom_ivlib.
  * 
  * 
  * \subsection win Microsoft Windows
@@ -135,6 +136,16 @@
  * \li Messine F., <a href="http://www.springerlink.com/content/d82232570052m120/">A general reliable quadratic form: An extension of affine arithmetic</a>, Reliable Computing, 2006 (Introduces AF1 and AF2)
  * \li <a href="http://www.nongnu.org/libaffa/">libaffa</a> (Yet another) C++ library for AA
  * 
+ * \section License
+ * \c YalAA is free software and available under the terms of the GNU Lesser General Public License
+ * Version 3. For more details refer to the files COPYING and COPYING.LESSER, which are included
+ * in the distribution.
+ * 
+ * \section Download
+ * Current version <br>
+ * \li <a href="download/yalaa-0.9.tar.gz">YalAA Version 0.9</a> (Preview version)
+ * 
+ * 
  * \section Contact
  * If you have any questions, suggenstions or bug reports regarding \c YalAA do not hesitate
  * to write me an <a href="mailto:kiel@inf.uni-due.de">email</a>.
@@ -180,8 +191,15 @@
 #include "config_sel.h"
 
 // iv selector
-#include "traits/interval_traits.hpp"
 #include "traits/base_traits.hpp"
+#include "traits/double_traits.hpp"
+#ifdef YALAA_HAVE_FLOAT
+#include "traits/float_traits.hpp"
+#endif
+#ifdef YALAA_HAVE_LONG_DOUBLE_WIDER
+#include "traits/l_double_traits.hpp"
+#endif
+#include "traits/interval_traits.hpp"
 #include "yalaa_iv.hpp"
 
 // AffineForm

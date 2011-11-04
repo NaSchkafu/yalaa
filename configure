@@ -822,20 +822,23 @@ GTEST_LIBS
 GTEST_LDFLAGS
 GTEST_CPPFLAGS
 GTEST_ROOT
+DEBUG_FLAGS
 CXSC_FALSE
 CXSC_TRUE
-PROFILE_BIAS_FALSE
-PROFILE_BIAS_TRUE
+CUSTOM_IVLIB_FALSE
+CUSTOM_IVLIB_TRUE
+PROFIL_BIAS_FALSE
+PROFIL_BIAS_TRUE
 FILIB_FALSE
 FILIB_TRUE
 CXSC_LIBS
 CXSC_CPPFLAGS
 CXSC_ROOT
 CUT_PROGRAM
-PROFILE_BIAS_LIBS
-PROFILE_BIAS_LDFLAGS
-PROFILE_BIAS_CPPFLAGS
-PROFILE_BIAS_ROOT
+PROFIL_BIAS_LIBS
+PROFIL_BIAS_LDFLAGS
+PROFIL_BIAS_CPPFLAGS
+PROFIL_BIAS_ROOT
 FILIB_LIBS
 FILIB_LDFLAGS
 FILIB_CPPFLAGS
@@ -936,10 +939,11 @@ ac_user_opts='
 enable_option_checking
 enable_dependency_tracking
 with_boost
+with_custom_ivlib
 with_filib
 with_filib_ldpath
-with_profile_bias
-with_profile_bias_ldpath
+with_profil_bias
+with_profil_bias_ldpath
 with_cxsc
 with_cxsc_ldpath
 enable_debug
@@ -978,7 +982,7 @@ CPP
 BOOST_ROOT
 CXXCPP
 FILIB_ROOT
-PROFILE_BIAS_ROOT
+PROFIL_BIAS_ROOT
 CUT_PROGRAM
 CXSC_ROOT
 GTEST_ROOT
@@ -1605,7 +1609,7 @@ Optional Features:
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --disable-dependency-tracking  speeds up one-time build
   --enable-dependency-tracking   do not reject slow dependency extractors
-  --disable-debug         disables debugging built
+  --enable-debug          enables debugging built
   --enable-tests          Enable unit tests, requires Google Test (GTEST)
   --enable-shared[=PKGS]  build shared libraries [default=yes]
   --enable-static[=PKGS]  build static libraries [default=yes]
@@ -1628,11 +1632,13 @@ Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-boost=DIR        prefix of Boost 1.47 [guess]
+  --with-custom_ivlib=<yes>
+                          Use a custom interval library
   --with-filib=DIR        prefix of FILIB
   --with-filib-ldpath=DIR prefix of FILIB
-  --with-profile_bias=DIR prefix of PROFILE_BIAS
-  --with-profile_bias-ldpath=DIR
-                          prefix of PROFILE_BIAS
+  --with-profil_bias=DIR  prefix of PROFIL_BIAS
+  --with-profil_bias-ldpath=DIR
+                          prefix of PROFIL_BIAS
   --with-cxsc=DIR         prefix of C-XSC 2
   --with-cxsc-ldpath      path of the C-XSC library
   --with-gtest=DIR        prefix of GTEST
@@ -1655,8 +1661,8 @@ Some influential environment variables:
   BOOST_ROOT  Location of Boost installation
   CXXCPP      C++ preprocessor
   FILIB_ROOT  Location of FILIB installation
-  PROFILE_BIAS_ROOT
-              Location of PROFILE_BIAS installation
+  PROFIL_BIAS_ROOT
+              Location of PROFIL_BIAS installation
   CUT_PROGRAM path to the cut program
   CXSC_ROOT   Location of C-XSC installation
   GTEST_ROOT  Location of GTEST installation
@@ -3174,6 +3180,7 @@ ac_config_files="$ac_config_files Makefile src/Makefile examples/Makefile"
 
 
 
+USER_CXXFLAGS=$CXXFLAGS
 ac_ext=cpp
 ac_cpp='$CXXCPP $CPPFLAGS'
 ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
@@ -3870,6 +3877,7 @@ else
 fi
 
 
+CXXFLAGS=$USER_CXXFLAGS
 
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
@@ -5572,16 +5580,72 @@ fi
 
 
 
-if test x"$with_filib" != x -o x"$FILIB_ROOT" != x; then :
-  use_iv_lib=filib
-fi
-if test x"$with_profile_bias" != x -o x"$PROFILE_BIAS_ROOT" != x; then :
-  use_iv_lib=profile_bias
-fi
-if test x"$with_cxsc" != x -o x"$CXSC_ROOT" != x; then :
-  use_iv_lib=cxsc
+# Check whether --with-custom_ivlib was given.
+if test "${with_custom_ivlib+set}" = set; then :
+  withval=$with_custom_ivlib;
 fi
 
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether to use  FILIB" >&5
+$as_echo_n "checking whether to use  FILIB... " >&6; }
+if test x"$with_filib" != x -o x"$FILIB_ROOT" != x; then :
+  if test x"$use_iv_lib" = x; then :
+  use_iv_lib=filib
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+else
+
+as_fn_error $? "More than one interval library specified!" "$LINENO" 5
+fi
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether to use  PROFIL_BIAS" >&5
+$as_echo_n "checking whether to use  PROFIL_BIAS... " >&6; }
+if test x"$with_profil_bias" != x -o x"$PROFIL_BIAS_ROOT" != x; then :
+  if test x"$use_iv_lib" = x; then :
+  use_iv_lib=profil_bias
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+else
+
+as_fn_error $? "More than one interval library specified!" "$LINENO" 5
+fi
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether to use  CUSTOM_IVLIB" >&5
+$as_echo_n "checking whether to use  CUSTOM_IVLIB... " >&6; }
+if test x"$with_custom_ivlib" != x -o x"$CUSTOM_IVLIB_ROOT" != x; then :
+  if test x"$use_iv_lib" = x; then :
+  use_iv_lib=custom_ivlib
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+else
+
+as_fn_error $? "More than one interval library specified!" "$LINENO" 5
+fi
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether to use  CXSC" >&5
+$as_echo_n "checking whether to use  CXSC... " >&6; }
+if test x"$with_cxsc" != x -o x"$CXSC_ROOT" != x; then :
+  if test x"$use_iv_lib" = x; then :
+  use_iv_lib=cxsc
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+else
+
+as_fn_error $? "More than one interval library specified!" "$LINENO" 5
+fi
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
 # Extract the first word of "cut", so it can be a program name with args.
 set dummy cut; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
@@ -5873,34 +5937,34 @@ LDFLAGS=$old_ldflags
 LIBS=$old_libs
 
  ;; #(
-  profile_bias) :
+  profil_bias) :
 
 
 
 
-# Check whether --with-profile_bias was given.
-if test "${with_profile_bias+set}" = set; then :
-  withval=$with_profile_bias;
+# Check whether --with-profil_bias was given.
+if test "${with_profil_bias+set}" = set; then :
+  withval=$with_profil_bias;
 fi
-if test x"$PROFILE_BIAS_ROOT" != "x"; then :
-  if test x"$with_profile_bias" = "x"; then :
-  { $as_echo "$as_me:${as_lineno-$LINENO}: Detected \$PROFILE_BIAS_ROOT; assuming --with-profile_bias=$PROFILE_BIAS_ROOT" >&5
-$as_echo "$as_me: Detected \$PROFILE_BIAS_ROOT; assuming --with-profile_bias=$PROFILE_BIAS_ROOT" >&6;}
-      with_profile_bias=$PROFILE_BIAS_ROOT
+if test x"$PROFIL_BIAS_ROOT" != "x"; then :
+  if test x"$with_profil_bias" = "x"; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: Detected \$PROFIL_BIAS_ROOT; assuming --with-profil_bias=$PROFIL_BIAS_ROOT" >&5
+$as_echo "$as_me: Detected \$PROFIL_BIAS_ROOT; assuming --with-profil_bias=$PROFIL_BIAS_ROOT" >&6;}
+      with_profil_bias=$PROFIL_BIAS_ROOT
 else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: PROFILE_BIAS_ROOT overriden by --with-profile_bias=$with_profile_bias" >&5
-$as_echo "$as_me: PROFILE_BIAS_ROOT overriden by --with-profile_bias=$with_profile_bias" >&6;}
+  { $as_echo "$as_me:${as_lineno-$LINENO}: PROFIL_BIAS_ROOT overriden by --with-profil_bias=$with_profil_bias" >&5
+$as_echo "$as_me: PROFIL_BIAS_ROOT overriden by --with-profil_bias=$with_profil_bias" >&6;}
 fi
 
 fi
-if test "${profile_bias_cv_inc_path+set}" = set; then :
+if test "${profil_bias_cv_inc_path+set}" = set; then :
   $as_echo_n "(cached) " >&6
 else
-  profile_bias_cv_inc_path=no
-	case $with_profile_bias in
-	     ''|yes) incdirs="/usr/local/include /usr/local/profile_bias /opt/profile_bias /usr/local/profile_bias/include /opt/profile_bias/include \
+  profil_bias_cv_inc_path=no
+	case $with_profil_bias in
+	     ''|yes) incdirs="/usr/local/include /usr/local/profil_bias /opt/profil_bias /usr/local/profil_bias/include /opt/profil_bias/include \
 	     	     ";;
-	     *)      incdirs="$with_profile_bias $with_profile_bias/include ";;
+	     *)      incdirs="$with_profil_bias $with_profil_bias/include ";;
 	esac
 old_cppflags=$CPPFLAGS
  ac_ext=cpp
@@ -5919,7 +5983,7 @@ fi
 
 
  if test "x$got" = "xyes"; then :
-  PROFILE_BIAS_CPPFLAGS=default
+  PROFIL_BIAS_CPPFLAGS=default
 else
 
  for dir in $incdirs; do
@@ -5955,12 +6019,12 @@ eval ac_res=\$ext_cv${ext_hashdr_cvdir}_hashdr_${hdr}
 	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
 $as_echo "$ac_res" >&6; }
      if eval `echo 'test x${'ext_cv${ext_hashdr_cvdir}_hashdr_${hdr}'}' = "xyes"`; then
-      PROFILE_BIAS_CPPFLAGS="-I${dir}"
+      PROFIL_BIAS_CPPFLAGS="-I${dir}"
       got="yes";
       hdr=`echo Interval.h | $as_tr_cpp`
 
 cat >>confdefs.h <<_ACEOF
-#define HAVE_PROFILE_BIAS 1
+#define HAVE_PROFIL_BIAS 1
 _ACEOF
 
      fi;
@@ -5974,57 +6038,57 @@ ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
-if test x"$PROFILE_BIAS_CPPFLAGS" != x; then :
-  if test x"$PROFILE_BIAS_CPPFLAGS" = "xdefault"; then :
-  PROFILE_BIAS_CPPFLAGS=""
+if test x"$PROFIL_BIAS_CPPFLAGS" != x; then :
+  if test x"$PROFIL_BIAS_CPPFLAGS" = "xdefault"; then :
+  PROFIL_BIAS_CPPFLAGS=""
 fi
-profile_bias_cv_inc_path=$PROFILE_BIAS_CPPFLAGS
+profil_bias_cv_inc_path=$PROFIL_BIAS_CPPFLAGS
 else
-  as_fn_error $? "cannot find PROFILE_BIAS headers" "$LINENO" 5
+  as_fn_error $? "cannot find PROFIL_BIAS headers" "$LINENO" 5
 fi
 fi
 
-PROFILE_BIAS_CPPFLAGS=$profile_bias_cv_inc_path
+PROFIL_BIAS_CPPFLAGS=$profil_bias_cv_inc_path
 
 
 
 
 
 
-# Check whether --with-profile_bias-ldpath was given.
-if test "${with_profile_bias_ldpath+set}" = set; then :
-  withval=$with_profile_bias_ldpath;
+# Check whether --with-profil_bias-ldpath was given.
+if test "${with_profil_bias_ldpath+set}" = set; then :
+  withval=$with_profil_bias_ldpath;
 fi
-if test x"$PROFILE_BIAS_ROOT" != "x"; then :
-  if test x"$with_profile_bias_ldpath" = "x"; then :
-  { $as_echo "$as_me:${as_lineno-$LINENO}: Detected \$PROFILE_BIAS_ROOT; assuming --with-ldapth-profile_bias=$PROFILE_BIAS_ROOT" >&5
-$as_echo "$as_me: Detected \$PROFILE_BIAS_ROOT; assuming --with-ldapth-profile_bias=$PROFILE_BIAS_ROOT" >&6;}
-      with_profile_bias_ldpath=$PROFILE_BIAS_ROOT
+if test x"$PROFIL_BIAS_ROOT" != "x"; then :
+  if test x"$with_profil_bias_ldpath" = "x"; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: Detected \$PROFIL_BIAS_ROOT; assuming --with-ldapth-profil_bias=$PROFIL_BIAS_ROOT" >&5
+$as_echo "$as_me: Detected \$PROFIL_BIAS_ROOT; assuming --with-ldapth-profil_bias=$PROFIL_BIAS_ROOT" >&6;}
+      with_profil_bias_ldpath=$PROFIL_BIAS_ROOT
 else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: PROFILE_BIAS_ROOT overriden by --with-ldpath-profile_bias=$with_profile_bias_ldpath" >&5
-$as_echo "$as_me: PROFILE_BIAS_ROOT overriden by --with-ldpath-profile_bias=$with_profile_bias_ldpath" >&6;}
+  { $as_echo "$as_me:${as_lineno-$LINENO}: PROFIL_BIAS_ROOT overriden by --with-ldpath-profil_bias=$with_profil_bias_ldpath" >&5
+$as_echo "$as_me: PROFIL_BIAS_ROOT overriden by --with-ldpath-profil_bias=$with_profil_bias_ldpath" >&6;}
 fi
 
 fi
-if test x"$with_profile_bias_ldpath" = x -a x"$with_profile_bias" != "x"; then :
+if test x"$with_profil_bias_ldpath" = x -a x"$with_profil_bias" != "x"; then :
 
-	    { $as_echo "$as_me:${as_lineno-$LINENO}: --with-profile_bias found but not --with-profile_bias-ldpath. Assuming --with-profile_bias-ldpath=$with_profile_bias" >&5
-$as_echo "$as_me: --with-profile_bias found but not --with-profile_bias-ldpath. Assuming --with-profile_bias-ldpath=$with_profile_bias" >&6;}
-	    with_profile_bias_ldpath=$with_profile_bias
+	    { $as_echo "$as_me:${as_lineno-$LINENO}: --with-profil_bias found but not --with-profil_bias-ldpath. Assuming --with-profil_bias-ldpath=$with_profil_bias" >&5
+$as_echo "$as_me: --with-profil_bias found but not --with-profil_bias-ldpath. Assuming --with-profil_bias-ldpath=$with_profil_bias" >&6;}
+	    with_profil_bias_ldpath=$with_profil_bias
 fi
-if test "${profile_bias_cv_lib_path+set}" = set; then :
+if test "${profil_bias_cv_lib_path+set}" = set; then :
   $as_echo_n "(cached) " >&6
 else
-  if test "${profile_bias_cv_lib_name+set}" = set; then :
+  if test "${profil_bias_cv_lib_name+set}" = set; then :
   $as_echo_n "(cached) " >&6
 else
-  profile_bias_cv_lib_name=no
-profile_bias_cv_lib_path=no
-case $with_profile_bias_ldpath in #(
+  profil_bias_cv_lib_name=no
+profil_bias_cv_lib_path=no
+case $with_profil_bias_ldpath in #(
   ''|yes) :
-    libdirs="/usr/local/lib /usr/local/profile_bias /opt/profile_bias /usr/local/profile_bias/lib /opt/profile_bias/lib " ;; #(
+    libdirs="/usr/local/lib /usr/local/profil_bias /opt/profil_bias /usr/local/profil_bias/lib /opt/profil_bias/lib " ;; #(
   *) :
-    libdirs="$with_profile_bias_ldpath $with_profile_bias_ldpath/lib " ;;
+    libdirs="$with_profil_bias_ldpath $with_profil_bias_ldpath/lib " ;;
 esac
 old_ldflapgs=$LDFLAGS
 old_libs=$LIBS
@@ -6035,13 +6099,13 @@ ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ex
 ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 shift
-#m4_if(lr[]x,[x],[libnames="-lprofile_bias"],[libnames="-lprofile_bias lr"])
-LIBS="$old_libs -lProfil -lBias -lm -lprofile_bias"
+#m4_if(lr[]x,[x],[libnames="-lprofil_bias"],[libnames="-lprofil_bias lr"])
+LIBS="$old_libs -lProfil -lBias -lm -lprofil_bias"
 for libdir in $libdirs; do
 #echo $libdir
 LDFLAGS="$old_ldflags -L$libdir"
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for profile_bias library with -L$libdir -lprofile_bias" >&5
-$as_echo_n "checking for profile_bias library with -L$libdir -lprofile_bias... " >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for profil_bias library with -L$libdir -lprofil_bias" >&5
+$as_echo_n "checking for profil_bias library with -L$libdir -lprofil_bias... " >&6; }
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 #include <Interval.h>
@@ -6055,8 +6119,8 @@ Sin(INTERVAL(2.0));
 }
 _ACEOF
 if ac_fn_cxx_try_link "$LINENO"; then :
-  PROFILE_BIAS_LDFLAGS="-L$libdir"
-	PROFILE_BIAS_LIBS="-lprofile_bias"; { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+  PROFIL_BIAS_LDFLAGS="-L$libdir"
+	PROFIL_BIAS_LIBS="-lprofil_bias"; { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }; break
 else
   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
@@ -6069,8 +6133,8 @@ LIBS="$old_libs -lProfil -lBias -lm -llr"
 for libdir in $libdirs; do
 #echo $libdir
 LDFLAGS="$old_ldflags -L$libdir"
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for profile_bias library with -L$libdir -llr" >&5
-$as_echo_n "checking for profile_bias library with -L$libdir -llr... " >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for profil_bias library with -L$libdir -llr" >&5
+$as_echo_n "checking for profil_bias library with -L$libdir -llr... " >&6; }
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 #include <Interval.h>
@@ -6084,8 +6148,8 @@ Sin(INTERVAL(2.0));
 }
 _ACEOF
 if ac_fn_cxx_try_link "$LINENO"; then :
-  PROFILE_BIAS_LDFLAGS="-L$libdir"
-	PROFILE_BIAS_LIBS="-llr"; { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+  PROFIL_BIAS_LDFLAGS="-L$libdir"
+	PROFIL_BIAS_LIBS="-llr"; { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }; break
 else
   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
@@ -6101,23 +6165,30 @@ ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
-if test x"$PROFILE_BIAS_LDFLAGS" != x; then :
-  profile_bias_cv_lib_path=$PROFILE_BIAS_LDFLAGS;
-	    profile_bias_cv_lib_name=$PROFILE_BIAS_LIBS
+if test x"$PROFIL_BIAS_LDFLAGS" != x; then :
+  profil_bias_cv_lib_path=$PROFIL_BIAS_LDFLAGS;
+	    profil_bias_cv_lib_name=$PROFIL_BIAS_LIBS
 else
-  as_fn_error $? "cannot find PROFILE_BIAS library" "$LINENO" 5
+  as_fn_error $? "cannot find PROFIL_BIAS library" "$LINENO" 5
 fi
 
 fi
 
 fi
 
-PROFILE_BIAS_LDFLAGS=$profile_bias_cv_lib_path
+PROFIL_BIAS_LDFLAGS=$profil_bias_cv_lib_path
 
-PROFILE_BIAS_LIBS=$profile_bias_cv_lib_name
+PROFIL_BIAS_LIBS=$profil_bias_cv_lib_name
 
 LDFLAGS=$old_ldflags
 LIBS=$old_libs
+
+PROFIL_BIAS_LIBS="-lProfil -lBias $PROFIL_BIAS_LIBS"
+ ;; #(
+  custom_ivlib) :
+
+
+$as_echo "#define HAVE_CUSTOM_IV_LIB 1" >>confdefs.h
 
  ;; #(
   *) :
@@ -6274,12 +6345,21 @@ else
 fi
 
 
-	 if test x"$use_iv_lib" = x"profile_bias"; then
-  PROFILE_BIAS_TRUE=
-  PROFILE_BIAS_FALSE='#'
+	 if test x"$use_iv_lib" = x"profil_bias"; then
+  PROFIL_BIAS_TRUE=
+  PROFIL_BIAS_FALSE='#'
 else
-  PROFILE_BIAS_TRUE='#'
-  PROFILE_BIAS_FALSE=
+  PROFIL_BIAS_TRUE='#'
+  PROFIL_BIAS_FALSE=
+fi
+
+
+	 if test x"$use_iv_lib" = x"custom_ivlib"; then
+  CUSTOM_IVLIB_TRUE=
+  CUSTOM_IVLIB_FALSE='#'
+else
+  CUSTOM_IVLIB_TRUE='#'
+  CUSTOM_IVLIB_FALSE=
 fi
 
 
@@ -6294,22 +6374,29 @@ fi
 
 
 
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether to build with debug information" >&5
+$as_echo_n "checking whether to build with debug information... " >&6; }
 # Check whether --enable-debug was given.
 if test "${enable_debug+set}" = set; then :
-  enableval=$enable_debug; if test x"$withval" = x; then :
-  enable_debug=
-fi
+  enableval=$enable_debug; enable_debug="$enableval"
 else
-  enable_debug=debug
+  enable_debug=no
 fi
 
-CFLAGS=
-CXXFLAGS=
-if test x"$enable_debug" = "xdebug"; then :
-  CXXFLAGS="-g"
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $enable_debug" >&5
+$as_echo "$enable_debug" >&6; }
+if test x"$enable_debug" = "xyes"; then :
+
+$as_echo "#define DEBUG /**/" >>confdefs.h
+
+	    DEBUG_FLAGS="-g -O0"
 else
-  CXXFLAGS=-O2
+
+$as_echo "#define NDEBUG /**/" >>confdefs.h
+
+	    DEBUG_FLAGS=-O2
 fi
+
 
 case $CXX in #(
   clang++) :
@@ -7115,13 +7202,13 @@ if test "${lt_cv_nm_interface+set}" = set; then :
 else
   lt_cv_nm_interface="BSD nm"
   echo "int some_variable = 0;" > conftest.$ac_ext
-  (eval echo "\"\$as_me:7118: $ac_compile\"" >&5)
+  (eval echo "\"\$as_me:7205: $ac_compile\"" >&5)
   (eval "$ac_compile" 2>conftest.err)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:7121: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
+  (eval echo "\"\$as_me:7208: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
   (eval "$NM \"conftest.$ac_objext\"" 2>conftest.err > conftest.out)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:7124: output\"" >&5)
+  (eval echo "\"\$as_me:7211: output\"" >&5)
   cat conftest.out >&5
   if $GREP 'External.*some_variable' conftest.out > /dev/null; then
     lt_cv_nm_interface="MS dumpbin"
@@ -8326,7 +8413,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 8329 "configure"' > conftest.$ac_ext
+  echo '#line 8416 "configure"' > conftest.$ac_ext
   if { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_compile\""; } >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -10114,11 +10201,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:10117: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:10204: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:10121: \$? = $ac_status" >&5
+   echo "$as_me:10208: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -10453,11 +10540,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:10456: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:10543: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:10460: \$? = $ac_status" >&5
+   echo "$as_me:10547: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -10558,11 +10645,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:10561: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:10648: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:10565: \$? = $ac_status" >&5
+   echo "$as_me:10652: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -10613,11 +10700,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:10616: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:10703: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:10620: \$? = $ac_status" >&5
+   echo "$as_me:10707: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -12997,7 +13084,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 13000 "configure"
+#line 13087 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -13093,7 +13180,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 13096 "configure"
+#line 13183 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -15049,11 +15136,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15052: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15139: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:15056: \$? = $ac_status" >&5
+   echo "$as_me:15143: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -15148,11 +15235,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15151: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15238: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:15155: \$? = $ac_status" >&5
+   echo "$as_me:15242: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -15200,11 +15287,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15203: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15290: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:15207: \$? = $ac_status" >&5
+   echo "$as_me:15294: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -18128,8 +18215,12 @@ if test -z "${FILIB_TRUE}" && test -z "${FILIB_FALSE}"; then
   as_fn_error $? "conditional \"FILIB\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
-if test -z "${PROFILE_BIAS_TRUE}" && test -z "${PROFILE_BIAS_FALSE}"; then
-  as_fn_error $? "conditional \"PROFILE_BIAS\" was never defined.
+if test -z "${PROFIL_BIAS_TRUE}" && test -z "${PROFIL_BIAS_FALSE}"; then
+  as_fn_error $? "conditional \"PROFIL_BIAS\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${CUSTOM_IVLIB_TRUE}" && test -z "${CUSTOM_IVLIB_FALSE}"; then
+  as_fn_error $? "conditional \"CUSTOM_IVLIB\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${CXSC_TRUE}" && test -z "${CXSC_FALSE}"; then

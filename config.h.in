@@ -1,5 +1,8 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* Debugging built */
+#undef DEBUG
+
 /* Defined if the requested minimum BOOST version is satisfied */
 #undef HAVE_BOOST
 
@@ -11,6 +14,9 @@
 
 /* Define to 1 if you have <boost/utility.hpp> */
 #undef HAVE_BOOST_UTILITY_HPP
+
+/* Use a custom IV library */
+#undef HAVE_CUSTOM_IV_LIB
 
 /* Define this if you have the CXSC header */
 #undef HAVE_CXSC
@@ -44,7 +50,7 @@
 #undef HAVE_MEMORY_H
 
 /* Define this if you have the Interval.h header */
-#undef HAVE_PROFILE_BIAS
+#undef HAVE_PROFIL_BIAS
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
@@ -70,6 +76,9 @@
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */
 #undef LT_OBJDIR
+
+/* No debugging built */
+#undef NDEBUG
 
 /* Name of package */
 #undef PACKAGE

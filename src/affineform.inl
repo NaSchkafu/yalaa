@@ -354,7 +354,7 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
    * 
    * @param af form
    * 
-   * @return exp(af)
+   * @return \f$e^{af}\f$
    */
   YALAA_FRIEND_DEF
   exp(AF af)
@@ -372,7 +372,7 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
    * 
    * @param af affine form
    * 
-   * @return 2^af
+   * @return \f$2^{af}\f$
    */
   YALAA_FRIEND_DEF
   exp2(AF af)
@@ -390,7 +390,7 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
  * 
  * @param af affine form
  * 
- * @return 10^af
+ * @return \f$10^{af}\f$
  */
   YALAA_FRIEND_DEF
   exp10(AF af)
@@ -408,7 +408,7 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
    * 
    * @param af affine form
    * 
-   * @return e^af - 1
+   * @return \f$e^{af} - 1\f$
    */
   YALAA_FRIEND_DEF
   expm1(AF af)
@@ -426,7 +426,7 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
    * 
    * @param af affine form
    * 
-   * @return 2^af - 1
+   * @return \f$2^{af} - 1\f$
    */
   YALAA_FRIEND_DEF
   exp2m1(AF af)
@@ -444,7 +444,7 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
    * 
    * @param af affine form
    * 
-   * @return 10^af - 1
+   * @return \f$10^{af} - 1\f$
    */
   YALAA_FRIEND_DEF
   exp10m1(AF af)
@@ -463,7 +463,7 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
    * 
    * @param af affine form
    * 
-   * @return sqrt(af)
+   * @return \f$\sqrt{af}\f$
    */
   YALAA_FRIEND_DEF
   sqrt(AF af)
@@ -485,7 +485,7 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
    * 
    * @param af affine form
    * 
-   * @return af^2 
+   * @return \f$af^2\f$ 
    */
   YALAA_FRIEND_DEF
   sqr(AF af)
@@ -504,7 +504,7 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
    * @param af base (affine form)
    * @param exp exponent
    * 
-   * @return af^exp
+   * @return \f$af^{exp}\f$
    */
   YALAA_FRIEND_DEF
   pown(AF af, int exp)
@@ -531,7 +531,7 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
    * @param af base (affine form)
    * @param exp exponent (affine form)
    * 
-   * @return exp(ln(af)*exp)
+   * @return \f$e^{ln(af) \cdot exp}\f$
    */
   YALAA_FRIEND_DEF
   pow(AF af, const AF &exp)
@@ -915,7 +915,7 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
    * @param p numerator of exponent
    * @param q denominator of exponent
    * 
-   * @return x^(p/q)
+   * @return \f$x^\frac p q\f$
    */
   YALAA_FRIEND_DEF
   powr(AF af, int p, unsigned q)
