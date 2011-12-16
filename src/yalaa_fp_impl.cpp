@@ -111,6 +111,19 @@ namespace yalaa
   template class details::AffineCombOpImpl<double, details::ErrorTermImpl, 
 					   details::AffineCombBaseImpl>;
   template class details::AffineCombImpl<double, details::ErrorTermImpl>;
+  template class kernel::details::ExactErrorAffineFP<double, details::ErrorTermImpl, 
+						     details::AffineCombImpl>;
+  template class kernel::details::MinRangeBuiltInFP<double, details::ErrorTermImpl,details::AffineCombImpl, 
+						    kernel::details::ExactErrorAffineFP<double, details::ErrorTermImpl, details::AffineCombImpl> >;
+  template class kernel::details::MinRangeFP<double, details::ErrorTermImpl, details::AffineCombImpl,
+					     kernel::details::ExactErrorAffineFP<double, details::ErrorTermImpl, details::AffineCombImpl>, 
+					     details::double_iv_t>;
+  template class kernel::details::MultiplicationFP<double, details::ErrorTermImpl,details::AffineCombImpl,
+						   kernel::details::ExactErrorAffineFP<double, details::ErrorTermImpl, details::AffineCombImpl>, 
+						   details::double_iv_t>;
+  template class kernel::details::ChebyshevFP<double, details::ErrorTermImpl, details::AffineCombImpl, 
+					      kernel::details::ExactErrorAffineFP<double, details::ErrorTermImpl, details::AffineCombImpl>, 
+					      details::double_iv_t>;
   template class kernel::ExactErrorFP<double, details::ErrorTermImpl, details::AffineCombImpl, 
 				      details::double_iv_t>;
   template class yalaa::details::ErrorTermImpl<double>;

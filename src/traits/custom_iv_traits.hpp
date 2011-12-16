@@ -36,7 +36,7 @@
  * 
  * \section adaptctraits Trait classes
  * \c YalAA accesses underlying interval libraries through a trait class. You have to provide
- * an approbiate specialization for your library. To simplify matters we have provided a template
+ * an approbiate specialization for your library. To simplify matters we provided a template
  * file \link custom_iv_traits.hpp \endlink. Please modify this file directly to fit your needs.
  * Make also sure that the \c typedef \c double_iv_t points to your desired interval type.
  * 

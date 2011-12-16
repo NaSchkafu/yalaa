@@ -19,9 +19,9 @@
 /*! \mainpage YalAA - Yet Another Library for Affine Arithmetic
  *
  * \section intro_sec Introduction
- * \c YalAA is a object-oriented C++ based template library for affine arithmetic (AA).
- * AA is a computation model allowing, similar to interval arithmetic, to derive bounds
- * on a function's codomain. In contrast to IA, AA tracks first-order dependencies during the
+ * \c YalAA is an object-oriented C++ based template library for affine arithmetic (AA).
+ * Similarly to interval arithmetic (IA), this computation model allows us to derive bounds on a 
+ * function's codomain. In contrast to IA, AA tracks first-order dependencies during the
  * computation process resulting often in tighter bounds on the codomain at the price of an
  * increased computational effort.
  * 
@@ -75,7 +75,7 @@
  * declations) headers and link your program against the respective library \c libyalaa.so on Linux 
  * or libyalaa.lib on Windows.
  * 
- * You can use one of the predfined types described in the table above or you can defined your own
+ * You can use one of the predfined types described in the table below or you can defined your own
  * type based on our templates. All of them are located in the namespace \c yalaa.ExactErrorFP 
  * If you use custom types, please note that \c YalAA uses an explicit
  * template instantiation approach. To avoid linker errors you have to use explicit template 
@@ -110,7 +110,7 @@
  * creating your own policies.
  * 
  * \section Ex Examples
- * To illustrate the usage of \c YalAA in more detail we have distributed some examples with the
+ * To illustrate the usage of \c YalAA in more detail we distribute some examples with the
  * library.
  * 
  * <table>
@@ -130,7 +130,7 @@
  * </table>
  * 
  * \section fd Further Documentation, References and Libraries
- * \li Kiel, S.: YalAA: Yet Another Library for Affine Arithmetic, Presentation at SWIM'2011 Bourges, <a href="doc/kiel_bourges.pdf">PDF</a>
+ * \li Kiel, S.: YalAA: Yet Another Library for Affine Arithmetic, Presentation at SWIM'2011 Bourges, <a href="download/kiel_bourges.pdf">PDF</a>
  * \li Kiel, S.: YalAA: Yet Another Library for Affine Arithmetic, Reliable Computing, Submitted 
  * \li <a href="http://www.ic.unicamp.br/~stolfi/EXPORT/projects/affine-arith/Welcome.html">Jorge Stolfi's Homepage</a> (Homepage of AA's inventor, most important publications and the reference implementation \c libaa are available on this site.)
  * \li Messine F., <a href="http://www.springerlink.com/content/d82232570052m120/">A general reliable quadratic form: An extension of affine arithmetic</a>, Reliable Computing, 2006 (Introduces AF1 and AF2)
