@@ -40,5 +40,8 @@ int main(int argc, char *argv[])
   yalaa::aff_e_d x0(iv_t(-1.0, 1.0));
   yalaa::aff_e_d x1(iv_t(-1.0, 1.0));
   std::cout << "SHCB  over [-1,1]^2: "<< eval_func(x0, x1) << std::endl;
+  // yalaa::aff_e_d y0(iv_t( 0.000000,  1.446429));
+  // yalaa::aff_e_d y1(iv_t( -1.468750,  1.062500));
+  // std::cout << sqr(y0)-y1 << std::endl;
   return 0;
 }

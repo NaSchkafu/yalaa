@@ -38,19 +38,30 @@ namespace yalaa
 	if(*it < *it2)
 	  ++it;
 	else if(*it2 < *it) {
-	  it = ac1->insert(*it2, it);
+	  if(ADD)
+	    it = ac1->insert(*it2, it);
+	  else {
+	    ET<T> et(*it2);
+	    et.set_dev(-et.dev());
+	    ac1->insert(et, it);
+	  }   
 	  ++it2;
 	}
 	else if(*it == *it2) {
-	  // std::cout << "special: " << it->special() << std::endl;
-	  // std::cout << it->dev() << std::endl;
 	  it->set_dev(it->dev( ) + ((ADD || it->special()) ? it2->dev() : -it2->dev()));
-	  //std::cout << it->dev() << std::endl;
 	  ++it; ++it2; ++ops;
 	}
       }
-      while(it2 != ac2.end())
-	ac1->push_back(*it2++);
+      while(it2 != ac2.end()) {
+	if(ADD)
+	  ac1->push_back(*it2);
+	else {
+	  ET<T> et(*it2);
+	  et.set_dev(-et.dev());
+	  ac1->push_back(et);
+	}
+	it2++;
+      }
       //std::copy(it2, ac2.end(), std::back_inserter(*ac1));
       return ops;
     }
@@ -89,10 +100,11 @@ namespace yalaa
 	     template<typename, template<typename> class> class AC>
     unsigned AffineCombOpImpl<T, ET, AC>::mul_ac_s(ac_t* ac, typename ac_t::base_ref_t sc, typename ac_t::base_ref_t sn)
     {
-      //std::cout << sc << " " << sn << std::endl;
       ac->set_central(sc*ac->central());
-      for(typename ac_t::aff_comb_iter it(ac->begin()); it != ac->end();++it)
-	it->set_dev((it->special() ? fabs(sn) : sn) *it->dev());
+      for(typename ac_t::aff_comb_iter it(ac->begin()); it != ac->end();++it) {
+	//std::cout << "TEst" << it->special() << std::endl;
+	it->set_dev((it->special() ? fabs(sn) : sn)*it->dev());
+      }
       return ac->size()+1;
     }
     

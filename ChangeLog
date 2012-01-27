@@ -1,0 +1,3 @@
+Changes since rel1.0 Tag
+	Takes subtraction into account for partial deviations not included in
+	both affine forms (-> correct sign is generated)
