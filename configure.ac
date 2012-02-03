@@ -67,7 +67,7 @@ AC_ARG_ENABLE([debug],AS_HELP_STRING([--enable-debug],[enables debugging built])
 AC_MSG_RESULT([$enable_debug])
 AS_IF([test x"$enable_debug" = "xyes"], [AC_DEFINE([DEBUG], [], [Debugging built])
 	    DEBUG_FLAGS="-g -O0"],[AC_DEFINE([NDEBUG], [], [No debugging built])
-	    DEBUG_FLAGS=-O2])
+	    DEBUG_FLAGS=-O3])
 AC_SUBST([DEBUG_FLAGS])
 
 dnl Compiler specific settings

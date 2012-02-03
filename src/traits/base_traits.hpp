@@ -88,8 +88,9 @@ namespace yalaa
        * 
        * @return true if d is a special value
        */
-      static bool is_special(base_t d)
+      static bool is_special(base_t )
         {
+	  return false;
         }
 
       /** 

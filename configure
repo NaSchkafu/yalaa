@@ -6268,7 +6268,7 @@ else
 
 $as_echo "#define NDEBUG /**/" >>confdefs.h
 
-	    DEBUG_FLAGS=-O2
+	    DEBUG_FLAGS=-O3
 fi
 
 

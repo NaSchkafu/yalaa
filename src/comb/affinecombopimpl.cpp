@@ -43,7 +43,7 @@ namespace yalaa
 	  else {
 	    ET<T> et(*it2);
 	    et.set_dev(-et.dev());
-	    ac1->insert(et, it);
+	    it = ac1->insert(et, it);
 	  }   
 	  ++it2;
 	}
