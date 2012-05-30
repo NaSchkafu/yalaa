@@ -260,9 +260,9 @@ int main(int argc, char *argv[])
   yalaa::details::double_iv_t ssx4(0.167526 , 0.693939);
   yalaa::details::double_iv_t ssx5(0.186068,  0.672560);
 
-   typedef aff_e_d_dec aaf;
-   std::cout << "IV " << atan(to_iv(aaf(ssx3)/aaf(ssx5))) << std::endl;
-   std::cout << "AAF " << atan(aaf(ssx3)/aaf(ssx5)) << std::endl; 
+   typedef aff_af1_d aaf;
+   // std::cout << "IV " << atan(to_iv(aaf(ssx3)/aaf(ssx5))) << std::endl;
+   // std::cout << "AAF " << atan(aaf(ssx3)/aaf(ssx5)) << std::endl; 
 //   [-0.22845 , 5.37437]
 
   //std::cout << powr(aff_e_d_dec(ssx1), 2, 5) << std::endl;

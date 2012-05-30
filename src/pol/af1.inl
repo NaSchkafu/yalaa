@@ -39,7 +39,7 @@ void AF1<T, ET, AC>::add_errors(AC<T, ET> *ac, const yalaa::details::ArithmeticE
     ac->set_central(nc);
   }
 
-  add_uncert(ac, errn);
+  add_uncert(ac, b_traits_t::my_abs(errn));
 }
 
 template<typename T, template<typename> class ET, 
@@ -61,7 +61,7 @@ void AF1<T, ET, AC>::add_uncert(AC<T, ET> *ac, base_ref_t uncert)
     if(it != ac->end())
       it->set_dev(b_traits_t::my_add_up(it->dev(), b_traits_t::my_abs(uncert)));
     else {
-      typename ac_t::error_t errt(uncert);
+      typename ac_t::error_t errt(b_traits_t::my_abs(uncert));
       errt.set_special(yalaa::details::SpecialErrTerm::GEN_ERR);
       ac->insert(errt);
     }

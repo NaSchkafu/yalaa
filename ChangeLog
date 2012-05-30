@@ -1,3 +1,4 @@
-Changes since rel1.0 Tag
+Changes since 0.9 Tag
 	Takes subtraction into account for partial deviations not included in
 	both affine forms (-> correct sign is generated)
+	Now handles AF1 special symbols correctly during subtraction.

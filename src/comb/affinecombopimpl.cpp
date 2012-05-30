@@ -1,6 +1,6 @@
 // -*-c++-*-
 /*
-  Copyright 2011 Stefan Kiel <kiel@inf.uni-due.de>
+  Copyright 2011-2012 Stefan Kiel <kiel@inf.uni-due.de>
   
   This file is part of yalaa.
   
@@ -38,7 +38,7 @@ namespace yalaa
 	if(*it < *it2)
 	  ++it;
 	else if(*it2 < *it) {
-	  if(ADD)
+	  if(ADD || it2->special())
 	    it = ac1->insert(*it2, it);
 	  else {
 	    ET<T> et(*it2);
@@ -53,7 +53,7 @@ namespace yalaa
 	}
       }
       while(it2 != ac2.end()) {
-	if(ADD)
+	if(ADD || it2->special())
 	  ac1->push_back(*it2);
 	else {
 	  ET<T> et(*it2);

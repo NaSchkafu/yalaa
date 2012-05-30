@@ -142,7 +142,10 @@
  * in the distribution.
  * 
  * \section Download
- * Current version <br>
+ * Current verion <br>
+ * \li <a href="download/yalaa-0.91.tar.gz">YalAA Version 0.91</a> (Preview version)
+ * 
+ * Old version <br>
  * \li <a href="download/yalaa-0.9.tar.gz">YalAA Version 0.9</a> (Preview version)
  * 
  * 

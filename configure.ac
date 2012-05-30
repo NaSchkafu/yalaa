@@ -1,4 +1,4 @@
-AC_INIT([yalaa],[0.9],[kiel@inf.uni-due.de])
+AC_INIT([yalaa],[0.91],[kiel@inf.uni-due.de])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 AC_CONFIG_HEADERS([config.h])
 AX_PREFIX_CONFIG_H([src/yalaa-config.h])
