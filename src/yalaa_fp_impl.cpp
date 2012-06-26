@@ -67,8 +67,6 @@
   template TNAME acosh(TNAME);                                          \
   template TNAME atanh(TNAME);                                          \
   template TNAME powr(TNAME, int, unsigned);                            \
-  template double rad(const TNAME&);                                    \
-  template IV to_iv(const TNAME&);					\
   template typename ERRPOL<BASE, IV>::special_t get_special(const TNAME &); \
   template bool is_valid(const TNAME &);
 
