@@ -1,6 +1,7 @@
 Changes since 0.91 Tag
 	Bugfix "Ambigous template specialization" with gcc4.7 in conjuction
 	with to_iv<> and to_rad<>
+	Added check to configure for C++-11 support
 Changes since 0.9 Tag
 	Takes subtraction into account for partial deviations not included in
 	both affine forms (-> correct sign is generated)

@@ -1,5 +1,6 @@
 AC_INIT([yalaa],[0.91],[kiel@inf.uni-due.de])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
+AM_PROG_AR
 AC_CONFIG_HEADERS([config.h])
 AX_PREFIX_CONFIG_H([src/yalaa-config.h])
 AC_CONFIG_FILES([Makefile
@@ -10,7 +11,8 @@ AC_CONFIG_MACRO_DIR([m4])
 dnl Compiler
 USER_CXXFLAGS=$CXXFLAGS
 AC_PROG_CXX
-CXXFLAGS=$USER_CXXFLAGS
+AC_CXX_COMPILE_STDCXX_0X
+CXXFLAGS=$USER_CXXFLAGS $CXX0X_FLAGS
 
 dnl System Header
 AC_CHECK_HEADERS([fenv.h float.h])
@@ -74,8 +76,9 @@ dnl Compiler specific settings
 AS_CASE([$CXX],[clang++],[
 CXXFLAGS+=" -msse2 -Wno-logical-op-parentheses"
 ],[g++],[
-CXXFLAGS+=" -frounding-math -mfpmath=sse -msse2 -std=c++0x"],[
+CXXFLAGS+=" -frounding-math -mfpmath=sse -msse2"],[
 AC_MSG_NOTICE([Unknown compiler. Please set flags for rounding math if necessary!])])
+CXXFLAGS+=" $CXX0X_FLAGS"
 
 dnl TESTS
 AC_ARG_ENABLE([tests], AS_HELP_STRING([--enable-tests],[Enable unit tests, requires Google Test (GTEST)]), dnl
