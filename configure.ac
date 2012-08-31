@@ -1,4 +1,4 @@
-AC_INIT([yalaa],[0.91],[kiel@inf.uni-due.de])
+AC_INIT([yalaa],[0.92],[kiel@inf.uni-due.de])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 AM_PROG_AR
 AC_CONFIG_HEADERS([config.h])
@@ -12,7 +12,7 @@ dnl Compiler
 USER_CXXFLAGS=$CXXFLAGS
 AC_PROG_CXX
 AC_CXX_COMPILE_STDCXX_0X
-CXXFLAGS=$USER_CXXFLAGS $CXX0X_FLAGS
+CXXFLAGS="$USER_CXXFLAGS $CXX0X_FLAGS"
 
 dnl System Header
 AC_CHECK_HEADERS([fenv.h float.h])
