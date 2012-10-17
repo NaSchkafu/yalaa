@@ -38,6 +38,7 @@
 #include "nonaff/mulfp.hpp"
 #include "nonaff/minrangefp.hpp"
 #include "nonaff/chebyshevfp.hpp"
+#include "nonaff/miscfp.hpp"
 
 namespace yalaa
 {
@@ -57,7 +58,8 @@ namespace yalaa
 			  public details::MinRangeBuiltInFP<T, ET, AC, details::ExactErrorAffineFP<T, ET,AC> >,
 			  public details::MinRangeFP<T, ET, AC, details::ExactErrorAffineFP<T, ET,AC>, IV>,
 			  public details::MultiplicationFP<T, ET, AC, details::ExactErrorAffineFP<T, ET, AC>, IV>,
-			  public details::ChebyshevFP<T, ET, AC, details::ExactErrorAffineFP<T, ET, AC>, IV>
+			  public details::ChebyshevFP<T, ET, AC, details::ExactErrorAffineFP<T, ET, AC>, IV>,
+      			  public details::MiscFP<T, ET, AC, details::ExactErrorAffineFP<T, ET, AC>, IV>
     {
     public:
       typedef ET<T> error_t;
@@ -72,7 +74,6 @@ namespace yalaa
       static aerror_t rootn(ac_t *ac, iv_t d, int q);
 
       static aerror_t inv(ac_t *ac, const iv_t &d);
-
     };
   }
 }

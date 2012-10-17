@@ -131,7 +131,7 @@
  * 
  * \section fd Further Documentation, References and Libraries
  * \li Kiel, S.: YalAA: Yet Another Library for Affine Arithmetic, Presentation at SWIM'2011 Bourges, <a href="download/kiel_bourges.pdf">PDF</a>
- * \li Kiel, S.: YalAA: Yet Another Library for Affine Arithmetic, Reliable Computing, Submitted 
+ * \li Kiel, S.: YalAA: Yet Another Library for Affine Arithmetic, <a href="http://interval.louisiana.edu/reliable-computing-journal/tables-of-contents.html#Volume_16">Reliable Computing, 16</a>, pp. 114-129, 2012, <a href="http://interval.louisiana.edu/reliable-computing-journal/volume-16/reliable-computing-16-pp-114-129.pdf">PDF</a>
  * \li <a href="http://www.ic.unicamp.br/~stolfi/EXPORT/projects/affine-arith/Welcome.html">Jorge Stolfi's Homepage</a> (Homepage of AA's inventor, most important publications and the reference implementation \c libaa are available on this site.)
  * \li Messine F., <a href="http://www.springerlink.com/content/d82232570052m120/">A general reliable quadratic form: An extension of affine arithmetic</a>, Reliable Computing, 2006 (Introduces AF1 and AF2)
  * \li <a href="http://www.nongnu.org/libaffa/">libaffa</a> (Yet another) C++ library for AA
@@ -142,7 +142,7 @@
  * in the distribution.
  * 
  * \section Download
- * Current verion <br>
+ * Current version <br>
  * \li <a href="download/yalaa-0.92.tar.gz">YalAA Version 0.92</a> (Preview version)
  * 
  * Old versions <br>

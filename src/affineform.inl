@@ -947,5 +947,22 @@ if(!(*it1 == *it2) || it1->dev() != it2->dev())
     return af;
   }
 
-  
+  /** 
+   * Absolute value function
+   * 
+   * @param af affine form
+   * 
+   * @return \f$|af|\f$
+   */
+  YALAA_FRIEND_DEF
+  abs(AF af) 
+  {
+    if(AF::ep_t::pre_op(&af)) {
+      const typename AF::iv_t &domain = to_iv(af);
+      typename AF::ar_t::aerror_t error(AF::ar_t::abs(&af.m_a, domain));
+      AF::ap_t::add_errors(&af.m_a, error);
+      AF::ep_t::post_op(&af, error);
+    }
+    return af;
+  }
 }

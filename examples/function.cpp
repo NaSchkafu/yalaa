@@ -30,7 +30,7 @@ typedef yalaa::traits::interval_traits<iv_t> iv_traits;
 template <typename T>
 T eval_func(const T& x0, const T& x1)
 {
-  return iv_traits::my_div(iv_t(0.0), iv_t(3))*pown(x0,6) + 
+  return iv_traits::my_div(iv_t(1.0), iv_t(3))*pown(x0,6) + 
     iv_traits::my_div(iv_t(21.0), iv_t(10))*pown(x0,4) + 4.0*sqr(x0) + 
     x0*x1 + 4.0*pown(x1,4) - 4.0*sqr(x1);
 }

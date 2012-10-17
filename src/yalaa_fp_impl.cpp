@@ -36,6 +36,7 @@
 #include "kernel/nonaff/mulfp.cpp"
 #include "kernel/nonaff/minrangefp.cpp"
 #include "kernel/nonaff/chebyshevfp.cpp"
+#include "kernel/nonaff/miscfp.cpp"
 
 #define INSTANTIATE_YALAA(TNAME, BASE, ERRORTERM, AFFINECOMB, ARKERNEL, AFFPOL, ERRPOL, IV) \
   template class AffineForm<BASE, ERRORTERM, AFFINECOMB, ARKERNEL, AFFPOL, ERRPOL, IV>; \
@@ -67,6 +68,7 @@
   template TNAME acosh(TNAME);                                          \
   template TNAME atanh(TNAME);                                          \
   template TNAME powr(TNAME, int, unsigned);                            \
+  template TNAME abs(TNAME);						\
   template typename ERRPOL<BASE, IV>::special_t get_special(const TNAME &); \
   template bool is_valid(const TNAME &);
 
@@ -122,6 +124,9 @@ namespace yalaa
   template class kernel::details::ChebyshevFP<double, details::ErrorTermImpl, details::AffineCombImpl, 
 					      kernel::details::ExactErrorAffineFP<double, details::ErrorTermImpl, details::AffineCombImpl>, 
 					      details::double_iv_t>;
+  template class kernel::details::MiscFP<double, details::ErrorTermImpl, details::AffineCombImpl, 
+					 kernel::details::ExactErrorAffineFP<double, details::ErrorTermImpl, details::AffineCombImpl>, 
+					 details::double_iv_t>;
   template class kernel::ExactErrorFP<double, details::ErrorTermImpl, details::AffineCombImpl, 
 				      details::double_iv_t>;
   template class yalaa::details::ErrorTermImpl<double>;

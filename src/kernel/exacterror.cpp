@@ -51,7 +51,7 @@ namespace yalaa
     {
       if(!q)
  	return aerror_t(0.0, aerror_t::I_ERROR);
-      unsigned p1 = abs(p), q1 = q, t;
+      unsigned p1 = std::abs(p), q1 = q, t;
       while(q1) {
  	t = p1 % q1;
  	p1 = q1;
@@ -109,9 +109,7 @@ namespace yalaa
     ExactErrorFP<T, ET, AC, IV>::inv(ac_t *ac, const iv_t &d) 
     {
       return details::MinRangeFP<T, ET, AC, details::ExactErrorAffineFP<T, ET, AC>, IV>::minr_inv(ac, d);
-    }
-
-    
+    }  
   }
 }
 
