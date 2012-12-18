@@ -24,38 +24,47 @@ typedef yalaa::details::double_iv_t iv_t;
 typedef yalaa::traits::interval_traits<iv_t> iv_traits;
 
 template <typename AF>
-std::map<typename AF::error_t, int> polarity(const AF& af)
+typename AF::base_t polarity(const AF& af, std::map<typename AF::error_t, int> &pol)
 {
-  std::map<typename AF::error_t, int> errors;
+  typename AF::base_t res = 0.0; 
   typename AF::ac_t ac(af.ac());
   for(auto it(ac.begin()); it != ac.end(); ++it) {
-    errors[*it] = it->dev() > 0 ? 1 : -1;
+    pol[*it] = it->dev() > 0 ? 1 : -1;
+    res += fabs(it->dev());
   }
-  return errors;
+  res += ac.central();
+  return res;
 }
 
-template <typename POL>
-typename POL::key_type::base_t eval(const POL &pol) 
+template <typename AF>
+typename AF::base_t eval(const AF &af, const std::map<typename AF::error_t, int> &pol)
 {
-  typename POL::key_type::base_t result = 0.0;  
-  for(auto it(pol.begin()); it != pol.end(); ++it) {
-    result += it->first.dev() * it->second;
+  typename AF::base_t result = 0.0;
+  typename AF::ac_t ac(af.ac());
+  for(auto it(ac.begin()); it != ac.end(); ++it) {
+    auto pit(pol.find(*it));
+    if(pit != pol.end())
+      result += it->dev() * pit->second;
+    else
+      std::cerr << "Noise symbol is not in the polarity map!" << std::endl;
   }
   return result;
 }
 
 int main(int argc, char *argv[])
 {
-  yalaa::aff_e_d x(iv_t(0.5, 1.0));
+  typedef yalaa::aff_e_d aaf;
+
+  aaf x(iv_t(0.5, 1.0));
   std::cout << "x: " << x << std::endl;
-  yalaa::aff_e_d y(iv_t(-0.5, 0.0));
+  aaf y(iv_t(-0.5, 0.0));
   std::cout << "y: " << y << std::endl;
   x -= y;
   std::cout << "x-y: " << x << std::endl;
 
-  auto pol_map(polarity(x));
-  std::cout << "Eval: " << eval(pol_map) << std::endl;
-
+  std::map<aaf::error_t, int> pol;
+  std::cout << "polarity(x-y): " << polarity(x, pol) << std::endl;
+  std::cout << "eval(x-y): " << eval(x, pol) << std::endl;
 
   return 0;
 }

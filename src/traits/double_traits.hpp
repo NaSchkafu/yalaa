@@ -21,6 +21,7 @@
 #define __DOUBLE_TRAITS_HPP__
 
 #include "helper/fphelper.hpp"
+#include <cmath>
 #include <limits>
 
 namespace yalaa 
@@ -63,7 +64,7 @@ namespace yalaa
 #ifdef _MSC_VER
 	  return !_finite(d);
 #else
-	  return isinf(d);
+	  return std::isinf(d);
 #endif
 	}
 
@@ -72,7 +73,7 @@ namespace yalaa
 #ifdef _MSC_VER
 		return _isnan(d);
 #else
-	  return isnan(d);
+		return std::isnan(d);
 #endif
 	}
 
@@ -81,7 +82,7 @@ namespace yalaa
 #ifdef _MSC_VER
 	  return _isnan || !_finite(d);
 #else
-	  return isnan(d) || isinf(d);
+	  return std::isnan(d) || std::isinf(d);
 #endif
 	}
 
