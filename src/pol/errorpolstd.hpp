@@ -18,7 +18,7 @@
 
 
 #ifndef __ERRORPOLSTD_HPP__
-#define __ERRORPOLSTD_HPP_
+#define __ERRORPOLSTD_HPP__
 
 #include "affineform_fwd.hpp"
 
