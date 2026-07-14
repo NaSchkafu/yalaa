@@ -54,7 +54,7 @@ namespace yalaa
       typedef double base_t;
       typedef yalaa::details::double_iv_t iv_t;
       typedef iv_t (*iv_f_t)(const iv_t&);
-      typedef yalaa::details::base_traits<iv_t> iv_traits;
+      typedef yalaa::traits::interval_traits<iv_t> iv_traits;
 
     protected:
       void SetUp()
@@ -141,7 +141,7 @@ namespace yalaa
    TEST(POWN, RangeTest)
     {
       typedef yalaa::details::double_iv_t iv_t;
-      typedef yalaa::details::base_traits<iv_t> iv_traits;
+      typedef yalaa::traits::interval_traits<iv_t> iv_traits;
       typedef double base_t;
       std::deque<iv_t> m_x;
       for(int exp = -10; exp <= 10; exp++) {
@@ -190,7 +190,7 @@ namespace yalaa
     /*TEST(POWR, RangeTest)
     {
       typedef yalaa::details::double_iv_t iv_t;
-      typedef yalaa::details::base_traits<iv_t> iv_traits;
+      typedef yalaa::traits::interval_traits<iv_t> iv_traits;
       typedef double base_t;
       std::deque<iv_t> m_x;
       for(int p = -10; p <= 10; p++) {
