@@ -21,19 +21,19 @@
 #define __YALAA_IOS_HPP__
 
 #include <iosfwd>
-#include <boost/mpl/has_xxx.hpp>
-#include <boost/utility/enable_if.hpp>
+#include <type_traits>
+#include "details/has_trait.hpp"
 
 namespace yalaa
 {
   namespace details
   {
-    BOOST_MPL_HAS_XXX_TRAIT_DEF(trait_is_iv_t)
-    BOOST_MPL_HAS_XXX_TRAIT_DEF(trait_is_err_t)
+    YALAA_DEFINE_HAS_TRAIT(trait_is_iv_t)
+    YALAA_DEFINE_HAS_TRAIT(trait_is_err_t)
 
     template<typename ET>
-    typename boost::enable_if<has_trait_is_err_t<ET>,std::ostream&>::type
-    operator<<(std::ostream &os, const ET& et) 
+    typename std::enable_if<has_trait_is_err_t<ET>::value,std::ostream&>::type
+    operator<<(std::ostream &os, const ET& et)
     {
       et.print(os);
       return os;
@@ -43,7 +43,7 @@ namespace yalaa
   namespace iv
   {
     template<typename IV>
-    typename boost::enable_if<details::has_trait_is_iv_t<IV>,std::ostream&>::type
+    typename std::enable_if<details::has_trait_is_iv_t<IV>::value,std::ostream&>::type
     operator<<(std::ostream &os, const IV& iv)
     {
       // TODO: Eigene Ausgabe mit korrekter Rundung implementieren
@@ -54,7 +54,7 @@ namespace yalaa
   }
 
   template<typename AF>
-  typename boost::enable_if<details::has_trait_is_aff_t<AF>,std::ostream&>::type
+  typename std::enable_if<details::has_trait_is_aff_t<AF>::value,std::ostream&>::type
   operator<<(std::ostream &os, const AF& af)
   {
     const typename AF::ac_t& ac = af.ac();

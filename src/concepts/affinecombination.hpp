@@ -25,11 +25,13 @@
  * 
  */
 
-namespace yalaa 
+#include <type_traits>
+
+namespace yalaa
 {
-  namespace concepts 
+  namespace concepts
   {
-  
+
     /// Concept defining an affine combination
     /**
      * This concept defines an affine combination.
@@ -52,7 +54,7 @@ namespace yalaa
       /// Type for error terms
       typedef ET<base_t> error_t;
       /// Const reference or base_t depending whether base_t is a fundamental type. 
-      typedef typename boost::mpl::if_<boost::is_fundamental<base_t>, base_t, typename boost::add_const<typename boost::add_reference<base_t>::type>::type>::type base_ref_t;
+      typedef typename std::conditional<std::is_fundamental<base_t>::value, base_t, typename std::add_const<typename std::add_lvalue_reference<base_t>::type>::type>::type base_ref_t;
       /// Type of *this
       typedef AffineCombination<T, ET> self_t;
       /// Type for size of the combination

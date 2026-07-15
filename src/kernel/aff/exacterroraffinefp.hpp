@@ -29,8 +29,7 @@
 #ifndef __EXACTERRORAFFINED_HPP__
 #define __EXACTERRORAFFINED_HPP__
 
-#include <boost/static_assert.hpp>
-#include <boost/type_traits/is_floating_point.hpp>
+#include <type_traits>
 
 namespace yalaa
 {
@@ -56,7 +55,7 @@ namespace yalaa
 	// This operations are only verified for floating-point numbers
 	// according to IEEE 754, please check the implementation carefully
 	// if you are using other types
-	BOOST_STATIC_ASSERT(boost::is_floating_point<T>::value);
+	static_assert(std::is_floating_point<T>::value, "T must be a floating-point type");
 
 	typedef ET<T> error_t;
         typedef AC<T, ET> ac_t;

@@ -22,6 +22,8 @@
 
 #include "affineform_fwd.hpp"
 
+#include <type_traits>
+
 #define YALAA_SPEC_TEMPLATE_DEF template<template<typename> class ET,   \
                                          template<typename, template<typename> class> class AC, \
                                          template<typename, template<typename> class, \
@@ -49,7 +51,7 @@ namespace yalaa
 
       typedef IV iv_t;
       typedef T base_t;
-      typedef typename boost::mpl::if_<boost::is_fundamental<base_t>, base_t, typename boost::add_const<typename boost::add_reference<base_t>::type>::type>::type base_ref_t;
+      typedef typename std::conditional<std::is_fundamental<base_t>::value, base_t, typename std::add_const<typename std::add_lvalue_reference<base_t>::type>::type>::type base_ref_t;
       typedef yalaa::details::ArithmeticError<T> aerror_t;
 
       /**

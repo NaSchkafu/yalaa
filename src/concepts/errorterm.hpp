@@ -8,6 +8,7 @@
  * 
  */
 
+#include <type_traits>
 
 namespace yalaa
 {
@@ -31,7 +32,7 @@ namespace yalaa
       typedef T base_t;
 
       /// Const reference or base_t depending whether base_t is a fundamental type
-      typedef typename boost::mpl::if_<boost::is_fundamental<base_t>, base_t, typename boost::add_const<typename boost::add_reference<base_t>::type>::type>::type base_ref_t;
+      typedef typename std::conditional<std::is_fundamental<base_t>::value, base_t, typename std::add_const<typename std::add_lvalue_reference<base_t>::type>::type>::type base_ref_t;
 
       /// Indicates that the class is an ErrorTerm
       typedef void trait_is_err_t;

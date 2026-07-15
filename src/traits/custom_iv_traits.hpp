@@ -42,17 +42,20 @@
  * 
  * \section configcustom Configure YalAA
  * After providing the trait classes you are ready for configuring the library.
- * To indicate to the \c configure that you use a custom interval library use the flag 
- * \c --with-custom_ivlib=yes. If your library needs further compiler flags and linker flags specify
- * them as environment variables.<br>
- *  For example, if you wanted to use C-XSC as a custom library the 
+ * To indicate to CMake that you use a custom interval library set
+ * \c -DYALAA_IV_BACKEND=custom. Since no \c Find module runs for a custom backend, your
+ * library's include and link flags have to be supplied directly, e.g. via
+ * \c CMAKE_CXX_FLAGS and \c CMAKE_EXE_LINKER_FLAGS.<br>
+ *  For example, if you wanted to use C-XSC as a custom library the
  * command line could be:<br> <br>
  * <tt>
- *CPPFLAGS=-I$HOME/libs/cxsc/include LDFLAGS=-L$HOME/libs/cxsc/lib LIBS=-lcxsc ./configure --with-boost=$HOME/libs/boost --with-custom_ivlib=yes 
+ *cmake -S . -B build -DYALAA_IV_BACKEND=custom \\<br>
+ *  -DCMAKE_CXX_FLAGS=-I$HOME/libs/cxsc/include \\<br>
+ *  -DCMAKE_EXE_LINKER_FLAGS="-L$HOME/libs/cxsc/lib -lcxsc"
  *</tt>
  * <br> <br>
- * You are now ready to call \c make to build \c YalAA!<br>
- * 
+ * You are now ready to call \c cmake --build build to build \c YalAA!<br>
+ *
  */
 
 

@@ -21,6 +21,7 @@
 #ifndef __AFFINECOMBIMPL_HPP__
 #define __AFFINECOMBIMPL_HPP__
 
+#include <type_traits>
 #include "affinecombbaseimpl.hpp"
 #include "affinecombopimpl.hpp"
 
@@ -40,7 +41,7 @@ namespace yalaa
     {
       typedef T base_t;
       typedef ET<T> error_t;
-      typedef typename boost::mpl::if_<boost::is_fundamental<base_t>, base_t, typename boost::add_const<typename boost::add_reference<base_t>::type>::type>::type base_ref_t;
+      typedef typename std::conditional<std::is_fundamental<base_t>::value, base_t, typename std::add_const<typename std::add_lvalue_reference<base_t>::type>::type>::type base_ref_t;
       typedef AffineCombBaseImpl<T, ET> self_t;
 
       /** 

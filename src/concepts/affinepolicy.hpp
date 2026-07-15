@@ -24,6 +24,8 @@
  * @brief  Provides a structure describing the AffinePolicy concept
  */
 
+#include <type_traits>
+
 namespace yalaa
 {
   namespace concepts
@@ -47,7 +49,7 @@ namespace yalaa
       /// Type for partial deviations
       typedef T base_t;
       /// Const reference or base_t depending whether base_t is a fundamental type. 
-      typedef typename boost::mpl::if_<boost::is_fundamental<base_t>, base_t, typename boost::add_const<typename boost::add_reference<base_t>::type>::type>::type base_ref_t;
+      typedef typename std::conditional<std::is_fundamental<base_t>::value, base_t, typename std::add_const<typename std::add_lvalue_reference<base_t>::type>::type>::type base_ref_t;
       /// Traits for base_t
       typedef yalaa::details::base_traits<base_t> b_traits_t;
 

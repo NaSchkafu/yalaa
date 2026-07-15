@@ -43,9 +43,6 @@ option(YALAA_ENABLE_TESTS "Build the unit tests (requires GTest)" OFF)
 set(YALAA_IV_BACKEND "cxsc" CACHE STRING "Interval backend to use (cxsc, filib, profil_bias, custom)")
 set_property(CACHE YALAA_IV_BACKEND PROPERTY STRINGS cxsc filib profil_bias custom)
 
-# --- Boost (header-only usage: type_traits, utility, operators) ---
-find_package(Boost 1.47 REQUIRED)
-
 # --- Interval backend ---
 string(TOLOWER "${YALAA_IV_BACKEND}" _yalaa_iv_backend)
 if(_yalaa_iv_backend STREQUAL "cxsc")

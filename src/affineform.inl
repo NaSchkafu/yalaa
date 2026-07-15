@@ -25,9 +25,9 @@
 #define YALAA_DECL AffineForm<T, ET, AC, AR, AP, EP, IV>
 #define YALAA_DECL_T typename AffineForm<T, ET, AC, AR, AP, EP, IV>
 #define YALAA_FRIEND_DEF   template<typename AF>                        \
-  typename boost::enable_if<details::has_trait_is_aff_t<AF>,AF>::type
+  typename std::enable_if<details::has_trait_is_aff_t<AF>::value,AF>::type
 #define YALAA_FRIEND_DECL   template<typename AF>                       \
-  friend typename boost::enable_if<details::has_trait_is_aff_t<AF>,AF>::type
+  friend typename std::enable_if<details::has_trait_is_aff_t<AF>::value,AF>::type
 
 
 namespace yalaa
@@ -41,7 +41,7 @@ namespace yalaa
    * @return special valu
    */
   template<typename AF>
-  typename boost::enable_if<details::has_trait_is_aff_t<AF>,typename AF::ep_t::special_t>::type
+  typename std::enable_if<details::has_trait_is_aff_t<AF>::value,typename AF::ep_t::special_t>::type
   get_special(const AF& af)
   {
     return af.special();
@@ -57,7 +57,7 @@ namespace yalaa
    * @return 
    */
   template<typename AF>
-  typename boost::enable_if<details::has_trait_is_aff_t<AF>, bool>::type
+  typename std::enable_if<details::has_trait_is_aff_t<AF>::value, bool>::type
   is_valid(const AF& af)
   {
     return AF::ep_t::valid(af);

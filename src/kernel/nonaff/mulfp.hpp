@@ -20,6 +20,8 @@
 #ifndef __MULFP_HPP__
 #define __MULFP_HPP__
 
+#include <type_traits>
+
 namespace yalaa
 {
   namespace kernel
@@ -40,7 +42,7 @@ namespace yalaa
 	// These operations are only verified for floating-point numbers
 	// according to IEEE 754, please check the implementation carefully
 	// if you are using other types
-	BOOST_STATIC_ASSERT(boost::is_floating_point<T>::value);
+	static_assert(std::is_floating_point<T>::value, "T must be a floating-point type");
 
         typedef ET<T> error_t;
         typedef AC<T, ET> ac_t;

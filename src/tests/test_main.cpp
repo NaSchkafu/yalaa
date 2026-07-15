@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 
 #include <deque>
-#include <boost/foreach.hpp>
 
 
 // yalaa

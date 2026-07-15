@@ -36,7 +36,6 @@ target_include_directories(yalaa PUBLIC
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/yalaa>
 )
 
-target_link_libraries(yalaa PUBLIC Boost::boost)
 if(YALAA_IV_TARGET)
   target_link_libraries(yalaa PUBLIC ${YALAA_IV_TARGET})
 endif()
@@ -118,7 +117,7 @@ if(YALAA_ENABLE_TESTS)
     tests/ftmeta.cpp
     tests/test_main.cpp
   )
-  target_link_libraries(test_yalaa PRIVATE yalaa GTest::gtest Boost::boost)
+  target_link_libraries(test_yalaa PRIVATE yalaa GTest::gtest)
 
   enable_testing()
   add_test(NAME test_yalaa COMMAND test_yalaa)
